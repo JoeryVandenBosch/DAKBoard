@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Family Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
-    <script src="https://alcdn.msauth.net/browser/2.38.0/js/msal-browser.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -903,6 +902,77 @@
             font-size: 0.9em;
         }
 
+        /* Device Code Screen */
+        .device-code-box {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 35px;
+            margin: 30px 0;
+            text-align: center;
+            max-width: 450px;
+        }
+
+        .device-code-step {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            text-align: left;
+            font-size: 1.1rem;
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0078d4, #00a4ef);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .verification-url {
+            display: block;
+            font-size: 1.4rem;
+            color: #00a4ef;
+            text-decoration: none;
+            margin-bottom: 30px;
+            word-break: break-all;
+        }
+
+        .verification-url:hover {
+            text-decoration: underline;
+        }
+
+        .user-code {
+            font-size: 3rem;
+            font-weight: 600;
+            letter-spacing: 8px;
+            font-family: monospace;
+            background: linear-gradient(135deg, #0078d4, #00a4ef);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+        }
+
+        .device-code-waiting {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            opacity: 0.7;
+            font-size: 1rem;
+        }
+
+        .device-code-waiting .loading-spinner {
+            width: 24px;
+            height: 24px;
+            margin: 0;
+        }
+
         /* Empty State */
         .empty-state {
             text-align: center;
@@ -1105,6 +1175,33 @@
                 <li>Enjoy automatic calendar reminders!</li>
             </ol>
         </div>
+    </div>
+
+    <!-- Device Code Screen -->
+    <div class="login-screen" id="deviceCodeScreen" style="display: none;">
+        <div class="login-title">🔐 Sign In</div>
+        <div class="login-subtitle">Use another device to complete sign-in</div>
+        
+        <div class="device-code-box">
+            <div class="device-code-step">
+                <div class="step-number">1</div>
+                <div>On your phone or computer, go to:</div>
+            </div>
+            <a href="https://microsoft.com/devicelogin" target="_blank" id="verificationUrl" class="verification-url">microsoft.com/devicelogin</a>
+            
+            <div class="device-code-step">
+                <div class="step-number">2</div>
+                <div>Enter this code:</div>
+            </div>
+            <div class="user-code" id="userCode">XXXXXXXX</div>
+            
+            <div class="device-code-waiting">
+                <div class="loading-spinner"></div>
+                <span>Waiting for you to sign in...</span>
+            </div>
+        </div>
+
+        <button class="submit-btn secondary" style="max-width: 300px; margin-top: 20px;" onclick="cancelLogin()">Cancel</button>
     </div>
 
     <!-- Main Dashboard -->
@@ -1425,19 +1522,8 @@
         // =====================================================
         // CONFIGURATION - UPDATE THIS WITH YOUR APP DETAILS
         // =====================================================
-        const msalConfig = {
-            auth: {
-                clientId: "ceeb2a9b-e2b7-4684-86e0-f0533851cae1", // Replace with your Azure AD App A Client ID
-                authority: "https://login.microsoftonline.com/common",
-                redirectUri: window.location.origin + window.location.pathname,
-            },
-            cache: {
-                cacheLocation: "localStorage",
-                storeAuthStateInCookie: true,
-            }
-        };
-
-        const graphScopes = ["Calendars.ReadWrite", "Tasks.ReadWrite", "User.Read"];
+        const clientId = "ceeb2a9b-e2b7-4684-86e0-f0533851cae1"; // Replace with your Azure AD App A Client ID
+        const graphScopes = "Calendars.ReadWrite Tasks.ReadWrite User.Read offline_access";
         
         // =====================================================
         // DATA STORAGE
@@ -1445,7 +1531,9 @@
         const STORAGE_KEYS = {
             CONTACTS: 'familyDashboard_contacts',
             SETTINGS: 'familyDashboard_settings',
-            API_CONFIG: 'familyDashboard_apiConfig'
+            API_CONFIG: 'familyDashboard_apiConfig',
+            AUTH_TOKENS: 'familyDashboard_authTokens',
+            USER_INFO: 'familyDashboard_userInfo'
         };
 
         let contacts = [];
@@ -1460,12 +1548,10 @@
             functionKey: ''
         };
 
-        // =====================================================
-        // MSAL INITIALIZATION
-        // =====================================================
-        const msalInstance = new msal.PublicClientApplication(msalConfig);
-        let currentAccount = null;
+        let authTokens = null;
+        let currentUser = null;
         let todoLists = [];
+        let deviceCodePolling = null;
 
         function loadSavedData() {
             try {
@@ -1477,6 +1563,12 @@
 
                 const savedApiConfig = localStorage.getItem(STORAGE_KEYS.API_CONFIG);
                 if (savedApiConfig) apiConfig = JSON.parse(savedApiConfig);
+
+                const savedTokens = localStorage.getItem(STORAGE_KEYS.AUTH_TOKENS);
+                if (savedTokens) authTokens = JSON.parse(savedTokens);
+
+                const savedUser = localStorage.getItem(STORAGE_KEYS.USER_INFO);
+                if (savedUser) currentUser = JSON.parse(savedUser);
             } catch (e) {
                 console.error('Error loading saved data:', e);
             }
@@ -1496,49 +1588,187 @@
             localStorage.setItem(STORAGE_KEYS.API_CONFIG, JSON.stringify(apiConfig));
         }
 
-        // Handle redirect response
-        msalInstance.handleRedirectPromise().then(response => {
-            if (response) {
-                currentAccount = response.account;
-                showDashboard();
-            } else {
-                const accounts = msalInstance.getAllAccounts();
-                if (accounts.length > 0) {
-                    currentAccount = accounts[0];
+        function saveAuthTokens(tokens) {
+            authTokens = tokens;
+            localStorage.setItem(STORAGE_KEYS.AUTH_TOKENS, JSON.stringify(tokens));
+        }
+
+        function saveUserInfo(user) {
+            currentUser = user;
+            localStorage.setItem(STORAGE_KEYS.USER_INFO, JSON.stringify(user));
+        }
+
+        // Check for existing login on page load
+        document.addEventListener('DOMContentLoaded', async () => {
+            loadSavedData();
+            
+            if (authTokens && authTokens.refresh_token) {
+                // Try to refresh the token
+                try {
+                    await refreshAccessToken();
                     showDashboard();
+                } catch (e) {
+                    console.log('Token refresh failed, need to login again');
+                    showLoginScreen();
                 }
+            } else {
+                showLoginScreen();
             }
-        }).catch(error => {
-            console.error('Redirect error:', error);
         });
 
+        function showLoginScreen() {
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('userInfo').style.display = 'none';
+            document.getElementById('deviceCodeScreen').style.display = 'none';
+        }
+
         // =====================================================
-        // AUTHENTICATION
+        // DEVICE CODE FLOW AUTHENTICATION
         // =====================================================
         async function signIn() {
             try {
-                await msalInstance.loginRedirect({ scopes: graphScopes });
+                // Step 1: Request device code
+                const deviceCodeResponse = await fetch('https://login.microsoftonline.com/common/oauth2/v2.0/devicecode', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `client_id=${clientId}&scope=${encodeURIComponent(graphScopes)}`
+                });
+
+                const deviceCodeData = await deviceCodeResponse.json();
+                
+                if (deviceCodeData.error) {
+                    throw new Error(deviceCodeData.error_description || 'Failed to get device code');
+                }
+
+                // Step 2: Show the code to the user
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('deviceCodeScreen').style.display = 'flex';
+                document.getElementById('userCode').textContent = deviceCodeData.user_code;
+                document.getElementById('verificationUrl').textContent = deviceCodeData.verification_uri;
+                document.getElementById('verificationUrl').href = deviceCodeData.verification_uri;
+
+                // Step 3: Poll for token
+                const pollInterval = (deviceCodeData.interval || 5) * 1000;
+                const expiresAt = Date.now() + (deviceCodeData.expires_in * 1000);
+                
+                deviceCodePolling = setInterval(async () => {
+                    if (Date.now() > expiresAt) {
+                        clearInterval(deviceCodePolling);
+                        showToast('Code expired. Please try again.', true);
+                        showLoginScreen();
+                        return;
+                    }
+
+                    try {
+                        const tokenResponse = await fetch('https://login.microsoftonline.com/common/oauth2/v2.0/token', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            body: `grant_type=urn:ietf:params:oauth:grant-type:device_code&client_id=${clientId}&device_code=${deviceCodeData.device_code}`
+                        });
+
+                        const tokenData = await tokenResponse.json();
+
+                        if (tokenData.access_token) {
+                            clearInterval(deviceCodePolling);
+                            saveAuthTokens(tokenData);
+                            
+                            // Get user info
+                            await fetchUserInfo();
+                            
+                            document.getElementById('deviceCodeScreen').style.display = 'none';
+                            showDashboard();
+                            showToast('Successfully signed in!');
+                        } else if (tokenData.error && tokenData.error !== 'authorization_pending') {
+                            clearInterval(deviceCodePolling);
+                            showToast(tokenData.error_description || 'Login failed', true);
+                            showLoginScreen();
+                        }
+                        // If error is 'authorization_pending', keep polling
+                    } catch (e) {
+                        console.error('Polling error:', e);
+                    }
+                }, pollInterval);
+
             } catch (error) {
                 console.error('Login error:', error);
                 showToast('Login failed. Please try again.', true);
+                showLoginScreen();
+            }
+        }
+
+        function cancelLogin() {
+            if (deviceCodePolling) {
+                clearInterval(deviceCodePolling);
+            }
+            showLoginScreen();
+        }
+
+        async function refreshAccessToken() {
+            if (!authTokens || !authTokens.refresh_token) {
+                throw new Error('No refresh token available');
+            }
+
+            const response = await fetch('https://login.microsoftonline.com/common/oauth2/v2.0/token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `grant_type=refresh_token&client_id=${clientId}&refresh_token=${authTokens.refresh_token}&scope=${encodeURIComponent(graphScopes)}`
+            });
+
+            const tokenData = await response.json();
+
+            if (tokenData.access_token) {
+                saveAuthTokens(tokenData);
+                return tokenData.access_token;
+            } else {
+                throw new Error(tokenData.error_description || 'Token refresh failed');
+            }
+        }
+
+        async function fetchUserInfo() {
+            try {
+                const response = await fetch('https://graph.microsoft.com/v1.0/me', {
+                    headers: {
+                        'Authorization': `Bearer ${authTokens.access_token}`
+                    }
+                });
+                const user = await response.json();
+                saveUserInfo(user);
+            } catch (e) {
+                console.error('Failed to fetch user info:', e);
             }
         }
 
         function signOut() {
-            msalInstance.logoutRedirect();
+            localStorage.removeItem(STORAGE_KEYS.AUTH_TOKENS);
+            localStorage.removeItem(STORAGE_KEYS.USER_INFO);
+            authTokens = null;
+            currentUser = null;
+            showLoginScreen();
+            showToast('Signed out successfully');
         }
 
         async function getAccessToken() {
-            const request = { scopes: graphScopes, account: currentAccount };
-            try {
-                const response = await msalInstance.acquireTokenSilent(request);
-                return response.accessToken;
-            } catch (error) {
-                if (error instanceof msal.InteractionRequiredAuthError) {
-                    await msalInstance.acquireTokenRedirect(request);
-                }
-                throw error;
+            if (!authTokens) {
+                throw new Error('Not authenticated');
             }
+
+            // Check if token is expired (with 5 min buffer)
+            const tokenPayload = JSON.parse(atob(authTokens.access_token.split('.')[1]));
+            const expiresAt = tokenPayload.exp * 1000;
+            
+            if (Date.now() > expiresAt - 300000) {
+                // Token expired or expiring soon, refresh it
+                return await refreshAccessToken();
+            }
+
+            return authTokens.access_token;
         }
 
         // =====================================================
@@ -2016,11 +2246,12 @@
         // =====================================================
         function showDashboard() {
             document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('deviceCodeScreen').style.display = 'none';
             document.getElementById('dashboard').style.display = 'grid';
             document.getElementById('userInfo').style.display = 'flex';
             
-            if (currentAccount) {
-                document.getElementById('userName').textContent = currentAccount.name || currentAccount.username;
+            if (currentUser) {
+                document.getElementById('userName').textContent = currentUser.displayName || currentUser.userPrincipalName || 'User';
             }
 
             loadSavedData();
