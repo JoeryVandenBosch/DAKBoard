@@ -1,0 +1,21 @@
+{
+  "name": "family-dashboard-notifications",
+  "version": "1.0.0",
+  "description": "Azure Function for sending Telegram notifications for calendar events",
+  "main": "src/functions/*.js",
+  "scripts": {
+    "start": "func start",
+    "test": "echo \"No tests configured\""
+  },
+  "dependencies": {
+    "@azure/functions": "^4.0.0",
+    "@azure/identity": "^4.0.0",
+    "@microsoft/microsoft-graph-client": "^3.0.7"
+  },
+  "devDependencies": {
+    "azure-functions-core-tools": "^4.x"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
