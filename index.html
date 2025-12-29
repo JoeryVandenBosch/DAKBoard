@@ -13,7 +13,7 @@
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             min-height: 100vh;
             color: white;
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
         /* ===== LOGIN SCREEN ===== */
@@ -103,8 +103,8 @@
         /* ===== DASHBOARD LAYOUT ===== */
         .dashboard {
             display: grid;
-            grid-template-rows: auto auto 1fr 1fr;
-            height: 100vh;
+            grid-template-rows: auto auto auto auto auto auto;
+            min-height: 100vh;
             padding: 20px;
             gap: 15px;
         }
@@ -177,238 +177,26 @@
             border: 1px solid rgba(255,255,255,0.1);
         }
 
-        /* ===== CONTENT ROW (Calendar Full Width) ===== */
+        /* ===== CONTENT ROW (Calendar & Todo Side by Side) ===== */
         .content-row {
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: 1fr 1fr;
             gap: 15px;
             min-height: 0;
             overflow: hidden;
         }
 
-        /* ===== CHORES ROW (Replaces Photos) ===== */
-        .chores-row {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 15px;
-            min-height: 0;
+        /* ===== PHOTO ROW (Full Width Bottom) ===== */
+        .photo-row {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
             overflow: hidden;
-        }
-
-        @media (max-width: 1200px) {
-            .chores-row { grid-template-columns: 1fr 1fr; }
-        }
-
-        @media (max-width: 800px) {
-            .chores-row { grid-template-columns: 1fr; grid-template-rows: auto auto; }
-        }
-
-        /* ===== CHORES CARD STYLES ===== */
-        .chores-card { position: relative; }
-
-        body.edit-mode .chores-card {
-            border: 2px solid rgba(239, 68, 68, 0.5);
-            box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
-        }
-
-        .header-buttons { display: flex; gap: 8px; align-items: center; }
-
-        .edit-mode-btn {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            color: white; padding: 5px 10px; border-radius: 8px;
-            cursor: pointer; font-family: 'Outfit', sans-serif;
-            font-size: 0.7rem; display: flex; align-items: center; gap: 5px;
-            transition: all 0.2s;
-        }
-        .edit-mode-btn:hover { background: rgba(255,255,255,0.2); }
-        .edit-mode-btn.active {
-            background: rgba(239, 68, 68, 0.2);
-            border-color: rgba(239, 68, 68, 0.5);
-            color: #ef4444;
-            animation: editPulse 2s ease infinite;
-        }
-
-        @keyframes editPulse {
-            0%, 100% { box-shadow: 0 0 5px rgba(239, 68, 68, 0.3); }
-            50% { box-shadow: 0 0 15px rgba(239, 68, 68, 0.5); }
-        }
-
-        .chore-item {
-            display: flex; align-items: center; gap: 10px;
-            padding: 10px 12px; background: rgba(255,255,255,0.05);
-            border-radius: 10px; margin-bottom: 6px;
-            cursor: pointer; transition: all 0.3s ease;
-        }
-        .chore-item:hover { background: rgba(255,255,255,0.1); transform: translateX(3px); }
-
-        .chore-checkbox {
-            width: 22px; height: 22px; border-radius: 50%;
-            border: 2px solid rgba(255,255,255,0.4); flex-shrink: 0;
-        }
-        .chore-item:hover .chore-checkbox { border-color: #4ade80; background: rgba(74,222,128,0.2); }
-
-        .chore-content { flex: 1; }
-        .chore-text { font-size: 0.85rem; margin-bottom: 2px; }
-        .chore-points { font-size: 0.7rem; color: #4ade80; }
-
-        .chore-completed-by { display: flex; flex-wrap: wrap; gap: 4px; }
-        .completed-tag {
-            font-size: 0.65rem; padding: 2px 6px;
-            background: rgba(74,222,128,0.2); color: #4ade80; border-radius: 6px;
-        }
-
-        .delete-chore-btn {
-            width: 26px; height: 26px; border-radius: 50%;
-            background: rgba(239, 68, 68, 0.2);
-            border: 1px solid rgba(239, 68, 68, 0.4);
-            color: #ef4444; font-size: 0.8rem; cursor: pointer;
-            display: none; align-items: center; justify-content: center;
-            flex-shrink: 0; transition: all 0.2s;
-        }
-        .delete-chore-btn:hover { background: rgba(239, 68, 68, 0.4); transform: scale(1.1); }
-        body.edit-mode .delete-chore-btn { display: flex; }
-
-        .reset-chores-btn {
-            width: 100%; margin-top: 10px; padding: 8px;
-            background: rgba(239,68,68,0.15);
-            border: 1px solid rgba(239,68,68,0.3);
-            color: #ef4444; border-radius: 8px; cursor: pointer;
-            font-family: 'Outfit', sans-serif; font-size: 0.75rem;
-            display: flex; align-items: center; justify-content: center; gap: 5px;
-        }
-
-        .scoreboard-mini { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
-
-        .score-mini-item {
-            flex: 1; min-width: 80px; background: rgba(255,255,255,0.05);
-            border-radius: 10px; padding: 10px; text-align: center;
-            cursor: pointer; transition: all 0.2s;
-        }
-        .score-mini-item:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
-        .score-mini-item.leader {
-            background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,215,0,0.05));
-            border: 1px solid rgba(255,215,0,0.3);
-        }
-
-        .score-mini-avatar { font-size: 1.3rem; margin-bottom: 4px; }
-        .score-mini-name { font-size: 0.7rem; opacity: 0.8; }
-        .score-mini-points {
-            font-size: 1.2rem; font-weight: 600;
-            background: linear-gradient(135deg, #4ade80, #22c55e);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        .score-mini-label { font-size: 0.6rem; opacity: 0.5; }
-
-        .score-mini-progress {
-            background: rgba(255,255,255,0.1); border-radius: 4px;
-            height: 4px; overflow: hidden; margin-top: 6px;
-        }
-        .score-mini-progress-bar {
-            height: 100%; background: linear-gradient(90deg, #4ade80, #22c55e); border-radius: 4px;
-        }
-
-        .weekly-section-title {
-            font-size: 0.75rem; opacity: 0.6; margin-bottom: 8px;
-            display: flex; align-items: center; gap: 6px;
-        }
-
-        .edit-mode-banner {
-            display: none; position: fixed; top: 10px; left: 50%;
-            transform: translateX(-50%); background: linear-gradient(135deg, #ef4444, #dc2626);
-            padding: 6px 15px; border-radius: 15px; font-size: 0.75rem;
-            font-weight: 500; z-index: 99;
-        }
-        body.edit-mode .edit-mode-banner { display: block; }
-
-        /* ===== PIN MODAL STYLES ===== */
-        .pin-input-container { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
-        .pin-digit {
-            width: 50px; height: 60px; border-radius: 12px;
-            border: 2px solid rgba(255,255,255,0.2);
-            background: rgba(255,255,255,0.05); color: white;
-            font-size: 1.5rem; font-weight: 600; text-align: center;
-            font-family: 'Outfit', sans-serif;
-        }
-        .pin-digit:focus { outline: none; border-color: #4ade80; background: rgba(74,222,128,0.1); }
-        .pin-error { color: #ef4444; font-size: 0.85rem; margin-bottom: 15px; display: none; text-align: center; }
-        .pin-error.active { display: block; }
-        .pin-icon { font-size: 3rem; margin-bottom: 10px; text-align: center; }
-        .pin-description { font-size: 0.9rem; opacity: 0.8; margin-bottom: 20px; text-align: center; }
-
-        /* ===== WHO MODAL ===== */
-        .who-completed-task {
-            font-size: 1rem; font-weight: 500; padding: 10px;
-            background: rgba(255,255,255,0.05); border-radius: 10px; margin-bottom: 15px; text-align: center;
-        }
-        .who-buttons { display: flex; flex-direction: column; gap: 8px; }
-        .who-btn {
-            display: flex; align-items: center; gap: 12px;
-            padding: 12px 15px; border-radius: 10px;
-            border: 2px solid rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.05); color: white;
-            font-family: 'Outfit', sans-serif; font-size: 0.95rem;
-            cursor: pointer; transition: all 0.3s;
-        }
-        .who-btn:hover { background: rgba(255,255,255,0.15); border-color: #4ade80; transform: translateX(5px); }
-        .who-btn .avatar {
-            width: 32px; height: 32px; border-radius: 50%;
-            background: linear-gradient(135deg, #e94560, #533483);
-            display: flex; align-items: center; justify-content: center; font-size: 1rem;
-        }
-        .who-btn .points-preview { margin-left: auto; color: #4ade80; font-weight: 500; }
-
-        /* ===== CONFIRM MODAL ===== */
-        .confirm-icon { font-size: 2.5rem; margin-bottom: 15px; text-align: center; }
-        .confirm-message { font-size: 0.95rem; margin-bottom: 20px; line-height: 1.5; text-align: center; }
-        .confirm-buttons { display: flex; gap: 12px; }
-        .confirm-btn {
-            flex: 1; padding: 12px 18px; border-radius: 10px; border: none;
-            font-family: 'Outfit', sans-serif; font-size: 0.9rem; font-weight: 500; cursor: pointer;
-        }
-        .confirm-btn.cancel { background: rgba(255,255,255,0.1); color: white; }
-        .confirm-btn.danger { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; }
-
-        /* ===== CELEBRATION ===== */
-        .chore-celebration-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 2000; pointer-events: none;
-        }
-        .chore-celebration-overlay.active { display: block; }
-        .chore-celebration-content {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            text-align: center; animation: choreCelebPop 0.5s ease;
-        }
-        @keyframes choreCelebPop {
-            0% { transform: translate(-50%, -50%) scale(0); }
-            50% { transform: translate(-50%, -50%) scale(1.2); }
-            100% { transform: translate(-50%, -50%) scale(1); }
-        }
-        .chore-celebration-emoji { font-size: 4rem; animation: choreBounce 0.6s ease infinite alternate; }
-        @keyframes choreBounce { 0% { transform: translateY(0); } 100% { transform: translateY(-15px); } }
-        .chore-celebration-text {
-            font-size: 1.8rem; font-weight: 600; margin-top: 10px;
-            background: linear-gradient(135deg, #ffd700, #ff6b6b, #4ade80, #00d4ff);
-            background-size: 300% 300%;
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: gradientShift 2s ease infinite;
-        }
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
-        }
-        .chore-celebration-points { font-size: 1.1rem; margin-top: 8px; color: #4ade80; }
-        .chore-celebration-reward { font-size: 0.95rem; margin-top: 5px; color: #ffd700; }
-        .chore-confetti { position: absolute; width: 10px; height: 10px; opacity: 0; }
-        .chore-confetti.active { animation: choreConfettiFall 3s ease-out forwards; }
-        @keyframes choreConfettiFall {
-            0% { opacity: 1; transform: translateY(0) rotate(0deg); }
-            100% { opacity: 0; transform: translateY(100vh) rotate(720deg); }
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
         }
 
         /* ===== CARDS ===== */
@@ -1005,6 +793,732 @@
         }
         .celebration-style-btn:hover { background: rgba(255,255,255,0.2); }
         .celebration-style-btn.active { background: linear-gradient(135deg, #4ade80, #22c55e); color: #1a1a2e; }
+
+        /* ===== V12 SCOREBOARD SYSTEM CSS ===== */
+        
+        /* Dropdown styling */
+        select, .form-select {
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.3);
+            background-color: #1e2a4a !important;
+            color: white !important;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e") !important;
+            background-repeat: no-repeat !important;
+            background-position: right 10px center !important;
+            background-size: 20px !important;
+            padding-right: 40px;
+        }
+
+        select option, .form-select option {
+            background-color: #1e2a4a !important;
+            color: white !important;
+        }
+
+        .year-selector select {
+            padding: 8px 12px;
+            font-size: 0.95rem;
+        }
+
+        /* Chores Row Layout */
+        .chores-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        @media (max-width: 900px) {
+            .chores-row { grid-template-columns: 1fr; }
+        }
+
+        /* Weekly Scoreboard */
+        .scoreboard {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .score-item {
+            flex: 1;
+            min-width: 180px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .score-item:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-3px);
+        }
+
+        .score-item.leader {
+            background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,215,0,0.05));
+            border: 1px solid rgba(255,215,0,0.3);
+        }
+
+        .score-item.leader::before {
+            content: '👑';
+            position: absolute;
+            top: 5px;
+            right: 8px;
+            font-size: 1.1rem;
+        }
+
+        .score-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e94560, #533483);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 10px;
+        }
+
+        .score-name { font-size: 1rem; font-weight: 500; margin-bottom: 3px; }
+
+        .score-points {
+            font-size: 2rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .score-label { font-size: 0.7rem; opacity: 0.6; margin-bottom: 8px; }
+
+        .score-progress {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            height: 8px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+
+        .score-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #4ade80, #22c55e);
+            border-radius: 8px;
+            transition: width 0.5s ease;
+        }
+
+        .score-reward-goal {
+            font-size: 0.75rem;
+            opacity: 0.9;
+            padding: 6px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+        }
+
+        .score-reward-goal strong { color: #ffd700; }
+
+        .reward-earned-badge {
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            color: #1a1a2e;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            display: inline-block;
+            animation: pulse 1s ease infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .edit-goal-btn {
+            font-size: 0.65rem;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 6px;
+        }
+
+        /* Jackpot Section */
+        .jackpot-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .jackpot-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .jackpot-cards {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .jackpot-card {
+            flex: 1;
+            min-width: 200px;
+            background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,165,0,0.05));
+            border: 1px solid rgba(255,215,0,0.2);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .jackpot-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255,215,0,0.4);
+        }
+
+        .jackpot-card .name { font-size: 1rem; font-weight: 500; margin-bottom: 5px; }
+        .jackpot-card .yearly-total { font-size: 1.8rem; font-weight: 600; color: #ffd700; }
+        .jackpot-card .yearly-label { font-size: 0.7rem; opacity: 0.7; margin-bottom: 10px; }
+
+        .jackpot-progress {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+
+        .jackpot-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700, #ff8c00);
+            border-radius: 10px;
+        }
+
+        .jackpot-goal { font-size: 0.8rem; }
+        .jackpot-goal strong { color: #ffd700; }
+
+        .jackpot-reward {
+            margin-top: 8px;
+            padding: 6px 10px;
+            background: rgba(255,215,0,0.15);
+            border-radius: 8px;
+            font-size: 0.75rem;
+        }
+
+        .jackpot-earned {
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            color: #1a1a2e;
+            padding: 8px 15px;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-top: 10px;
+            animation: jackpotPulse 1.5s ease infinite;
+        }
+
+        @keyframes jackpotPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(255,215,0,0.3); }
+            50% { transform: scale(1.02); box-shadow: 0 0 30px rgba(255,215,0,0.5); }
+        }
+
+        .edit-jackpot-btn {
+            font-size: 0.7rem;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        /* Monthly Table */
+        .monthly-table-container { overflow-x: auto; }
+
+        .monthly-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .monthly-table th, .monthly-table td {
+            padding: 10px 8px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .monthly-table th {
+            background: rgba(255,255,255,0.05);
+            font-weight: 500;
+            font-size: 0.75rem;
+        }
+
+        .monthly-table th:first-child, .monthly-table td:first-child {
+            text-align: left;
+            padding-left: 15px;
+        }
+
+        .monthly-table .current-month { background: rgba(74,222,128,0.1); font-weight: 600; }
+        .monthly-table .total-cell { font-weight: 600; color: #ffd700; background: rgba(255,215,0,0.1); }
+
+        .monthly-table .member-name {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .monthly-table .mini-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e94560, #533483);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        /* Chore Items */
+        .chore-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chore-item:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateX(5px);
+        }
+
+        .chore-checkbox {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.4);
+            flex-shrink: 0;
+        }
+
+        .chore-item:hover .chore-checkbox {
+            border-color: #4ade80;
+            background: rgba(74,222,128,0.2);
+        }
+
+        .chore-content { flex: 1; }
+        .chore-text { font-size: 0.95rem; margin-bottom: 2px; }
+        .chore-points { font-size: 0.75rem; color: #4ade80; }
+
+        .chore-completed-by {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .completed-tag {
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            background: rgba(74,222,128,0.2);
+            color: #4ade80;
+            border-radius: 8px;
+        }
+
+        /* Delete button for chores */
+        .delete-chore-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #ef4444;
+            font-size: 1rem;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+
+        .delete-chore-btn:hover {
+            background: rgba(239, 68, 68, 0.4);
+            transform: scale(1.1);
+        }
+
+        body.edit-mode .delete-chore-btn {
+            display: flex;
+        }
+
+        body.edit-mode .chores-card {
+            border: 2px solid rgba(239, 68, 68, 0.5);
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
+        }
+
+        /* Edit Mode Button */
+        .edit-mode-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s;
+        }
+
+        .edit-mode-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .edit-mode-btn.active {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.5);
+            color: #ef4444;
+            animation: editPulse 2s ease infinite;
+        }
+
+        @keyframes editPulse {
+            0%, 100% { box-shadow: 0 0 5px rgba(239, 68, 68, 0.3); }
+            50% { box-shadow: 0 0 15px rgba(239, 68, 68, 0.5); }
+        }
+
+        .reset-btn {
+            background: rgba(239,68,68,0.15);
+            border: 1px solid rgba(239,68,68,0.3);
+            color: #ef4444;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        /* PIN Modal */
+        .pin-modal .modal { max-width: 320px; text-align: center; }
+        .pin-icon { font-size: 3rem; margin-bottom: 10px; text-align: center; }
+        .pin-description { font-size: 0.9rem; opacity: 0.8; margin-bottom: 20px; text-align: center; }
+
+        .pin-input-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .pin-digit {
+            width: 50px;
+            height: 60px;
+            border-radius: 12px;
+            border: 2px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.05);
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .pin-digit:focus {
+            outline: none;
+            border-color: #4ade80;
+            background: rgba(74,222,128,0.1);
+        }
+
+        .pin-error {
+            color: #ef4444;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            display: none;
+            text-align: center;
+        }
+
+        .pin-error.active { display: block; }
+
+        /* Who Modal */
+        .who-completed-modal .modal { max-width: 350px; text-align: center; }
+
+        .who-completed-task {
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .who-buttons { display: flex; flex-direction: column; gap: 10px; }
+
+        .who-btn {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 2px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .who-btn:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: #4ade80;
+            transform: translateX(5px);
+        }
+
+        .who-btn .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e94560, #533483);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .who-btn .points-preview { margin-left: auto; color: #4ade80; font-weight: 500; }
+
+        /* Confirm Modal */
+        .confirm-modal-v12 .modal { max-width: 360px; text-align: center; }
+        .confirm-icon-v12 { font-size: 2.5rem; margin-bottom: 15px; text-align: center; }
+        .confirm-message-v12 { font-size: 1rem; margin-bottom: 20px; line-height: 1.5; text-align: center; }
+        .confirm-buttons-v12 { display: flex; gap: 12px; }
+
+        .confirm-btn-v12 {
+            flex: 1;
+            padding: 12px 18px;
+            border-radius: 10px;
+            border: none;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .confirm-btn-v12.cancel { background: rgba(255,255,255,0.1); color: white; }
+        .confirm-btn-v12.danger { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; }
+
+        /* Chore Celebration */
+        .chore-celebration-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2000;
+            pointer-events: none;
+        }
+
+        .chore-celebration-overlay.active { display: block; }
+
+        .chore-celebration-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            animation: choreCelebrationPop 0.5s ease;
+        }
+
+        @keyframes choreCelebrationPop {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            50% { transform: translate(-50%, -50%) scale(1.2); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .chore-celebration-emoji { font-size: 4rem; animation: choreBounce 0.6s ease infinite alternate; }
+
+        @keyframes choreBounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-15px); }
+        }
+
+        .chore-celebration-text {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-top: 10px;
+            background: linear-gradient(135deg, #ffd700, #ff6b6b, #4ade80, #00d4ff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 2s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .chore-celebration-points { font-size: 1.2rem; margin-top: 8px; color: #4ade80; }
+        .chore-celebration-reward { font-size: 1rem; margin-top: 5px; color: #ffd700; }
+
+        .chore-confetti { position: absolute; width: 10px; height: 10px; opacity: 0; }
+        .chore-confetti.active { animation: choreConfettiFall 3s ease-out forwards; }
+
+        @keyframes choreConfettiFall {
+            0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+            100% { opacity: 0; transform: translateY(100vh) rotate(720deg); }
+        }
+
+        /* Jackpot Celebration */
+        .jackpot-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .jackpot-overlay.active { display: flex; }
+
+        .jackpot-celebration { text-align: center; animation: jackpotAppear 0.8s ease; }
+
+        @keyframes jackpotAppear {
+            0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+            50% { transform: scale(1.2) rotate(10deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        .jackpot-celebration .mega-emoji {
+            font-size: 8rem;
+            animation: jackpotBounce 0.5s ease infinite alternate;
+        }
+
+        @keyframes jackpotBounce {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(-30px) scale(1.1); }
+        }
+
+        .jackpot-celebration .mega-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 20px 0;
+            background: linear-gradient(135deg, #ffd700, #ff8c00, #ffd700);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: goldShimmer 1s ease infinite;
+        }
+
+        @keyframes goldShimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .jackpot-celebration .winner-name { font-size: 2rem; color: white; }
+        .jackpot-celebration .prize-text {
+            font-size: 1.5rem;
+            color: #ffd700;
+            padding: 15px 30px;
+            background: rgba(255,215,0,0.15);
+            border-radius: 15px;
+            display: inline-block;
+            margin: 20px 0;
+        }
+
+        .jackpot-celebration .close-jackpot {
+            margin-top: 30px;
+            padding: 15px 40px;
+            border-radius: 30px;
+            border: none;
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            color: #1a1a2e;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        .sound-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 50;
+        }
+
+        .section-divider {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin: 12px 0;
+            padding-top: 12px;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .edit-mode-banner {
+            display: none;
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            z-index: 99;
+            animation: bannerPulse 2s ease infinite;
+        }
+
+        body.edit-mode .edit-mode-banner {
+            display: block;
+        }
+
+        @keyframes bannerPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
     </style>
 </head>
 <body>
@@ -1104,8 +1618,75 @@
             </div>
         </div>
 
-        <!-- Row 3: Calendar (Full Width) -->
-        <div class="content-row">
+        <!-- Row 3: Scoreboard (Full Width) -->
+        <div class="card" style="grid-column: 1 / -1;">
+            <div class="card-header">
+                <div class="card-title">🏆 Weekly Scoreboard</div>
+                <button type="button" class="reset-btn" onclick="requestPinForAction('resetWeek')">
+                    <span class="lock-icon">🔒</span> Reset Week
+                </button>
+            </div>
+            <div class="scoreboard" id="scoreboard"></div>
+
+            <div class="jackpot-section">
+                <div class="jackpot-title">
+                    🎰 Super Ultimate Jackpot 
+                    <span class="year-selector">
+                        <select id="yearSelect" onchange="changeYear()">
+                            <option value="2024">2024</option>
+                            <option value="2025" selected>2025</option>
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                            <option value="2028">2028</option>
+                            <option value="2029">2029</option>
+                            <option value="2030">2030</option>
+                            <option value="2031">2031</option>
+                            <option value="2032">2032</option>
+                            <option value="2033">2033</option>
+                            <option value="2034">2034</option>
+                            <option value="2035">2035</option>
+                        </select>
+                    </span>
+                </div>
+                <div class="jackpot-cards" id="jackpotCards"></div>
+            </div>
+        </div>
+
+        <!-- Row 4: Monthly Table (Full Width) -->
+        <div class="card" style="grid-column: 1 / -1;">
+            <div class="card-header">
+                <div class="card-title">📅 Monthly Points <span id="monthlyYearLabel">2025</span></div>
+                <button type="button" class="reset-btn" onclick="requestPinForAction('resetYear')">
+                    <span class="lock-icon">🔒</span> Reset Year
+                </button>
+            </div>
+            <div class="monthly-table-container">
+                <table class="monthly-table" id="monthlyTable"></table>
+            </div>
+        </div>
+
+        <!-- Row 5: Chores & Calendar & Todo -->
+        <div class="chores-row">
+            <!-- Chores Card -->
+            <div class="card chores-card">
+                <div class="card-header">
+                    <div class="card-title">🧹 Daily Chores</div>
+                    <div class="header-buttons">
+                        <button type="button" class="edit-mode-btn" id="editModeBtn" onclick="toggleEditMode()">
+                            <span id="editModeIcon">🔒</span>
+                            <span id="editModeText">Edit</span>
+                        </button>
+                        <button type="button" class="add-btn" onclick="openAddChoreModal()">+</button>
+                    </div>
+                </div>
+                <div id="choresList"></div>
+                <div class="section-divider">
+                    <button type="button" class="reset-btn" onclick="requestPinForAction('resetDay')" style="width:100%;">
+                        <span class="lock-icon">🔒</span> New Day - Reset Chores
+                    </button>
+                </div>
+            </div>
+
             <!-- Calendar -->
             <div class="card calendar-card">
                 <div class="card-header">
@@ -1118,44 +1699,20 @@
             </div>
         </div>
 
-        <!-- Row 4: Chores & Todo -->
-        <div class="chores-row">
-            <!-- Chores Card -->
-            <div class="card chores-card">
-                <div class="card-header">
-                    <div class="card-title">🧹 Family Chores</div>
-                    <div class="header-buttons">
-                        <button class="edit-mode-btn" id="editModeBtn" onclick="toggleChoreEditMode()">
-                            <span id="editModeIcon">🔒</span>
-                            <span id="editModeText">Edit</span>
-                        </button>
-                        <button class="add-btn" onclick="openModal('addChore')">+</button>
-                    </div>
-                </div>
-                <div class="card-content">
-                    <div class="weekly-section-title">🏆 This Week</div>
-                    <div class="scoreboard-mini" id="scoreboardMini"></div>
-                    <div class="weekly-section-title" style="margin-top:12px;">📋 Today's Chores</div>
-                    <div id="choresList"></div>
-                    <button class="reset-chores-btn" onclick="requestChorePin('resetDay')">🔒 New Day - Reset Chores</button>
-                </div>
+        <!-- Row 6: Microsoft To Do (Full Width) -->
+        <div class="card" style="grid-column: 1 / -1;">
+            <div class="card-header">
+                <div class="card-title">✅ Microsoft To Do</div>
+                <button class="add-btn" onclick="openModal('todo')">+</button>
             </div>
-
-            <!-- ToDo -->
-            <div class="card todo-card">
-                <div class="card-header">
-                    <div class="card-title">✅ To Do</div>
-                    <button class="add-btn" onclick="openModal('todo')">+</button>
-                </div>
-                <div class="card-content" id="todoContent">
-                    <div class="loading"><div class="loading-spinner"></div>Loading tasks...</div>
-                </div>
+            <div class="card-content" id="todoContent">
+                <div class="loading"><div class="loading-spinner"></div>Loading tasks...</div>
             </div>
         </div>
     </div>
 
     <!-- Edit Mode Banner -->
-    <div class="edit-mode-banner">✏️ EDIT MODE - Tap 🗑️ to delete</div>
+    <div class="edit-mode-banner">✏️ EDIT MODE - Tap 🗑️ to delete chores</div>
 
     <!-- User Info -->
     <div class="user-info" id="userInfo" style="display: none;">
@@ -1251,6 +1808,7 @@
                 <button class="settings-tab active" onclick="switchSettingsTab('contacts')">👥 Contacts</button>
                 <button class="settings-tab" onclick="switchSettingsTab('notifications')">🔔 Reminders</button>
                 <button class="settings-tab" onclick="switchSettingsTab('weather')">🌤️ Weather</button>
+                <button class="settings-tab" onclick="switchSettingsTab('photos')">📸 Photos</button>
                 <button class="settings-tab" onclick="switchSettingsTab('api')">🔗 API</button>
             </div>
 
@@ -1478,12 +2036,46 @@
         </div>
     </div>
 
-    <!-- ===== ADD CHORE MODAL ===== -->
+    <!-- ===== V12 MODALS ===== -->
+
+    <!-- PIN Modal -->
+    <div class="modal-overlay pin-modal" id="pinModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">🔐 Parent Access</div>
+                <button type="button" class="modal-close" onclick="closePinModal()">×</button>
+            </div>
+            <div class="pin-icon">👨‍👩‍👧‍👦</div>
+            <div class="pin-description">Enter the 4-digit parent PIN</div>
+            <div class="pin-input-container">
+                <input type="tel" class="pin-digit" id="pin1" maxlength="1" oninput="handlePinInput(1)" onkeydown="handlePinKeydown(event, 1)">
+                <input type="tel" class="pin-digit" id="pin2" maxlength="1" oninput="handlePinInput(2)" onkeydown="handlePinKeydown(event, 2)">
+                <input type="tel" class="pin-digit" id="pin3" maxlength="1" oninput="handlePinInput(3)" onkeydown="handlePinKeydown(event, 3)">
+                <input type="tel" class="pin-digit" id="pin4" maxlength="1" oninput="handlePinInput(4)" onkeydown="handlePinKeydown(event, 4)">
+            </div>
+            <div class="pin-error" id="pinError">❌ Incorrect PIN</div>
+            <button type="button" class="submit-btn" onclick="verifyPin()">🔓 Unlock</button>
+        </div>
+    </div>
+
+    <!-- Who Modal -->
+    <div class="modal-overlay who-completed-modal" id="whoModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">🎯 Who did this?</div>
+                <button type="button" class="modal-close" onclick="closeWhoModal()">×</button>
+            </div>
+            <div class="who-completed-task" id="whoTaskName">Task</div>
+            <div class="who-buttons" id="whoButtons"></div>
+        </div>
+    </div>
+
+    <!-- Add Chore Modal -->
     <div class="modal-overlay" id="addChoreModal">
-        <div class="modal" style="max-width:400px;">
+        <div class="modal">
             <div class="modal-header">
                 <div class="modal-title">🧹 Add Daily Chore</div>
-                <button class="modal-close" onclick="closeModal('addChore')">×</button>
+                <button type="button" class="modal-close" onclick="closeAddChoreModal()">×</button>
             </div>
             <div class="form-group">
                 <label class="form-label">Chore Name</label>
@@ -1499,56 +2091,79 @@
                     <option value="5">⭐⭐⭐⭐⭐ 5 points</option>
                 </select>
             </div>
-            <button type="button" class="submit-btn" onclick="addNewChore()">➕ Add Chore</button>
+            <button type="button" class="submit-btn" onclick="addChore()">➕ Add Chore</button>
         </div>
     </div>
 
-    <!-- ===== CHORE PIN MODAL ===== -->
-    <div class="modal-overlay" id="chorePinModal">
-        <div class="modal" style="max-width:320px;">
+    <!-- Edit Weekly Goal Modal -->
+    <div class="modal-overlay" id="editRewardModal">
+        <div class="modal">
             <div class="modal-header">
-                <div class="modal-title">🔐 Parent Access</div>
-                <button class="modal-close" onclick="closeModal('chorePin')">×</button>
+                <div class="modal-title">🎁 Weekly Reward Goal</div>
+                <button type="button" class="modal-close" onclick="closeEditRewardModal()">×</button>
             </div>
-            <div class="pin-icon">👨‍👩‍👧‍👦</div>
-            <div class="pin-description">Enter the 4-digit parent PIN</div>
-            <div class="pin-input-container">
-                <input type="tel" class="pin-digit" id="chorePin1" maxlength="1" oninput="handleChorePinInput(1)" onkeydown="handleChorePinKeydown(event, 1)">
-                <input type="tel" class="pin-digit" id="chorePin2" maxlength="1" oninput="handleChorePinInput(2)" onkeydown="handleChorePinKeydown(event, 2)">
-                <input type="tel" class="pin-digit" id="chorePin3" maxlength="1" oninput="handleChorePinInput(3)" onkeydown="handleChorePinKeydown(event, 3)">
-                <input type="tel" class="pin-digit" id="chorePin4" maxlength="1" oninput="handleChorePinInput(4)" onkeydown="handleChorePinKeydown(event, 4)">
+            <div id="editRewardName" style="font-size:1.1rem;text-align:center;margin-bottom:15px;"></div>
+            <div class="form-group">
+                <label class="form-label">Reward</label>
+                <input type="text" class="form-input" id="rewardGoalInput" placeholder="e.g., Ice cream">
             </div>
-            <div class="pin-error" id="chorePinError">❌ Incorrect PIN</div>
-            <button type="button" class="submit-btn" onclick="verifyChorePinCode()">🔓 Unlock</button>
+            <div class="form-group">
+                <label class="form-label">Points needed</label>
+                <select class="form-select" id="rewardPointsSelect">
+                    <option value="5">⭐ 5 - Easy</option>
+                    <option value="10">🌟 10 - Normal</option>
+                    <option value="15">💪 15 - Super</option>
+                    <option value="20">🔥 20 - Challenge</option>
+                    <option value="25">🏆 25 - Ultimate</option>
+                    <option value="30">👑 30 - Legend</option>
+                    <option value="50">💎 50 - Epic</option>
+                </select>
+            </div>
+            <button type="button" class="submit-btn" onclick="saveReward()">🎯 Set Goal</button>
         </div>
     </div>
 
-    <!-- ===== WHO COMPLETED MODAL ===== -->
-    <div class="modal-overlay" id="whoModal">
-        <div class="modal" style="max-width:350px;">
+    <!-- Edit Jackpot Modal -->
+    <div class="modal-overlay" id="editJackpotModal">
+        <div class="modal">
             <div class="modal-header">
-                <div class="modal-title">🎯 Who did this?</div>
-                <button class="modal-close" onclick="closeModal('who')">×</button>
+                <div class="modal-title">🎰 Super Ultimate Jackpot</div>
+                <button type="button" class="modal-close" onclick="closeEditJackpotModal()">×</button>
             </div>
-            <div class="who-completed-task" id="whoTaskName">Task</div>
-            <div class="who-buttons" id="whoButtons"></div>
+            <div id="editJackpotName" style="font-size:1.1rem;text-align:center;margin-bottom:15px;"></div>
+            <div class="form-group">
+                <label class="form-label">Jackpot Prize</label>
+                <input type="text" class="form-input" id="jackpotGoalInput" placeholder="e.g., New bike">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Points needed</label>
+                <select class="form-select" id="jackpotPointsSelect">
+                    <option value="300">🌟 300 - Starter</option>
+                    <option value="400">💪 400 - Ambitious</option>
+                    <option value="500">🔥 500 - Champion</option>
+                    <option value="600" selected>🏆 600 - Super Ultimate</option>
+                    <option value="750">👑 750 - Legend</option>
+                    <option value="1000">💎 1000 - Epic</option>
+                </select>
+            </div>
+            <button type="button" class="submit-btn" onclick="saveJackpot()">🎰 Set Jackpot</button>
         </div>
     </div>
 
-    <!-- ===== CHORE CONFIRM MODAL ===== -->
-    <div class="modal-overlay" id="choreConfirmModal">
-        <div class="modal" style="max-width:360px;">
-            <div class="confirm-icon" id="choreConfirmIcon">⚠️</div>
-            <div class="modal-title" id="choreConfirmTitle" style="margin-bottom:10px;text-align:center;">Confirm</div>
-            <div class="confirm-message" id="choreConfirmMessage">Are you sure?</div>
-            <div class="confirm-buttons">
-                <button class="confirm-btn cancel" onclick="closeModal('choreConfirm')">Cancel</button>
-                <button class="confirm-btn danger" id="choreConfirmActionBtn">Yes</button>
+    <!-- Confirm Modal (v12) -->
+    <div class="modal-overlay confirm-modal-v12" id="confirmModalV12">
+        <div class="modal">
+            <div class="confirm-icon-v12" id="confirmIconV12">⚠️</div>
+            <div class="modal-title" id="confirmTitleV12" style="text-align:center;margin-bottom:10px;">Confirm</div>
+            <div class="confirm-message-v12" id="confirmMessageV12">Are you sure?</div>
+            <div class="confirm-buttons-v12">
+                <button type="button" class="confirm-btn-v12 cancel" onclick="closeConfirmModalV12()">Cancel</button>
+                <button type="button" class="confirm-btn-v12 danger" id="confirmActionBtnV12">Yes</button>
             </div>
         </div>
     </div>
 
-    <!-- ===== CHORE CELEBRATION ===== -->
+    <!-- Chore Celebration -->
     <div class="chore-celebration-overlay" id="choreCelebrationOverlay">
         <div class="chore-celebration-content">
             <div class="chore-celebration-emoji" id="choreCelebrationEmoji">🎉</div>
@@ -1558,8 +2173,25 @@
         </div>
     </div>
 
+    <!-- Jackpot Celebration -->
+    <div class="jackpot-overlay" id="jackpotOverlay">
+        <div class="jackpot-celebration">
+            <div class="mega-emoji">🎰</div>
+            <div class="mega-title">🏆 JACKPOT!!! 🏆</div>
+            <div class="winner-name" id="jackpotWinnerName">Winner</div>
+            <div class="prize-text" id="jackpotPrizeText">🎁 Prize!</div>
+            <button type="button" class="close-jackpot" onclick="closeJackpotCelebration()">🎉 CLAIM PRIZE! 🎉</button>
+        </div>
+    </div>
+
     <!-- Toast -->
     <div class="toast" id="toast"></div>
+
+    <!-- Sound Toggle -->
+    <button type="button" class="sound-toggle" onclick="toggleSound()">
+        <span id="soundIcon">🔊</span>
+        <span id="soundText">Sound On</span>
+    </button>
 
     <script>
         // =====================================================
@@ -1579,8 +2211,8 @@
             USER_INFO: 'vdbDashboard_userInfo',
             WEATHER_LOCATIONS: 'vdbDashboard_weatherLocations',
             PHOTO_CONFIG: 'vdbDashboard_photoConfig',
-            CHORES: 'vdbDashboard_chores',
-            FAMILY_MEMBERS: 'vdbDashboard_familyMembers'
+            FAMILY_MEMBERS: 'vdbDashboard_familyMembers',
+            CHORES: 'vdbDashboard_chores'
         };
 
         let contacts = [];
@@ -1604,19 +2236,44 @@
         let currentPhotoIndex = 0;
 
         // =====================================================
-        // CHORES SYSTEM
+        // V12 SCOREBOARD SYSTEM VARIABLES
         // =====================================================
-        const CHORE_PIN = "2812";
-        let choreEditMode = false;
-        let choreEditModeTimeout = null;
-        let pendingChoreAction = null;
-        let currentChoreId = null;
-        let choreAudioContext;
+        const PARENT_PIN = "2812";
+        const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const CURRENT_MONTH = new Date().getMonth();
+        const CURRENT_YEAR = new Date().getFullYear();
+        let selectedYear = 2025;
+        let editMode = false;
+        let editModeTimeout = null;
 
         let familyMembers = [
-            { name: 'Maxim', emoji: '👦', weeklyPoints: 0, rewardGoal: 'Extra screen time', rewardPoints: 10 },
-            { name: 'Synn', emoji: '👧', weeklyPoints: 0, rewardGoal: 'Ice cream', rewardPoints: 10 },
-            { name: 'Sam', emoji: '👧', weeklyPoints: 0, rewardGoal: 'Movie night', rewardPoints: 15 }
+            { 
+                name: 'Maxim', emoji: '👦', weeklyPoints: 0, 
+                rewardGoal: 'Extra screen time', rewardPoints: 10,
+                yearlyData: {
+                    2024: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    2025: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                },
+                jackpotGoal: 'New video game', jackpotPoints: 600, jackpotWon: {}
+            },
+            { 
+                name: 'Synn', emoji: '👧', weeklyPoints: 0, 
+                rewardGoal: 'Ice cream', rewardPoints: 10,
+                yearlyData: {
+                    2024: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    2025: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                },
+                jackpotGoal: 'Shopping trip', jackpotPoints: 600, jackpotWon: {}
+            },
+            { 
+                name: 'Sam', emoji: '👧', weeklyPoints: 0, 
+                rewardGoal: 'Movie night', rewardPoints: 15,
+                yearlyData: {
+                    2024: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    2025: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                },
+                jackpotGoal: 'Trip to amusement park', jackpotPoints: 600, jackpotWon: {}
+            }
         ];
 
         let chores = [
@@ -1624,8 +2281,16 @@
             { id: 2, name: 'Unload dishwasher', points: 2, completedBy: [] },
             { id: 3, name: 'Take out trash', points: 2, completedBy: [] },
             { id: 4, name: 'Clean your room', points: 3, completedBy: [] },
-            { id: 5, name: 'Set the table', points: 1, completedBy: [] }
+            { id: 5, name: 'Set the table', points: 1, completedBy: [] },
         ];
+
+        let currentChoreId = null;
+        let currentEditMember = null;
+        let pendingAction = null;
+        let pendingDeleteChoreId = null;
+        let soundEnabled = true;
+        let audioContext;
+        const confettiColors = ['#ff6b6b', '#4ade80', '#ffd700', '#00d4ff', '#ff69b4', '#9b59b6'];
 
         // =====================================================
         // INITIALIZATION
@@ -1643,9 +2308,17 @@
                 currentUser = saved(STORAGE_KEYS.USER_INFO);
                 weatherLocations = saved(STORAGE_KEYS.WEATHER_LOCATIONS) || weatherLocations;
                 photoConfig = saved(STORAGE_KEYS.PHOTO_CONFIG) || photoConfig;
-                chores = saved(STORAGE_KEYS.CHORES) || chores;
-                familyMembers = saved(STORAGE_KEYS.FAMILY_MEMBERS) || familyMembers;
+                // V12 data
+                const savedFamily = saved(STORAGE_KEYS.FAMILY_MEMBERS);
+                if (savedFamily) familyMembers = savedFamily;
+                const savedChores = saved(STORAGE_KEYS.CHORES);
+                if (savedChores) chores = savedChores;
             } catch (e) { console.error('Error loading data:', e); }
+        }
+
+        function saveV12Data() {
+            saveData(STORAGE_KEYS.FAMILY_MEMBERS, familyMembers);
+            saveData(STORAGE_KEYS.CHORES, chores);
         }
 
         function saveData(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
@@ -1809,8 +2482,9 @@
             loadWeather();
             loadCalendarEvents();
             loadTodoLists().then(() => loadTodoTasks());
-            renderScoreboardMini();
-            renderChores();
+            
+            // V12 Scoreboard System
+            renderAllV12();
 
             setInterval(updateTime, 1000);
             setInterval(updateDate, 60000);
@@ -2116,305 +2790,6 @@
                 console.error('Todo error:', e);
                 content.innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div><div>Could not load tasks</div></div>';
             }
-        }
-
-        // =====================================================
-        // CHORES FUNCTIONS
-        // =====================================================
-        function saveChoreData() {
-            saveData(STORAGE_KEYS.CHORES, chores);
-            saveData(STORAGE_KEYS.FAMILY_MEMBERS, familyMembers);
-        }
-
-        function initChoreAudio() {
-            choreAudioContext = new (window.AudioContext || window.webkitAudioContext)();
-        }
-
-        function playChoreSuccessSound() {
-            if (!choreAudioContext) initChoreAudio();
-            [523.25, 659.25, 783.99].forEach((freq, i) => {
-                setTimeout(() => {
-                    const osc = choreAudioContext.createOscillator();
-                    const gain = choreAudioContext.createGain();
-                    osc.connect(gain);
-                    gain.connect(choreAudioContext.destination);
-                    osc.frequency.setValueAtTime(freq, choreAudioContext.currentTime);
-                    osc.type = 'sine';
-                    gain.gain.setValueAtTime(0.15, choreAudioContext.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, choreAudioContext.currentTime + 0.25);
-                    osc.start(choreAudioContext.currentTime);
-                    osc.stop(choreAudioContext.currentTime + 0.25);
-                }, i * 80);
-            });
-        }
-
-        function playChoreRewardSound() {
-            if (!choreAudioContext) initChoreAudio();
-            [659.25, 783.99, 987.77, 1174.66].forEach((freq, i) => {
-                setTimeout(() => {
-                    const osc = choreAudioContext.createOscillator();
-                    const gain = choreAudioContext.createGain();
-                    osc.connect(gain);
-                    gain.connect(choreAudioContext.destination);
-                    osc.frequency.setValueAtTime(freq, choreAudioContext.currentTime);
-                    osc.type = 'triangle';
-                    gain.gain.setValueAtTime(0.2, choreAudioContext.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, choreAudioContext.currentTime + 0.35);
-                    osc.start(choreAudioContext.currentTime);
-                    osc.stop(choreAudioContext.currentTime + 0.35);
-                }, i * 100);
-            });
-        }
-
-        function toggleChoreEditMode() {
-            if (choreEditMode) {
-                disableChoreEditMode();
-            } else {
-                pendingChoreAction = 'enableEditMode';
-                requestChorePin('enableEditMode');
-            }
-        }
-
-        function enableChoreEditMode() {
-            choreEditMode = true;
-            document.body.classList.add('edit-mode');
-            document.getElementById('editModeBtn').classList.add('active');
-            document.getElementById('editModeIcon').textContent = '✏️';
-            document.getElementById('editModeText').textContent = 'Done';
-            showToast('✏️ Edit mode ON');
-            
-            if (choreEditModeTimeout) clearTimeout(choreEditModeTimeout);
-            choreEditModeTimeout = setTimeout(() => {
-                disableChoreEditMode();
-                showToast('⏰ Edit mode auto-disabled');
-            }, 60000);
-        }
-
-        function disableChoreEditMode() {
-            choreEditMode = false;
-            document.body.classList.remove('edit-mode');
-            document.getElementById('editModeBtn').classList.remove('active');
-            document.getElementById('editModeIcon').textContent = '🔒';
-            document.getElementById('editModeText').textContent = 'Edit';
-            if (choreEditModeTimeout) {
-                clearTimeout(choreEditModeTimeout);
-                choreEditModeTimeout = null;
-            }
-        }
-
-        function requestChorePin(action) {
-            pendingChoreAction = action;
-            document.getElementById('chorePinModal').classList.add('active');
-            document.getElementById('chorePinError').classList.remove('active');
-            for (let i = 1; i <= 4; i++) document.getElementById('chorePin' + i).value = '';
-            setTimeout(() => document.getElementById('chorePin1').focus(), 100);
-        }
-
-        function handleChorePinInput(index) {
-            const input = document.getElementById('chorePin' + index);
-            if (input.value.length === 1 && index < 4) {
-                document.getElementById('chorePin' + (index + 1)).focus();
-            }
-            if (index === 4 && input.value.length === 1) setTimeout(verifyChorePinCode, 100);
-        }
-
-        function handleChorePinKeydown(event, index) {
-            if (event.key === 'Backspace' && index > 1 && document.getElementById('chorePin' + index).value === '') {
-                document.getElementById('chorePin' + (index - 1)).focus();
-            }
-            if (event.key === 'Enter') verifyChorePinCode();
-        }
-
-        function verifyChorePinCode() {
-            const pin = document.getElementById('chorePin1').value + document.getElementById('chorePin2').value +
-                       document.getElementById('chorePin3').value + document.getElementById('chorePin4').value;
-            if (pin === CHORE_PIN) {
-                const action = pendingChoreAction;
-                closeModal('chorePin');
-                showToast('🔓 Access granted!');
-                setTimeout(() => executeChoreAction(action), 200);
-            } else {
-                document.getElementById('chorePinError').classList.add('active');
-                document.querySelector('#chorePinModal .pin-input-container').style.animation = 'shake 0.3s';
-                setTimeout(() => document.querySelector('#chorePinModal .pin-input-container').style.animation = '', 300);
-                for (let i = 1; i <= 4; i++) document.getElementById('chorePin' + i).value = '';
-                document.getElementById('chorePin1').focus();
-            }
-        }
-
-        function executeChoreAction(action) {
-            if (action === 'enableEditMode') {
-                enableChoreEditMode();
-            } else if (action === 'resetDay') {
-                showChoreConfirm('🌅', 'Reset Daily Chores?', 'Chores reset, points kept!', () => {
-                    chores.forEach(c => c.completedBy = []);
-                    saveChoreData();
-                    renderChores();
-                    showToast('🌅 Chores reset!');
-                });
-            } else if (action === 'resetWeek') {
-                showChoreConfirm('⚠️', 'Reset Weekly Scores?', 'All weekly points to zero!', () => {
-                    familyMembers.forEach(m => m.weeklyPoints = 0);
-                    saveChoreData();
-                    renderScoreboardMini();
-                    showToast('🔄 Week reset!');
-                });
-            }
-        }
-
-        function showChoreConfirm(icon, title, message, onConfirm) {
-            document.getElementById('choreConfirmIcon').textContent = icon;
-            document.getElementById('choreConfirmTitle').textContent = title;
-            document.getElementById('choreConfirmMessage').innerHTML = message;
-            document.getElementById('choreConfirmActionBtn').onclick = () => {
-                closeModal('choreConfirm');
-                onConfirm();
-            };
-            document.getElementById('choreConfirmModal').classList.add('active');
-        }
-
-        function deleteChore(choreId, event) {
-            event.stopPropagation();
-            if (!choreEditMode) {
-                showToast('🔒 Enable Edit mode first');
-                return;
-            }
-            const chore = chores.find(c => c.id === choreId);
-            if (!chore) return;
-            
-            showChoreConfirm('🗑️', 'Delete Chore?', `Delete "${chore.name}"?`, () => {
-                chores = chores.filter(c => c.id !== choreId);
-                saveChoreData();
-                renderChores();
-                showToast('🗑️ Chore deleted');
-            });
-        }
-
-        function renderScoreboardMini() {
-            const container = document.getElementById('scoreboardMini');
-            if (!container) return;
-            const sorted = [...familyMembers].sort((a, b) => b.weeklyPoints - a.weeklyPoints);
-            const leader = sorted[0];
-
-            container.innerHTML = familyMembers.map(member => {
-                const isLeader = member.name === leader.name && leader.weeklyPoints > 0;
-                const progress = Math.min((member.weeklyPoints / member.rewardPoints) * 100, 100);
-
-                return `
-                    <div class="score-mini-item ${isLeader ? 'leader' : ''}">
-                        <div class="score-mini-avatar">${member.emoji}</div>
-                        <div class="score-mini-name">${member.name}</div>
-                        <div class="score-mini-points">${member.weeklyPoints}</div>
-                        <div class="score-mini-label">pts</div>
-                        <div class="score-mini-progress">
-                            <div class="score-mini-progress-bar" style="width: ${progress}%"></div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function renderChores() {
-            const container = document.getElementById('choresList');
-            if (!container) return;
-            container.innerHTML = chores.map(chore => `
-                <div class="chore-item" onclick="handleChoreClick(${chore.id})">
-                    <div class="chore-checkbox"></div>
-                    <div class="chore-content">
-                        <div class="chore-text">${chore.name}</div>
-                        <div class="chore-points">+${chore.points} pt${chore.points > 1 ? 's' : ''}</div>
-                    </div>
-                    ${chore.completedBy.length > 0 ? `<div class="chore-completed-by">${chore.completedBy.map(n => `<span class="completed-tag">✓ ${n}</span>`).join('')}</div>` : ''}
-                    <button class="delete-chore-btn" onclick="deleteChore(${chore.id}, event)">🗑️</button>
-                </div>
-            `).join('');
-        }
-
-        function handleChoreClick(choreId) {
-            if (choreEditMode) return;
-            const chore = chores.find(c => c.id === choreId);
-            if (!chore) return;
-            currentChoreId = choreId;
-            document.getElementById('whoTaskName').textContent = chore.name;
-            document.getElementById('whoButtons').innerHTML = familyMembers.map(m => `
-                <button class="who-btn" onclick="completeChoreAs('${m.name}')">
-                    <div class="avatar">${m.emoji}</div>
-                    <span>${m.name}</span>
-                    <span class="points-preview">+${chore.points} pts</span>
-                </button>
-            `).join('');
-            document.getElementById('whoModal').classList.add('active');
-        }
-
-        function completeChoreAs(memberName) {
-            const chore = chores.find(c => c.id === currentChoreId);
-            const member = familyMembers.find(m => m.name === memberName);
-            if (!chore || !member) return;
-            closeModal('who');
-            
-            chore.completedBy.push(member.name);
-            const oldRewardsCount = Math.floor(member.weeklyPoints / member.rewardPoints);
-            member.weeklyPoints += chore.points;
-            const newRewardsCount = Math.floor(member.weeklyPoints / member.rewardPoints);
-            const earnedNewReward = newRewardsCount > oldRewardsCount;
-            
-            saveChoreData();
-            
-            if (earnedNewReward) {
-                playChoreRewardSound();
-                showChoreCelebration(chore.points, member, true);
-            } else {
-                playChoreSuccessSound();
-                showChoreCelebration(chore.points, member, false);
-            }
-            
-            renderScoreboardMini();
-            renderChores();
-        }
-
-        function showChoreCelebration(points, member, isReward) {
-            const overlay = document.getElementById('choreCelebrationOverlay');
-            const confettiColors = ['#ff6b6b', '#4ade80', '#ffd700', '#00d4ff', '#ff69b4', '#9b59b6'];
-            
-            if (isReward) {
-                document.getElementById('choreCelebrationEmoji').textContent = '🎁';
-                document.getElementById('choreCelebrationText').textContent = 'REWARD EARNED!';
-                document.getElementById('choreCelebrationReward').textContent = `🎁 ${member.rewardGoal}`;
-            } else {
-                document.getElementById('choreCelebrationEmoji').textContent = ['🎉', '⭐', '🌟', '💪', '🔥'][Math.floor(Math.random() * 5)];
-                document.getElementById('choreCelebrationText').textContent = ['Great Job!', 'Awesome!', 'Well Done!'][Math.floor(Math.random() * 3)];
-                document.getElementById('choreCelebrationReward').textContent = '';
-            }
-            document.getElementById('choreCelebrationPoints').textContent = `+${points} pt${points > 1 ? 's' : ''} for ${member.name}!`;
-            
-            overlay.classList.add('active');
-            
-            for (let i = 0; i < (isReward ? 60 : 40); i++) {
-                const c = document.createElement('div');
-                c.className = 'chore-confetti';
-                c.style.cssText = `left:${Math.random()*100}vw;top:-20px;background:${confettiColors[Math.floor(Math.random()*6)]};width:${Math.random()*8+4}px;height:${Math.random()*8+4}px;border-radius:${Math.random()>0.5?'50%':'2px'};animation-delay:${Math.random()*0.5}s;animation-duration:${Math.random()*2+2}s`;
-                overlay.appendChild(c);
-                setTimeout(() => c.classList.add('active'), 10);
-                setTimeout(() => c.remove(), 4000);
-            }
-            
-            setTimeout(() => overlay.classList.remove('active'), isReward ? 2800 : 2000);
-        }
-
-        function addNewChore() {
-            const name = document.getElementById('choreNameInput').value.trim();
-            if (!name) { showToast('⚠️ Enter a name', true); return; }
-            chores.push({
-                id: Date.now(),
-                name,
-                points: parseInt(document.getElementById('chorePointsSelect').value),
-                completedBy: []
-            });
-            saveChoreData();
-            renderChores();
-            closeModal('addChore');
-            document.getElementById('choreNameInput').value = '';
-            showToast('✓ Added: ' + name);
         }
 
         // =====================================================
@@ -2983,6 +3358,9 @@
                 initCelebrationButtons();
                 document.getElementById('functionUrl').value = apiConfig.functionUrl;
                 document.getElementById('functionKey').value = apiConfig.functionKey;
+                document.getElementById('icloudAlbumUrl').value = photoConfig.icloudUrl || '';
+                document.getElementById('customPhotosUrl').value = photoConfig.customUrl || '';
+                if (photoConfig.source) selectPhotoSource(photoConfig.source);
                 checkApiConnection();
             }
         }
@@ -3008,6 +3386,524 @@
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
+        }
+
+        // =====================================================
+        // V12 SCOREBOARD SYSTEM FUNCTIONS
+        // =====================================================
+
+        function getMonthlyPoints(member) {
+            return member.yearlyData[selectedYear] || [0,0,0,0,0,0,0,0,0,0,0,0];
+        }
+
+        function getYearlyTotal(member) {
+            return getMonthlyPoints(member).reduce((sum, pts) => sum + pts, 0);
+        }
+
+        function ensureYearData(member, year) {
+            if (!member.yearlyData[year]) {
+                member.yearlyData[year] = [0,0,0,0,0,0,0,0,0,0,0,0];
+            }
+        }
+
+        function initAudio() {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+
+        function playSuccessSound() {
+            if (!soundEnabled) return;
+            if (!audioContext) initAudio();
+            [523.25, 659.25, 783.99].forEach((freq, i) => {
+                setTimeout(() => {
+                    const osc = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioContext.destination);
+                    osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+                    osc.type = 'sine';
+                    gain.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                    osc.start(audioContext.currentTime);
+                    osc.stop(audioContext.currentTime + 0.3);
+                }, i * 100);
+            });
+        }
+
+        function playRewardSound() {
+            if (!soundEnabled) return;
+            if (!audioContext) initAudio();
+            [659.25, 783.99, 987.77, 1174.66].forEach((freq, i) => {
+                setTimeout(() => {
+                    const osc = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioContext.destination);
+                    osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+                    osc.type = 'triangle';
+                    gain.gain.setValueAtTime(0.25, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+                    osc.start(audioContext.currentTime);
+                    osc.stop(audioContext.currentTime + 0.4);
+                }, i * 120);
+            });
+        }
+
+        function playJackpotSound() {
+            if (!soundEnabled) return;
+            if (!audioContext) initAudio();
+            [523.25, 659.25, 783.99, 1046.50, 783.99, 1046.50, 1318.51, 1567.98].forEach((freq, i) => {
+                setTimeout(() => {
+                    const osc = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioContext.destination);
+                    osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+                    osc.type = 'triangle';
+                    gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                    osc.start(audioContext.currentTime);
+                    osc.stop(audioContext.currentTime + 0.5);
+                }, i * 150);
+            });
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            document.getElementById('soundIcon').textContent = soundEnabled ? '🔊' : '🔇';
+            document.getElementById('soundText').textContent = soundEnabled ? 'Sound On' : 'Sound Off';
+        }
+
+        function changeYear() {
+            selectedYear = parseInt(document.getElementById('yearSelect').value);
+            document.getElementById('monthlyYearLabel').textContent = selectedYear;
+            renderAllV12();
+        }
+
+        // Edit Mode Toggle
+        function toggleEditMode() {
+            if (editMode) {
+                disableEditMode();
+            } else {
+                pendingAction = 'enableEditMode';
+                requestPinForAction('enableEditMode');
+            }
+        }
+
+        function enableEditMode() {
+            editMode = true;
+            document.body.classList.add('edit-mode');
+            document.getElementById('editModeBtn').classList.add('active');
+            document.getElementById('editModeIcon').textContent = '✏️';
+            document.getElementById('editModeText').textContent = 'Done';
+            showToast('✏️ Edit mode ON - tap 🗑️ to delete');
+            
+            if (editModeTimeout) clearTimeout(editModeTimeout);
+            editModeTimeout = setTimeout(() => {
+                disableEditMode();
+                showToast('⏰ Edit mode auto-disabled');
+            }, 60000);
+        }
+
+        function disableEditMode() {
+            editMode = false;
+            document.body.classList.remove('edit-mode');
+            document.getElementById('editModeBtn').classList.remove('active');
+            document.getElementById('editModeIcon').textContent = '🔒';
+            document.getElementById('editModeText').textContent = 'Edit';
+            if (editModeTimeout) {
+                clearTimeout(editModeTimeout);
+                editModeTimeout = null;
+            }
+            showToast('🔒 Edit mode OFF');
+        }
+
+        function requestPinForAction(action) {
+            pendingAction = action;
+            document.getElementById('pinModal').classList.add('active');
+            document.getElementById('pinError').classList.remove('active');
+            for (let i = 1; i <= 4; i++) document.getElementById('pin' + i).value = '';
+            setTimeout(() => document.getElementById('pin1').focus(), 100);
+        }
+
+        function closePinModal() {
+            document.getElementById('pinModal').classList.remove('active');
+            pendingAction = null;
+            pendingDeleteChoreId = null;
+        }
+
+        function handlePinInput(index) {
+            const input = document.getElementById('pin' + index);
+            if (input.value.length === 1 && index < 4) {
+                document.getElementById('pin' + (index + 1)).focus();
+            }
+            if (index === 4 && input.value.length === 1) setTimeout(verifyPin, 100);
+        }
+
+        function handlePinKeydown(event, index) {
+            if (event.key === 'Backspace' && index > 1 && document.getElementById('pin' + index).value === '') {
+                document.getElementById('pin' + (index - 1)).focus();
+            }
+            if (event.key === 'Enter') verifyPin();
+        }
+
+        function verifyPin() {
+            const pin = document.getElementById('pin1').value + document.getElementById('pin2').value + 
+                       document.getElementById('pin3').value + document.getElementById('pin4').value;
+            if (pin === PARENT_PIN) {
+                const action = pendingAction;
+                const choreIdToDelete = pendingDeleteChoreId;
+                closePinModal();
+                showToast('🔓 Access granted!');
+                setTimeout(() => {
+                    if (action === 'enableEditMode') {
+                        enableEditMode();
+                    } else if (action === 'deleteChore' && choreIdToDelete) {
+                        confirmDeleteChore(choreIdToDelete);
+                    } else {
+                        executeAction(action);
+                    }
+                }, 200);
+            } else {
+                document.getElementById('pinError').classList.add('active');
+                document.querySelector('.pin-input-container').style.animation = 'shake 0.3s';
+                setTimeout(() => document.querySelector('.pin-input-container').style.animation = '', 300);
+                for (let i = 1; i <= 4; i++) document.getElementById('pin' + i).value = '';
+                document.getElementById('pin1').focus();
+            }
+        }
+
+        function executeAction(action) {
+            const actions = {
+                'resetDay': ['🌅', 'Reset Daily Chores?', 'Chores reset, <span style="color:#4ade80;">points kept!</span>'],
+                'resetWeek': ['⚠️', 'Reset Weekly Scores?', '<span style="color:#ef4444;">All weekly points to zero!</span>'],
+                'resetYear': ['🚨', 'Reset YEARLY Scores?', '<span style="color:#ef4444;">All points for ' + selectedYear + ' reset!</span>'],
+                'editJackpot': null
+            };
+            if (action === 'editJackpot') { openEditJackpotModalAfterPin(); return; }
+            if (!actions[action]) return;
+            const [icon, title, msg] = actions[action];
+            showConfirmModalV12(icon, title, msg, action);
+        }
+
+        function showConfirmModalV12(icon, title, message, action) {
+            document.getElementById('confirmIconV12').textContent = icon;
+            document.getElementById('confirmTitleV12').textContent = title;
+            document.getElementById('confirmMessageV12').innerHTML = message;
+            document.getElementById('confirmActionBtnV12').onclick = () => {
+                closeConfirmModalV12();
+                if (action === 'resetDay') { 
+                    chores.forEach(c => c.completedBy = []); 
+                    saveV12Data();
+                    renderChoresV12(); 
+                    showToast('🌅 Chores reset!'); 
+                }
+                else if (action === 'resetWeek') { 
+                    familyMembers.forEach(m => m.weeklyPoints = 0); 
+                    saveV12Data();
+                    renderAllV12(); 
+                    showToast('🔄 Week reset!'); 
+                }
+                else if (action === 'resetYear') { 
+                    familyMembers.forEach(m => { 
+                        m.yearlyData[selectedYear] = [0,0,0,0,0,0,0,0,0,0,0,0]; 
+                        if (selectedYear === CURRENT_YEAR) m.weeklyPoints = 0; 
+                        m.jackpotWon[selectedYear] = false; 
+                    }); 
+                    saveV12Data();
+                    renderAllV12(); 
+                    showToast('🔄 Year ' + selectedYear + ' reset!'); 
+                }
+            };
+            document.getElementById('confirmModalV12').classList.add('active');
+        }
+
+        function closeConfirmModalV12() { document.getElementById('confirmModalV12').classList.remove('active'); }
+
+        // Delete chore - only works in edit mode
+        function deleteChore(choreId, event) {
+            event.stopPropagation();
+            if (!editMode) {
+                showToast('🔒 Enable Edit mode first');
+                return;
+            }
+            confirmDeleteChore(choreId);
+        }
+
+        function confirmDeleteChore(choreId) {
+            const chore = chores.find(c => c.id === choreId);
+            if (!chore) return;
+            
+            showConfirmModalV12('🗑️', 'Delete Chore?', 
+                `Are you sure you want to delete "<strong>${chore.name}</strong>"?<br><span style="color:#ef4444;">This cannot be undone!</span>`,
+                'confirmDelete_' + choreId);
+            
+            document.getElementById('confirmActionBtnV12').onclick = () => {
+                closeConfirmModalV12();
+                chores = chores.filter(c => c.id !== choreId);
+                saveV12Data();
+                renderChoresV12();
+                showToast('🗑️ Chore deleted');
+            };
+        }
+
+        function renderScoreboard() {
+            const container = document.getElementById('scoreboard');
+            if (!container) return;
+            const sorted = [...familyMembers].sort((a, b) => b.weeklyPoints - a.weeklyPoints);
+            const leader = sorted[0];
+
+            container.innerHTML = familyMembers.map(member => {
+                const isLeader = member.name === leader.name && leader.weeklyPoints > 0;
+                const progress = Math.min((member.weeklyPoints / member.rewardPoints) * 100, 100);
+                const rewardsEarned = Math.floor(member.weeklyPoints / member.rewardPoints);
+                const pointsToReward = member.rewardPoints - (member.weeklyPoints % member.rewardPoints);
+
+                return `
+                    <div class="score-item ${isLeader ? 'leader' : ''}" onclick="openEditRewardModal('${member.name}')">
+                        <div class="score-avatar">${member.emoji}</div>
+                        <div class="score-name">${member.name}</div>
+                        <div class="score-points">${member.weeklyPoints}</div>
+                        <div class="score-label">points this week</div>
+                        <div class="score-progress">
+                            <div class="score-progress-bar" style="width: ${progress}%"></div>
+                        </div>
+                        ${rewardsEarned > 0 
+                            ? `<div class="reward-earned-badge">🎁 ${rewardsEarned} reward${rewardsEarned > 1 ? 's' : ''} earned!</div>` 
+                            : `<div class="score-reward-goal"><strong>${pointsToReward}</strong> pts to: 🎁 ${member.rewardGoal}</div>`}
+                        <button type="button" class="edit-goal-btn" onclick="event.stopPropagation(); openEditRewardModal('${member.name}')">✏️ Edit Goal</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderJackpotCards() {
+            const container = document.getElementById('jackpotCards');
+            if (!container) return;
+            container.innerHTML = familyMembers.map(member => {
+                const yearlyTotal = getYearlyTotal(member);
+                const progress = Math.min((yearlyTotal / member.jackpotPoints) * 100, 100);
+                const pointsNeeded = Math.max(member.jackpotPoints - yearlyTotal, 0);
+                const jackpotWon = member.jackpotWon[selectedYear] || yearlyTotal >= member.jackpotPoints;
+                return `
+                    <div class="jackpot-card" onclick="requestJackpotEdit('${member.name}')">
+                        <div class="name">${member.emoji} ${member.name}</div>
+                        <div class="yearly-total">${yearlyTotal}</div>
+                        <div class="yearly-label">points in ${selectedYear}</div>
+                        <div class="jackpot-progress"><div class="jackpot-progress-bar" style="width: ${progress}%"></div></div>
+                        ${jackpotWon 
+                            ? `<div class="jackpot-earned">🎰 JACKPOT WON!</div>`
+                            : `<div class="jackpot-goal"><strong>${pointsNeeded}</strong> to jackpot</div>`}
+                        <div class="jackpot-reward">🎁 ${member.jackpotGoal}</div>
+                        <button type="button" class="edit-jackpot-btn" onclick="event.stopPropagation(); requestJackpotEdit('${member.name}')">🔒 Edit (Parent)</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderMonthlyTable() {
+            const table = document.getElementById('monthlyTable');
+            if (!table) return;
+            table.innerHTML = `
+                <thead><tr><th>Name</th>${MONTHS.map((m, i) => `<th class="${i === CURRENT_MONTH && selectedYear === CURRENT_YEAR ? 'current-month' : ''}">${m}</th>`).join('')}<th>Total</th></tr></thead>
+                <tbody>${familyMembers.map(member => {
+                    const monthlyPoints = getMonthlyPoints(member);
+                    return `
+                    <tr>
+                        <td><div class="member-name"><div class="mini-avatar">${member.emoji}</div>${member.name}</div></td>
+                        ${monthlyPoints.map((pts, i) => `<td class="${i === CURRENT_MONTH && selectedYear === CURRENT_YEAR ? 'current-month' : ''}">${pts}</td>`).join('')}
+                        <td class="total-cell">${getYearlyTotal(member)}</td>
+                    </tr>
+                `}).join('')}</tbody>
+            `;
+        }
+
+        function renderChoresV12() {
+            const container = document.getElementById('choresList');
+            if (!container) return;
+            container.innerHTML = chores.map(chore => `
+                <div class="chore-item" onclick="handleChoreClick(${chore.id})">
+                    <div class="chore-checkbox"></div>
+                    <div class="chore-content">
+                        <div class="chore-text">${chore.name}</div>
+                        <div class="chore-points">+${chore.points} point${chore.points > 1 ? 's' : ''}</div>
+                    </div>
+                    ${chore.completedBy.length > 0 ? `<div class="chore-completed-by">${chore.completedBy.map(n => `<span class="completed-tag">✓ ${n}</span>`).join('')}</div>` : ''}
+                    <button type="button" class="delete-chore-btn" onclick="deleteChore(${chore.id}, event)" title="Delete chore">🗑️</button>
+                </div>
+            `).join('');
+        }
+
+        function handleChoreClick(choreId) {
+            if (editMode) return;
+            
+            const chore = chores.find(c => c.id === choreId);
+            if (!chore) return;
+            currentChoreId = choreId;
+            document.getElementById('whoTaskName').textContent = chore.name;
+            document.getElementById('whoButtons').innerHTML = familyMembers.map(m => `
+                <button type="button" class="who-btn" onclick="completeChoreAs('${m.name}')">
+                    <div class="avatar">${m.emoji}</div><span>${m.name}</span><span class="points-preview">+${chore.points} pts</span>
+                </button>
+            `).join('');
+            document.getElementById('whoModal').classList.add('active');
+        }
+
+        function closeWhoModal() { document.getElementById('whoModal').classList.remove('active'); currentChoreId = null; }
+
+        function completeChoreAs(memberName) {
+            const chore = chores.find(c => c.id === currentChoreId);
+            const member = familyMembers.find(m => m.name === memberName);
+            if (!chore || !member) return;
+            closeWhoModal();
+            chore.completedBy.push(member.name);
+            
+            const oldRewardsCount = Math.floor(member.weeklyPoints / member.rewardPoints);
+            const oldYearlyTotal = getYearlyTotal(member);
+            
+            member.weeklyPoints += chore.points;
+            ensureYearData(member, CURRENT_YEAR);
+            member.yearlyData[CURRENT_YEAR][CURRENT_MONTH] += chore.points;
+            
+            const newRewardsCount = Math.floor(member.weeklyPoints / member.rewardPoints);
+            const earnedNewReward = newRewardsCount > oldRewardsCount;
+            
+            const newYearlyTotal = getYearlyTotal(member);
+            const justWonJackpot = oldYearlyTotal < member.jackpotPoints && newYearlyTotal >= member.jackpotPoints && !member.jackpotWon[CURRENT_YEAR];
+            
+            if (earnedNewReward) {
+                playRewardSound();
+                showRewardCelebration(chore.points, member);
+            } else {
+                playSuccessSound();
+                showChoreCelebration(chore.points, member.name);
+            }
+            
+            saveV12Data();
+            renderAllV12();
+            
+            if (justWonJackpot) {
+                member.jackpotWon[CURRENT_YEAR] = true;
+                saveV12Data();
+                setTimeout(() => showJackpotCelebration(member), 2500);
+            }
+        }
+
+        function showChoreCelebration(points, name) {
+            const overlay = document.getElementById('choreCelebrationOverlay');
+            document.getElementById('choreCelebrationEmoji').textContent = ['🎉', '⭐', '🌟', '💪', '🔥'][Math.floor(Math.random() * 5)];
+            document.getElementById('choreCelebrationText').textContent = ['Great Job!', 'Awesome!', 'Well Done!', 'Amazing!'][Math.floor(Math.random() * 4)];
+            document.getElementById('choreCelebrationPoints').textContent = `+${points} point${points > 1 ? 's' : ''} for ${name}!`;
+            document.getElementById('choreCelebrationReward').textContent = '';
+            overlay.classList.add('active');
+            createChoreConfetti(50);
+            setTimeout(() => overlay.classList.remove('active'), 2200);
+        }
+
+        function showRewardCelebration(points, member) {
+            const overlay = document.getElementById('choreCelebrationOverlay');
+            document.getElementById('choreCelebrationEmoji').textContent = '🎁';
+            document.getElementById('choreCelebrationText').textContent = 'REWARD EARNED!';
+            document.getElementById('choreCelebrationPoints').textContent = `+${points} point${points > 1 ? 's' : ''} for ${member.name}!`;
+            document.getElementById('choreCelebrationReward').textContent = `🎁 ${member.rewardGoal}`;
+            overlay.classList.add('active');
+            createChoreConfetti(80);
+            setTimeout(() => overlay.classList.remove('active'), 3000);
+        }
+
+        function createChoreConfetti(count) {
+            const overlay = document.getElementById('choreCelebrationOverlay');
+            for (let i = 0; i < count; i++) {
+                const c = document.createElement('div');
+                c.className = 'chore-confetti';
+                c.style.cssText = `left:${Math.random()*100}vw;top:-20px;background:${confettiColors[Math.floor(Math.random()*6)]};width:${Math.random()*10+5}px;height:${Math.random()*10+5}px;border-radius:${Math.random()>0.5?'50%':'2px'};animation-delay:${Math.random()*0.5}s;animation-duration:${Math.random()*2+2}s`;
+                overlay.appendChild(c);
+                setTimeout(() => c.classList.add('active'), 10);
+                setTimeout(() => c.remove(), 4000);
+            }
+        }
+
+        function showJackpotCelebration(member) {
+            document.getElementById('jackpotWinnerName').textContent = `${member.emoji} ${member.name}`;
+            document.getElementById('jackpotPrizeText').textContent = `🎁 ${member.jackpotGoal}`;
+            document.getElementById('jackpotOverlay').classList.add('active');
+            playJackpotSound();
+        }
+
+        function closeJackpotCelebration() { document.getElementById('jackpotOverlay').classList.remove('active'); }
+
+        function openAddChoreModal() {
+            document.getElementById('addChoreModal').classList.add('active');
+            document.getElementById('choreNameInput').value = '';
+        }
+
+        function closeAddChoreModal() { document.getElementById('addChoreModal').classList.remove('active'); }
+
+        function addChore() {
+            const name = document.getElementById('choreNameInput').value.trim();
+            if (!name) { showToast('⚠️ Enter a name', true); return; }
+            chores.push({ id: Date.now(), name, points: parseInt(document.getElementById('chorePointsSelect').value), completedBy: [] });
+            saveV12Data();
+            renderChoresV12();
+            closeAddChoreModal();
+            showToast('✓ Added: ' + name);
+        }
+
+        function openEditRewardModal(memberName) {
+            currentEditMember = familyMembers.find(m => m.name === memberName);
+            if (!currentEditMember) return;
+            document.getElementById('editRewardName').innerHTML = `${currentEditMember.emoji} ${currentEditMember.name}'s Weekly Goal`;
+            document.getElementById('rewardGoalInput').value = currentEditMember.rewardGoal;
+            document.getElementById('rewardPointsSelect').value = currentEditMember.rewardPoints.toString();
+            document.getElementById('editRewardModal').classList.add('active');
+        }
+
+        function closeEditRewardModal() { document.getElementById('editRewardModal').classList.remove('active'); }
+
+        function saveReward() {
+            if (!currentEditMember) return;
+            const goal = document.getElementById('rewardGoalInput').value.trim();
+            if (!goal) { showToast('⚠️ Enter a reward', true); return; }
+            currentEditMember.rewardGoal = goal;
+            currentEditMember.rewardPoints = parseInt(document.getElementById('rewardPointsSelect').value);
+            saveV12Data();
+            renderAllV12();
+            closeEditRewardModal();
+            showToast('🎯 Goal updated!');
+        }
+
+        function requestJackpotEdit(memberName) {
+            currentEditMember = familyMembers.find(m => m.name === memberName);
+            pendingAction = 'editJackpot';
+            requestPinForAction('editJackpot');
+        }
+
+        function openEditJackpotModalAfterPin() {
+            if (!currentEditMember) return;
+            document.getElementById('editJackpotName').innerHTML = `${currentEditMember.emoji} ${currentEditMember.name}'s Jackpot`;
+            document.getElementById('jackpotGoalInput').value = currentEditMember.jackpotGoal;
+            document.getElementById('jackpotPointsSelect').value = currentEditMember.jackpotPoints.toString();
+            document.getElementById('editJackpotModal').classList.add('active');
+        }
+
+        function closeEditJackpotModal() { document.getElementById('editJackpotModal').classList.remove('active'); }
+
+        function saveJackpot() {
+            if (!currentEditMember) return;
+            const goal = document.getElementById('jackpotGoalInput').value.trim();
+            if (!goal) { showToast('⚠️ Enter a prize', true); return; }
+            currentEditMember.jackpotGoal = goal;
+            currentEditMember.jackpotPoints = parseInt(document.getElementById('jackpotPointsSelect').value);
+            saveV12Data();
+            renderAllV12();
+            closeEditJackpotModal();
+            showToast('🎰 Jackpot updated!');
+        }
+
+        function renderAllV12() { 
+            renderScoreboard(); 
+            renderJackpotCards(); 
+            renderMonthlyTable(); 
+            renderChoresV12();
         }
 
         document.querySelectorAll('.modal-overlay').forEach(overlay => {
