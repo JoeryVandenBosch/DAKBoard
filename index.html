@@ -2315,22 +2315,21 @@
                 });
             });
 
-            // Add focus handlers to all text inputs
-            document.querySelectorAll('input[type="text"], input[type="url"], input[type="password"]').forEach(input => {
-                input.addEventListener('focus', (e) => {
-                    e.preventDefault();
-                    openKeyboard(input);
+            // Add focus handlers to all text inputs (delayed to not block other events)
+            setTimeout(() => {
+                document.querySelectorAll('input[type="text"], input[type="url"]').forEach(input => {
+                    input.setAttribute('readonly', 'readonly'); // Prevent native keyboard
+                    input.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openKeyboard(input);
+                    });
                 });
-                // Prevent default keyboard on touch
-                input.addEventListener('touchstart', (e) => {
-                    e.preventDefault();
-                    openKeyboard(input);
-                });
-            });
+            }, 500);
         }
 
         function openKeyboard(inputElement) {
             activeKeyboardInput = inputElement;
+            activeKeyboardInput.removeAttribute('readonly'); // Allow value changes
             
             // Get label from associated label or placeholder
             const label = inputElement.placeholder || 'Input';
@@ -2351,16 +2350,12 @@
             } else {
                 switchKeyboardTab('letters');
             }
-
-            // Scroll input into view above keyboard
-            setTimeout(() => {
-                inputElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 100);
         }
 
         function closeKeyboard() {
             document.getElementById('keyboardOverlay').classList.remove('active');
             if (activeKeyboardInput) {
+                activeKeyboardInput.setAttribute('readonly', 'readonly');
                 activeKeyboardInput.blur();
             }
             activeKeyboardInput = null;
@@ -2379,15 +2374,8 @@
             }
             
             // Insert character at cursor position
-            const start = activeKeyboardInput.selectionStart || activeKeyboardInput.value.length;
-            const end = activeKeyboardInput.selectionEnd || activeKeyboardInput.value.length;
-            const value = activeKeyboardInput.value;
-            
-            activeKeyboardInput.value = value.substring(0, start) + typedChar + value.substring(end);
-            
-            // Move cursor
-            const newPos = start + typedChar.length;
-            activeKeyboardInput.setSelectionRange(newPos, newPos);
+            const value = activeKeyboardInput.value || '';
+            activeKeyboardInput.value = value + typedChar;
             
             // Trigger input event
             activeKeyboardInput.dispatchEvent(new Event('input', { bubbles: true }));
@@ -2398,22 +2386,12 @@
         function keyboardBackspace() {
             if (!activeKeyboardInput) return;
             
-            const start = activeKeyboardInput.selectionStart || activeKeyboardInput.value.length;
-            const end = activeKeyboardInput.selectionEnd || activeKeyboardInput.value.length;
-            const value = activeKeyboardInput.value;
-            
-            if (start === end && start > 0) {
-                // No selection, delete char before cursor
-                activeKeyboardInput.value = value.substring(0, start - 1) + value.substring(end);
-                activeKeyboardInput.setSelectionRange(start - 1, start - 1);
-            } else if (start !== end) {
-                // Selection exists, delete selection
-                activeKeyboardInput.value = value.substring(0, start) + value.substring(end);
-                activeKeyboardInput.setSelectionRange(start, start);
+            const value = activeKeyboardInput.value || '';
+            if (value.length > 0) {
+                activeKeyboardInput.value = value.substring(0, value.length - 1);
+                activeKeyboardInput.dispatchEvent(new Event('input', { bubbles: true }));
+                updateKeyboardPreview();
             }
-            
-            activeKeyboardInput.dispatchEvent(new Event('input', { bubbles: true }));
-            updateKeyboardPreview();
         }
 
         function keyboardDone() {
@@ -2465,13 +2443,8 @@
             preview.innerHTML = escapeHtml(value) + '<span class="keyboard-input-cursor"></span>';
         }
 
-        // Initialize keyboard when DOM is ready
-        document.addEventListener('DOMContentLoaded', () => {
-            initKeyboard();
-        });
-
-        // Re-initialize keyboard when modals open (for dynamically shown inputs)
-        const originalOpenModal = typeof openModal === 'function' ? openModal : null;
+        // Initialize keyboard after a short delay to not interfere with page load
+        setTimeout(initKeyboard, 1000);
 
         function escapeHtml(text) {
             const div = document.createElement('div');
