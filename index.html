@@ -404,6 +404,78 @@
         .form-row { display: flex; gap: 12px; }
         .form-row .form-group { flex: 1; }
 
+        /* ===== MENTION DROPDOWN ===== */
+        .mention-wrapper {
+            position: relative;
+        }
+
+        .mention-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(30, 42, 74, 0.98);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1001;
+            display: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .mention-dropdown.active {
+            display: block;
+        }
+
+        .mention-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .mention-item:hover, .mention-item.selected {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .mention-item:first-child {
+            border-radius: 10px 10px 0 0;
+        }
+
+        .mention-item:last-child {
+            border-radius: 0 0 10px 10px;
+        }
+
+        .mention-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0088cc, #00aaff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .mention-name {
+            font-size: 0.9rem;
+        }
+
+        .mention-hint {
+            font-size: 0.75rem;
+            opacity: 0.5;
+            margin-left: auto;
+        }
+
+        .task-mention {
+            color: #00aaff;
+            font-weight: 500;
+        }
+
         .submit-btn {
             width: 100%; padding: 14px; border-radius: 10px; border: none;
             background: linear-gradient(135deg, #e94560, #533483);
@@ -792,9 +864,10 @@
                 <button class="modal-close" onclick="closeModal('todo')">×</button>
             </div>
             <form id="todoForm" onsubmit="createTodo(event)">
-                <div class="form-group">
-                    <label class="form-label">Task</label>
-                    <input type="text" class="form-input" id="todoTitle" placeholder="What needs to be done?" required>
+                <div class="form-group mention-wrapper">
+                    <label class="form-label">Task <span style="opacity:0.5;font-size:0.8rem;">(type @ to tag someone)</span></label>
+                    <input type="text" class="form-input" id="todoTitle" placeholder="What needs to be done? @name to assign" required autocomplete="off">
+                    <div class="mention-dropdown" id="mentionDropdown"></div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
@@ -1576,11 +1649,20 @@
             btn.disabled = true; btn.textContent = 'Adding...';
 
             try {
-                const task = { title: document.getElementById('todoTitle').value, importance: document.getElementById('todoPriority').value };
+                const titleInput = document.getElementById('todoTitle');
+                const taskTitle = titleInput.value;
+                const task = { title: taskTitle, importance: document.getElementById('todoPriority').value };
                 const due = document.getElementById('todoDueDate').value;
                 if (due) task.dueDateTime = { dateTime: `${due}T00:00:00`, timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone };
 
                 await callGraphAPI(`/me/todo/lists/${document.getElementById('todoList').value}/tasks`, 'POST', task);
+                
+                // Send notifications to mentioned contacts
+                const mentionedContacts = extractMentions(taskTitle);
+                if (mentionedContacts.length > 0) {
+                    await sendMentionNotifications(taskTitle, mentionedContacts);
+                }
+                
                 showToast('Task added!');
                 closeModal('todo');
                 document.getElementById('todoForm').reset();
@@ -1588,6 +1670,167 @@
             } catch (e) { showToast('Failed to add task', true); }
             finally { btn.disabled = false; btn.textContent = 'Add Task'; }
         }
+
+        // =====================================================
+        // @MENTION FUNCTIONALITY
+        // =====================================================
+        let mentionSelectedIndex = 0;
+        let mentionFilteredContacts = [];
+
+        function initMentionSystem() {
+            const input = document.getElementById('todoTitle');
+            const dropdown = document.getElementById('mentionDropdown');
+            
+            if (!input || !dropdown) return;
+
+            input.addEventListener('input', handleMentionInput);
+            input.addEventListener('keydown', handleMentionKeydown);
+            input.addEventListener('blur', () => {
+                // Delay hiding to allow click on dropdown
+                setTimeout(() => dropdown.classList.remove('active'), 200);
+            });
+        }
+
+        function handleMentionInput(e) {
+            const input = e.target;
+            const value = input.value;
+            const cursorPos = input.selectionStart;
+            const dropdown = document.getElementById('mentionDropdown');
+
+            // Find if we're in a mention context (after @ but before space)
+            const textBeforeCursor = value.substring(0, cursorPos);
+            const mentionMatch = textBeforeCursor.match(/@(\w*)$/);
+
+            if (mentionMatch && contacts.length > 0) {
+                const searchTerm = mentionMatch[1].toLowerCase();
+                mentionFilteredContacts = contacts.filter(c => 
+                    c.name.toLowerCase().includes(searchTerm)
+                );
+
+                if (mentionFilteredContacts.length > 0) {
+                    mentionSelectedIndex = 0;
+                    renderMentionDropdown();
+                    dropdown.classList.add('active');
+                } else {
+                    dropdown.classList.remove('active');
+                }
+            } else {
+                dropdown.classList.remove('active');
+            }
+        }
+
+        function handleMentionKeydown(e) {
+            const dropdown = document.getElementById('mentionDropdown');
+            if (!dropdown.classList.contains('active')) return;
+
+            switch(e.key) {
+                case 'ArrowDown':
+                    e.preventDefault();
+                    mentionSelectedIndex = Math.min(mentionSelectedIndex + 1, mentionFilteredContacts.length - 1);
+                    renderMentionDropdown();
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    mentionSelectedIndex = Math.max(mentionSelectedIndex - 1, 0);
+                    renderMentionDropdown();
+                    break;
+                case 'Enter':
+                    if (mentionFilteredContacts.length > 0) {
+                        e.preventDefault();
+                        selectMention(mentionFilteredContacts[mentionSelectedIndex]);
+                    }
+                    break;
+                case 'Escape':
+                    dropdown.classList.remove('active');
+                    break;
+            }
+        }
+
+        function renderMentionDropdown() {
+            const dropdown = document.getElementById('mentionDropdown');
+            dropdown.innerHTML = mentionFilteredContacts.map((contact, index) => `
+                <div class="mention-item ${index === mentionSelectedIndex ? 'selected' : ''}" 
+                     onclick="selectMention(contacts.find(c => c.chatId === '${contact.chatId}'))">
+                    <div class="mention-avatar">${contact.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}</div>
+                    <div class="mention-name">${escapeHtml(contact.name)}</div>
+                    <div class="mention-hint">Enter to select</div>
+                </div>
+            `).join('');
+        }
+
+        function selectMention(contact) {
+            const input = document.getElementById('todoTitle');
+            const dropdown = document.getElementById('mentionDropdown');
+            const value = input.value;
+            const cursorPos = input.selectionStart;
+
+            // Find the @ position before cursor
+            const textBeforeCursor = value.substring(0, cursorPos);
+            const mentionMatch = textBeforeCursor.match(/@(\w*)$/);
+
+            if (mentionMatch) {
+                const atPosition = cursorPos - mentionMatch[0].length;
+                const beforeAt = value.substring(0, atPosition);
+                const afterCursor = value.substring(cursorPos);
+                
+                // Insert the mention with a space after
+                const newValue = beforeAt + '@' + contact.name + ' ' + afterCursor;
+                input.value = newValue;
+                
+                // Move cursor after the mention
+                const newCursorPos = atPosition + contact.name.length + 2;
+                input.setSelectionRange(newCursorPos, newCursorPos);
+            }
+
+            dropdown.classList.remove('active');
+            input.focus();
+        }
+
+        function extractMentions(text) {
+            const mentions = text.match(/@[\w\s]+/g) || [];
+            const mentionedContacts = [];
+            
+            mentions.forEach(mention => {
+                const name = mention.substring(1).trim();
+                const contact = contacts.find(c => 
+                    c.name.toLowerCase() === name.toLowerCase() ||
+                    c.name.toLowerCase().startsWith(name.toLowerCase())
+                );
+                if (contact && !mentionedContacts.find(mc => mc.chatId === contact.chatId)) {
+                    mentionedContacts.push(contact);
+                }
+            });
+            
+            return mentionedContacts;
+        }
+
+        async function sendMentionNotifications(taskTitle, mentionedContacts) {
+            if (!apiConfig.functionUrl || mentionedContacts.length === 0) return;
+            
+            // Clean task title for notification (remove @mentions for cleaner message)
+            const cleanTitle = taskTitle.replace(/@[\w\s]+/g, '').trim();
+            const message = `📋 New task assigned to you:\n\n${cleanTitle || taskTitle}\n\nFrom: ${currentUser?.displayName || 'Family Dashboard'}`;
+            
+            try {
+                // Use the testNotification endpoint with a custom message
+                await fetch(`${apiConfig.functionUrl}/api/testNotification?code=${apiConfig.functionKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contacts: mentionedContacts.map(c => c.chatId),
+                        message: message
+                    })
+                });
+                showToast(`Notified ${mentionedContacts.map(c => c.name).join(', ')}!`);
+            } catch (err) {
+                console.error('Failed to send mention notification:', err);
+            }
+        }
+
+        // Initialize mention system when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(initMentionSystem, 100);
+        });
 
         // =====================================================
         // CONTACTS
@@ -1760,6 +2003,10 @@
         function openModal(type) {
             document.getElementById(`${type}Modal`).classList.add('active');
             if (type === 'event') document.getElementById('eventDate').value = new Date().toISOString().split('T')[0];
+            if (type === 'todo') {
+                // Initialize mention system when todo modal opens
+                setTimeout(initMentionSystem, 50);
+            }
             if (type === 'settings') {
                 renderContacts();
                 renderNotificationSettings();
