@@ -1643,11 +1643,99 @@
         .key.shift { background: rgba(99,102,241,0.3); }
         .key.shift.active { background: rgba(99,102,241,0.6); }
 
+        /* ===== PIN KEYPAD ===== */
+        .pin-keypad-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 6000;
+            align-items: center;
+            justify-content: center;
+        }
+        .pin-keypad-overlay.active { display: flex; }
+
+        .pin-keypad {
+            background: linear-gradient(135deg, #1e2a4a 0%, #16213e 100%);
+            border-radius: 24px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.2);
+            text-align: center;
+        }
+
+        .pin-keypad-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .pin-keypad-display {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .pin-keypad-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.4);
+            background: transparent;
+        }
+
+        .pin-keypad-dot.filled {
+            background: #4ade80;
+            border-color: #4ade80;
+        }
+
+        .pin-keypad-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 70px);
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .pin-key {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .pin-key:active {
+            background: rgba(74,222,128,0.4);
+        }
+
+        .pin-key.cancel {
+            background: rgba(239,68,68,0.3);
+            font-size: 1.2rem;
+        }
+
+        .pin-key.backspace {
+            background: rgba(255,255,255,0.1);
+            font-size: 1.5rem;
+        }
+
+        .pin-keypad-error {
+            color: #ef4444;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            min-height: 25px;
+        }
+
         /* ===== DAKBOARD COMPATIBILITY ===== */
         /* Simple year buttons instead of select dropdown */
         .year-buttons {
+            display: -webkit-flex;
             display: flex;
             gap: 5px;
+            -webkit-flex-wrap: wrap;
             flex-wrap: wrap;
         }
 
@@ -1655,7 +1743,7 @@
             padding: 6px 12px;
             border-radius: 8px;
             border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(255,255,255,0.1);
+            background-color: rgba(255,255,255,0.1);
             color: white;
             font-family: 'Outfit', sans-serif;
             font-size: 0.85rem;
@@ -1663,27 +1751,84 @@
         }
 
         .year-btn.active {
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            background-color: #ffd700;
             color: #1a1a2e;
             border-color: #ffd700;
             font-weight: 600;
         }
 
-        /* Force table visibility on DAKboard */
+        /* DAKBOARD: Force all sections visible with fallback properties */
+        .jackpot-section {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            height: auto !important;
+            overflow: visible !important;
+            position: relative !important;
+        }
+
+        .jackpot-cards {
+            display: -webkit-flex !important;
+            display: flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            -webkit-flex-wrap: wrap;
+            flex-wrap: wrap;
+        }
+
+        .jackpot-card {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            -webkit-flex: 1;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .monthly-table-container {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            overflow-x: auto !important;
+        }
+
         .monthly-table {
             display: table !important;
             visibility: visible !important;
             opacity: 1 !important;
+            width: 100% !important;
         }
 
-        .jackpot-section, .jackpot-cards, .jackpot-card {
+        .monthly-table thead,
+        .monthly-table tbody,
+        .monthly-table tr,
+        .monthly-table th,
+        .monthly-table td {
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+
+        /* DAKBOARD: Scoreboard visibility */
+        .scoreboard {
+            display: -webkit-flex !important;
+            display: flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            -webkit-flex-wrap: wrap;
+            flex-wrap: wrap;
+        }
+
+        .score-item {
             display: block !important;
             visibility: visible !important;
             opacity: 1 !important;
         }
 
-        .jackpot-cards {
-            display: flex !important;
+        /* DAKBOARD: Remove backdrop-filter (not supported in older Chrome) */
+        @supports not (backdrop-filter: blur(20px)) {
+            .card, .weather-row, .modal {
+                background-color: rgba(30, 42, 74, 0.95);
+            }
         }
     </style>
 </head>
@@ -2405,6 +2550,34 @@
                     <button type="button" class="key space" data-key=" ">Space</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- PIN Keypad -->
+    <div class="pin-keypad-overlay" id="pinKeypadOverlay">
+        <div class="pin-keypad">
+            <div class="pin-keypad-title">🔐 Enter PIN</div>
+            <div class="pin-keypad-display">
+                <div class="pin-keypad-dot" id="pinDot1"></div>
+                <div class="pin-keypad-dot" id="pinDot2"></div>
+                <div class="pin-keypad-dot" id="pinDot3"></div>
+                <div class="pin-keypad-dot" id="pinDot4"></div>
+            </div>
+            <div class="pin-keypad-grid">
+                <button type="button" class="pin-key" onclick="pinKeyPress('1')">1</button>
+                <button type="button" class="pin-key" onclick="pinKeyPress('2')">2</button>
+                <button type="button" class="pin-key" onclick="pinKeyPress('3')">3</button>
+                <button type="button" class="pin-key" onclick="pinKeyPress('4')">4</button>
+                <button type="button" class="pin-key" onclick="pinKeyPress('5')">5</button>
+                <button type="button" class="pin-key" onclick="pinKeyPress('6')">6</button>
+                <button type="button" class="pin-key" onclick="pinKeyPress('7')">7</button>
+                <button type="button" class="pin-key" onclick="pinKeyPress('8')">8</button>
+                <button type="button" class="pin-key" onclick="pinKeyPress('9')">9</button>
+                <button type="button" class="pin-key cancel" onclick="closePinKeypad()">✕</button>
+                <button type="button" class="pin-key" onclick="pinKeyPress('0')">0</button>
+                <button type="button" class="pin-key backspace" onclick="pinKeyBackspace()">⌫</button>
+            </div>
+            <div class="pin-keypad-error" id="pinKeypadError"></div>
         </div>
     </div>
 
@@ -3751,14 +3924,82 @@
             showToast('🔒 Edit mode OFF');
         }
 
+        // PIN Keypad state
+        let pinKeypadValue = '';
+
         function requestPinForAction(action) {
             pendingAction = action;
-            document.getElementById('pinModal').classList.add('active');
-            document.getElementById('pinError').classList.remove('active');
-            for (let i = 1; i <= 4; i++) document.getElementById('pin' + i).value = '';
-            setTimeout(() => document.getElementById('pin1').focus(), 100);
+            pinKeypadValue = '';
+            updatePinKeypadDots();
+            document.getElementById('pinKeypadError').textContent = '';
+            document.getElementById('pinKeypadOverlay').classList.add('active');
         }
 
+        function closePinKeypad() {
+            document.getElementById('pinKeypadOverlay').classList.remove('active');
+            pendingAction = null;
+            pendingDeleteChoreId = null;
+            pinKeypadValue = '';
+            updatePinKeypadDots();
+        }
+
+        function pinKeyPress(digit) {
+            if (pinKeypadValue.length < 4) {
+                pinKeypadValue += digit;
+                updatePinKeypadDots();
+                
+                if (pinKeypadValue.length === 4) {
+                    setTimeout(verifyPinKeypad, 200);
+                }
+            }
+        }
+
+        function pinKeyBackspace() {
+            if (pinKeypadValue.length > 0) {
+                pinKeypadValue = pinKeypadValue.slice(0, -1);
+                updatePinKeypadDots();
+                document.getElementById('pinKeypadError').textContent = '';
+            }
+        }
+
+        function updatePinKeypadDots() {
+            for (let i = 1; i <= 4; i++) {
+                const dot = document.getElementById('pinDot' + i);
+                if (i <= pinKeypadValue.length) {
+                    dot.classList.add('filled');
+                } else {
+                    dot.classList.remove('filled');
+                }
+            }
+        }
+
+        function verifyPinKeypad() {
+            if (pinKeypadValue === PARENT_PIN) {
+                const action = pendingAction;
+                const choreIdToDelete = pendingDeleteChoreId;
+                closePinKeypad();
+                showToast('🔓 Access granted!');
+                setTimeout(() => {
+                    if (action === 'enableEditMode') {
+                        enableEditMode();
+                    } else if (action === 'deleteChore' && choreIdToDelete) {
+                        confirmDeleteChore(choreIdToDelete);
+                    } else {
+                        executeAction(action);
+                    }
+                }, 200);
+            } else {
+                document.getElementById('pinKeypadError').textContent = '❌ Incorrect PIN';
+                pinKeypadValue = '';
+                updatePinKeypadDots();
+                // Shake animation
+                const keypad = document.querySelector('.pin-keypad');
+                keypad.style.animation = 'shake 0.3s';
+                setTimeout(() => keypad.style.animation = '', 300);
+            }
+        }
+
+        // Keep old PIN modal functions for backward compatibility
         function closePinModal() {
             document.getElementById('pinModal').classList.remove('active');
             pendingAction = null;
