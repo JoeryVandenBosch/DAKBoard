@@ -651,97 +651,45 @@
         }
 
         /* ===== ON-SCREEN KEYBOARD ===== */
-        .keyboard-overlay {
+        .keyboard-container {
             display: none; position: fixed; bottom: 0; left: 0; width: 100%;
             background: linear-gradient(180deg, rgba(22,33,62,0.98) 0%, rgba(15,52,96,0.99) 100%);
             border-top: 1px solid rgba(255,255,255,0.2);
-            padding: 15px; z-index: 3000;
+            padding: 12px; z-index: 3000;
             box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
-            animation: keyboardSlideUp 0.3s ease;
         }
-        .keyboard-overlay.active { display: block; }
+        .keyboard-container.visible { display: block; }
 
-        @keyframes keyboardSlideUp {
-            0% { transform: translateY(100%); }
-            100% { transform: translateY(0); }
-        }
-
-        .keyboard-input-preview {
+        .keyboard-preview {
             display: flex; align-items: center; gap: 10px;
-            margin-bottom: 12px; padding: 10px 15px;
-            background: rgba(255,255,255,0.1); border-radius: 10px;
+            margin-bottom: 10px; padding: 8px 12px;
+            background: rgba(255,255,255,0.1); border-radius: 8px;
+        }
+        .keyboard-preview-label { font-size: 0.75rem; opacity: 0.6; }
+        .keyboard-preview-value { flex: 1; font-size: 1rem; font-family: monospace; min-height: 20px; }
+        .keyboard-cursor { display: inline-block; width: 2px; height: 1em; background: #4ade80; animation: blink 1s infinite; }
+        @keyframes blink { 0%,50% { opacity: 1; } 51%,100% { opacity: 0; } }
+
+        .keyboard-close-btn {
+            position: absolute; top: 8px; right: 12px;
+            background: rgba(255,255,255,0.1); border: none; color: white;
+            width: 32px; height: 32px; border-radius: 50%; font-size: 1.1rem; cursor: pointer;
         }
 
-        .keyboard-input-label {
-            font-size: 0.8rem; opacity: 0.6; min-width: 80px;
-        }
-
-        .keyboard-input-value {
-            flex: 1; font-size: 1.1rem; font-family: monospace;
-            word-break: break-all; min-height: 24px;
-        }
-
-        .keyboard-input-cursor {
-            display: inline-block; width: 2px; height: 1.2em;
-            background: #4ade80; animation: cursorBlink 1s infinite;
-            vertical-align: middle; margin-left: 2px;
-        }
-
-        @keyframes cursorBlink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-
-        .keyboard-close {
-            position: absolute; top: 10px; right: 15px;
-            background: rgba(255,255,255,0.1); border: none;
-            color: white; width: 36px; height: 36px; border-radius: 50%;
-            font-size: 1.2rem; cursor: pointer;
+        .kb-row { display: flex; justify-content: center; gap: 5px; margin-bottom: 5px; }
+        .kb-key {
+            min-width: 38px; height: 44px; border-radius: 6px;
+            background: rgba(255,255,255,0.12); border: none; color: white;
+            font-family: 'Outfit', sans-serif; font-size: 1rem; cursor: pointer;
             display: flex; align-items: center; justify-content: center;
         }
-        .keyboard-close:hover { background: rgba(255,255,255,0.2); }
-
-        .keyboard-row {
-            display: flex; justify-content: center; gap: 6px; margin-bottom: 6px;
-        }
-
-        .keyboard-key {
-            min-width: 42px; height: 50px; border-radius: 8px;
-            background: rgba(255,255,255,0.15); border: none;
-            color: white; font-family: 'Outfit', sans-serif; font-size: 1.1rem;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-            transition: all 0.1s ease; user-select: none;
-        }
-        .keyboard-key:hover { background: rgba(255,255,255,0.25); }
-        .keyboard-key:active { 
-            background: rgba(74,222,128,0.4); transform: scale(0.95);
-        }
-
-        .keyboard-key.wide { min-width: 70px; font-size: 0.85rem; }
-        .keyboard-key.extra-wide { min-width: 100px; font-size: 0.85rem; }
-        .keyboard-key.space { flex: 1; max-width: 280px; }
-        .keyboard-key.shift.active { background: rgba(74,222,128,0.3); }
-
-        .keyboard-key.action {
-            background: linear-gradient(135deg, #4ade80, #22c55e);
-            color: #1a1a2e; font-weight: 500;
-        }
-        .keyboard-key.action:hover { 
-            background: linear-gradient(135deg, #22c55e, #16a34a);
-        }
-
-        .keyboard-tabs {
-            display: flex; gap: 8px; margin-bottom: 10px; justify-content: center;
-        }
-
-        .keyboard-tab {
-            padding: 8px 16px; border-radius: 8px;
-            background: rgba(255,255,255,0.1); border: none;
-            color: white; font-family: 'Outfit', sans-serif; font-size: 0.85rem;
-            cursor: pointer;
-        }
-        .keyboard-tab:hover { background: rgba(255,255,255,0.15); }
-        .keyboard-tab.active { background: rgba(74,222,128,0.3); }
+        .kb-key:active { background: rgba(74,222,128,0.4); }
+        .kb-key.w2 { min-width: 60px; font-size: 0.8rem; }
+        .kb-key.space { flex: 1; max-width: 200px; }
+        .kb-key.done { background: linear-gradient(135deg, #4ade80, #22c55e); color: #1a1a2e; font-weight: 500; }
+        .kb-tabs { display: flex; gap: 6px; margin-bottom: 8px; justify-content: center; }
+        .kb-tab { padding: 6px 14px; border-radius: 6px; background: rgba(255,255,255,0.1); border: none; color: white; font-size: 0.8rem; cursor: pointer; }
+        .kb-tab.active { background: rgba(74,222,128,0.3); }
     </style>
 </head>
 <body>
@@ -905,7 +853,7 @@
             <form id="eventForm" onsubmit="createEvent(event)">
                 <div class="form-group">
                     <label class="form-label">Event Title</label>
-                    <input type="text" class="form-input" id="eventTitle" placeholder="What's happening?" required autocomplete="off" inputmode="text" enterkeyhint="next">
+                    <input type="text" class="form-input" id="eventTitle" placeholder="What's happening?" required autocomplete="off" inputmode="text" enterkeyhint="next" onclick="kbOpen(this)">
                 </div>
                 <div class="form-row">
                     <div class="form-group">
@@ -925,7 +873,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Location (optional)</label>
-                    <input type="text" class="form-input" id="eventLocation" placeholder="Where?" autocomplete="off" inputmode="text" enterkeyhint="done">
+                    <input type="text" class="form-input" id="eventLocation" placeholder="Where?" autocomplete="off" inputmode="text" enterkeyhint="done" onclick="kbOpen(this)">
                 </div>
                 <button type="submit" class="submit-btn" id="eventSubmitBtn">Create Event</button>
             </form>
@@ -942,7 +890,7 @@
             <form id="todoForm" onsubmit="createTodo(event)">
                 <div class="form-group">
                     <label class="form-label">Task</label>
-                    <input type="text" class="form-input" id="todoTitle" placeholder="What needs to be done?" required autocomplete="off" inputmode="text" enterkeyhint="next">
+                    <input type="text" class="form-input" id="todoTitle" placeholder="What needs to be done?" required autocomplete="off" inputmode="text" enterkeyhint="next" onclick="kbOpen(this)">
                 </div>
                 <div class="form-row">
                     <div class="form-group">
@@ -1009,10 +957,10 @@
                     <div style="font-size:0.9rem;margin-bottom:12px;opacity:0.8;">➕ Add New Contact</div>
                     <div class="form-row" style="margin-bottom:12px;">
                         <div class="form-group" style="margin-bottom:0;">
-                            <input type="text" class="form-input" id="newContactName" placeholder="Name" autocomplete="off" inputmode="text" enterkeyhint="next">
+                            <input type="text" class="form-input" id="newContactName" placeholder="Name" autocomplete="off" inputmode="text" enterkeyhint="next" onclick="kbOpen(this)">
                         </div>
                         <div class="form-group" style="margin-bottom:0;">
-                            <input type="text" class="form-input" id="newContactChatId" placeholder="Telegram Chat ID" autocomplete="off" inputmode="numeric" enterkeyhint="done">
+                            <input type="text" class="form-input" id="newContactChatId" placeholder="Telegram Chat ID" autocomplete="off" inputmode="numeric" enterkeyhint="done" onclick="kbOpen(this)">
                         </div>
                     </div>
                     <button type="button" class="submit-btn telegram" onclick="addContact()">Add Contact</button>
@@ -1115,7 +1063,7 @@
                     <div style="font-size:0.9rem;margin-bottom:12px;opacity:0.8;">➕ Add Location</div>
                     <div class="form-row" style="margin-bottom:12px;">
                         <div class="form-group" style="margin-bottom:0;flex:2;">
-                            <input type="text" class="form-input" id="newLocationName" placeholder="City name (e.g., Antwerpen)" autocomplete="off" inputmode="text" enterkeyhint="search">
+                            <input type="text" class="form-input" id="newLocationName" placeholder="City name (e.g., Antwerpen)" autocomplete="off" inputmode="text" enterkeyhint="search" onclick="kbOpen(this)">
                         </div>
                     </div>
                     <button type="button" class="submit-btn" onclick="addWeatherLocation()">Search & Add</button>
@@ -1150,7 +1098,7 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">iCloud Shared Album URL</label>
-                        <input type="url" class="form-input" id="icloudAlbumUrl" placeholder="https://www.icloud.com/sharedalbum/..." autocomplete="off" inputmode="url" enterkeyhint="done">
+                        <input type="url" class="form-input" id="icloudAlbumUrl" placeholder="https://www.icloud.com/sharedalbum/..." autocomplete="off" inputmode="url" enterkeyhint="done" onclick="kbOpen(this)">
                     </div>
                     <button class="submit-btn" onclick="savePhotoSettings()">Save Photo Settings</button>
                 </div>
@@ -1158,7 +1106,7 @@
                 <div id="photoConfigUrl" style="display:none;margin-top:15px;">
                     <div class="form-group">
                         <label class="form-label">Photos JSON URL</label>
-                        <input type="url" class="form-input" id="customPhotosUrl" placeholder="https://yoursite.com/photos.json" autocomplete="off" inputmode="url" enterkeyhint="done">
+                        <input type="url" class="form-input" id="customPhotosUrl" placeholder="https://yoursite.com/photos.json" autocomplete="off" inputmode="url" enterkeyhint="done" onclick="kbOpen(this)">
                     </div>
                     <p style="font-size:0.8rem;opacity:0.6;margin-bottom:15px;">JSON should be an array of image URLs</p>
                     <button class="submit-btn" onclick="savePhotoSettings()">Save Photo Settings</button>
@@ -1174,12 +1122,12 @@
 
                 <div class="form-group">
                     <label class="form-label">Azure Function URL</label>
-                    <input type="url" class="form-input" id="functionUrl" placeholder="https://your-function.azurewebsites.net" autocomplete="off" inputmode="url" enterkeyhint="next">
+                    <input type="url" class="form-input" id="functionUrl" placeholder="https://your-function.azurewebsites.net" autocomplete="off" inputmode="url" enterkeyhint="next" onclick="kbOpen(this)">
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Function Host Key</label>
-                    <input type="text" class="form-input" id="functionKey" placeholder="Your function host key" autocomplete="off" inputmode="text" enterkeyhint="done">
+                    <input type="text" class="form-input" id="functionKey" placeholder="Your function host key" autocomplete="off" inputmode="text" enterkeyhint="done" onclick="kbOpen(this)">
                 </div>
 
                 <button class="submit-btn secondary" onclick="saveApiSettings()">Save & Test Connection</button>
@@ -1213,150 +1161,142 @@
     <div class="toast" id="toast"></div>
 
     <!-- On-Screen Keyboard -->
-    <div class="keyboard-overlay" id="keyboardOverlay">
-        <button class="keyboard-close" onclick="closeKeyboard()">×</button>
-        
-        <div class="keyboard-input-preview">
-            <div class="keyboard-input-label" id="keyboardLabel">Input:</div>
-            <div class="keyboard-input-value" id="keyboardValue"><span class="keyboard-input-cursor"></span></div>
+    <div class="keyboard-container" id="keyboard">
+        <button class="keyboard-close-btn" onclick="kbClose()">×</button>
+        <div class="keyboard-preview">
+            <span class="keyboard-preview-label" id="kbLabel">Input:</span>
+            <span class="keyboard-preview-value" id="kbPreview"><span class="keyboard-cursor"></span></span>
         </div>
-
-        <div class="keyboard-tabs">
-            <button class="keyboard-tab active" id="tabLetters" onclick="switchKeyboardTab('letters')">ABC</button>
-            <button class="keyboard-tab" id="tabNumbers" onclick="switchKeyboardTab('numbers')">123</button>
-            <button class="keyboard-tab" id="tabSymbols" onclick="switchKeyboardTab('symbols')">@#$</button>
+        <div class="kb-tabs">
+            <button class="kb-tab active" id="kbTabAbc" onclick="kbShowLayout('abc')">ABC</button>
+            <button class="kb-tab" id="kbTab123" onclick="kbShowLayout('123')">123</button>
+            <button class="kb-tab" id="kbTabSym" onclick="kbShowLayout('sym')">@#$</button>
         </div>
-
-        <!-- Letters Layout -->
-        <div id="keyboardLetters">
-            <div class="keyboard-row">
-                <button class="keyboard-key" data-key="q">q</button>
-                <button class="keyboard-key" data-key="w">w</button>
-                <button class="keyboard-key" data-key="e">e</button>
-                <button class="keyboard-key" data-key="r">r</button>
-                <button class="keyboard-key" data-key="t">t</button>
-                <button class="keyboard-key" data-key="y">y</button>
-                <button class="keyboard-key" data-key="u">u</button>
-                <button class="keyboard-key" data-key="i">i</button>
-                <button class="keyboard-key" data-key="o">o</button>
-                <button class="keyboard-key" data-key="p">p</button>
+        <div id="kbAbc">
+            <div class="kb-row">
+                <button class="kb-key" onclick="kbType('q')">q</button>
+                <button class="kb-key" onclick="kbType('w')">w</button>
+                <button class="kb-key" onclick="kbType('e')">e</button>
+                <button class="kb-key" onclick="kbType('r')">r</button>
+                <button class="kb-key" onclick="kbType('t')">t</button>
+                <button class="kb-key" onclick="kbType('y')">y</button>
+                <button class="kb-key" onclick="kbType('u')">u</button>
+                <button class="kb-key" onclick="kbType('i')">i</button>
+                <button class="kb-key" onclick="kbType('o')">o</button>
+                <button class="kb-key" onclick="kbType('p')">p</button>
             </div>
-            <div class="keyboard-row">
-                <button class="keyboard-key" data-key="a">a</button>
-                <button class="keyboard-key" data-key="s">s</button>
-                <button class="keyboard-key" data-key="d">d</button>
-                <button class="keyboard-key" data-key="f">f</button>
-                <button class="keyboard-key" data-key="g">g</button>
-                <button class="keyboard-key" data-key="h">h</button>
-                <button class="keyboard-key" data-key="j">j</button>
-                <button class="keyboard-key" data-key="k">k</button>
-                <button class="keyboard-key" data-key="l">l</button>
+            <div class="kb-row">
+                <button class="kb-key" onclick="kbType('a')">a</button>
+                <button class="kb-key" onclick="kbType('s')">s</button>
+                <button class="kb-key" onclick="kbType('d')">d</button>
+                <button class="kb-key" onclick="kbType('f')">f</button>
+                <button class="kb-key" onclick="kbType('g')">g</button>
+                <button class="kb-key" onclick="kbType('h')">h</button>
+                <button class="kb-key" onclick="kbType('j')">j</button>
+                <button class="kb-key" onclick="kbType('k')">k</button>
+                <button class="kb-key" onclick="kbType('l')">l</button>
             </div>
-            <div class="keyboard-row">
-                <button class="keyboard-key wide shift" id="shiftKey" onclick="toggleShift()">⇧</button>
-                <button class="keyboard-key" data-key="z">z</button>
-                <button class="keyboard-key" data-key="x">x</button>
-                <button class="keyboard-key" data-key="c">c</button>
-                <button class="keyboard-key" data-key="v">v</button>
-                <button class="keyboard-key" data-key="b">b</button>
-                <button class="keyboard-key" data-key="n">n</button>
-                <button class="keyboard-key" data-key="m">m</button>
-                <button class="keyboard-key wide" onclick="keyboardBackspace()">⌫</button>
+            <div class="kb-row">
+                <button class="kb-key w2" id="kbShift" onclick="kbShift()">⇧</button>
+                <button class="kb-key" onclick="kbType('z')">z</button>
+                <button class="kb-key" onclick="kbType('x')">x</button>
+                <button class="kb-key" onclick="kbType('c')">c</button>
+                <button class="kb-key" onclick="kbType('v')">v</button>
+                <button class="kb-key" onclick="kbType('b')">b</button>
+                <button class="kb-key" onclick="kbType('n')">n</button>
+                <button class="kb-key" onclick="kbType('m')">m</button>
+                <button class="kb-key w2" onclick="kbBackspace()">⌫</button>
             </div>
-            <div class="keyboard-row">
-                <button class="keyboard-key wide" onclick="switchKeyboardTab('numbers')">123</button>
-                <button class="keyboard-key" data-key="-">-</button>
-                <button class="keyboard-key space" data-key=" ">space</button>
-                <button class="keyboard-key" data-key=".">.</button>
-                <button class="keyboard-key wide action" onclick="keyboardDone()">Done</button>
+            <div class="kb-row">
+                <button class="kb-key w2" onclick="kbShowLayout('123')">123</button>
+                <button class="kb-key" onclick="kbType('-')">-</button>
+                <button class="kb-key space" onclick="kbType(' ')">space</button>
+                <button class="kb-key" onclick="kbType('.')">.</button>
+                <button class="kb-key w2 done" onclick="kbDone()">Done</button>
             </div>
         </div>
-
-        <!-- Numbers Layout -->
-        <div id="keyboardNumbers" style="display:none;">
-            <div class="keyboard-row">
-                <button class="keyboard-key" data-key="1">1</button>
-                <button class="keyboard-key" data-key="2">2</button>
-                <button class="keyboard-key" data-key="3">3</button>
-                <button class="keyboard-key" data-key="4">4</button>
-                <button class="keyboard-key" data-key="5">5</button>
-                <button class="keyboard-key" data-key="6">6</button>
-                <button class="keyboard-key" data-key="7">7</button>
-                <button class="keyboard-key" data-key="8">8</button>
-                <button class="keyboard-key" data-key="9">9</button>
-                <button class="keyboard-key" data-key="0">0</button>
+        <div id="kb123" style="display:none;">
+            <div class="kb-row">
+                <button class="kb-key" onclick="kbType('1')">1</button>
+                <button class="kb-key" onclick="kbType('2')">2</button>
+                <button class="kb-key" onclick="kbType('3')">3</button>
+                <button class="kb-key" onclick="kbType('4')">4</button>
+                <button class="kb-key" onclick="kbType('5')">5</button>
+                <button class="kb-key" onclick="kbType('6')">6</button>
+                <button class="kb-key" onclick="kbType('7')">7</button>
+                <button class="kb-key" onclick="kbType('8')">8</button>
+                <button class="kb-key" onclick="kbType('9')">9</button>
+                <button class="kb-key" onclick="kbType('0')">0</button>
             </div>
-            <div class="keyboard-row">
-                <button class="keyboard-key" data-key="-">-</button>
-                <button class="keyboard-key" data-key="/">/</button>
-                <button class="keyboard-key" data-key=":">:</button>
-                <button class="keyboard-key" data-key=";">;</button>
-                <button class="keyboard-key" data-key="(">(</button>
-                <button class="keyboard-key" data-key=")">)</button>
-                <button class="keyboard-key" data-key="€">€</button>
-                <button class="keyboard-key" data-key="&">&amp;</button>
-                <button class="keyboard-key" data-key="@">@</button>
-                <button class="keyboard-key" data-key='"'>"</button>
+            <div class="kb-row">
+                <button class="kb-key" onclick="kbType('-')">-</button>
+                <button class="kb-key" onclick="kbType('/')">/</button>
+                <button class="kb-key" onclick="kbType(':')">:</button>
+                <button class="kb-key" onclick="kbType(';')">;</button>
+                <button class="kb-key" onclick="kbType('(')">(</button>
+                <button class="kb-key" onclick="kbType(')')">)</button>
+                <button class="kb-key" onclick="kbType('€')">€</button>
+                <button class="kb-key" onclick="kbType('@')">@</button>
+                <button class="kb-key" onclick="kbType('?')">?</button>
+                <button class="kb-key" onclick="kbType('!')">!</button>
             </div>
-            <div class="keyboard-row">
-                <button class="keyboard-key wide" onclick="switchKeyboardTab('symbols')">#+=</button>
-                <button class="keyboard-key" data-key=".">.</button>
-                <button class="keyboard-key" data-key=",">,</button>
-                <button class="keyboard-key" data-key="?">?</button>
-                <button class="keyboard-key" data-key="!">!</button>
-                <button class="keyboard-key" data-key="'">'</button>
-                <button class="keyboard-key wide" onclick="keyboardBackspace()">⌫</button>
+            <div class="kb-row">
+                <button class="kb-key w2" onclick="kbShowLayout('sym')">#+=</button>
+                <button class="kb-key" onclick="kbType('.')">.</button>
+                <button class="kb-key" onclick="kbType(',')">,</button>
+                <button class="kb-key" onclick="kbType('_')">_</button>
+                <button class="kb-key" onclick="kbType('&')">&</button>
+                <button class="kb-key" onclick="kbType('\"')">\"</button>
+                <button class="kb-key w2" onclick="kbBackspace()">⌫</button>
             </div>
-            <div class="keyboard-row">
-                <button class="keyboard-key wide" onclick="switchKeyboardTab('letters')">ABC</button>
-                <button class="keyboard-key" data-key="_">_</button>
-                <button class="keyboard-key space" data-key=" ">space</button>
-                <button class="keyboard-key" data-key=".">.</button>
-                <button class="keyboard-key wide action" onclick="keyboardDone()">Done</button>
+            <div class="kb-row">
+                <button class="kb-key w2" onclick="kbShowLayout('abc')">ABC</button>
+                <button class="kb-key" onclick="kbType('\'')">\'</button>
+                <button class="kb-key space" onclick="kbType(' ')">space</button>
+                <button class="kb-key" onclick="kbType('.')">.</button>
+                <button class="kb-key w2 done" onclick="kbDone()">Done</button>
             </div>
         </div>
-
-        <!-- Symbols Layout -->
-        <div id="keyboardSymbols" style="display:none;">
-            <div class="keyboard-row">
-                <button class="keyboard-key" data-key="[">[</button>
-                <button class="keyboard-key" data-key="]">]</button>
-                <button class="keyboard-key" data-key="{">{</button>
-                <button class="keyboard-key" data-key="}">}</button>
-                <button class="keyboard-key" data-key="#">#</button>
-                <button class="keyboard-key" data-key="%">%</button>
-                <button class="keyboard-key" data-key="^">^</button>
-                <button class="keyboard-key" data-key="*">*</button>
-                <button class="keyboard-key" data-key="+">+</button>
-                <button class="keyboard-key" data-key="=">=</button>
+        <div id="kbSym" style="display:none;">
+            <div class="kb-row">
+                <button class="kb-key" onclick="kbType('[')">[</button>
+                <button class="kb-key" onclick="kbType(']')">]</button>
+                <button class="kb-key" onclick="kbType('{')">{</button>
+                <button class="kb-key" onclick="kbType('}')">}</button>
+                <button class="kb-key" onclick="kbType('#')">#</button>
+                <button class="kb-key" onclick="kbType('%')">%</button>
+                <button class="kb-key" onclick="kbType('^')">^</button>
+                <button class="kb-key" onclick="kbType('*')">*</button>
+                <button class="kb-key" onclick="kbType('+')">+</button>
+                <button class="kb-key" onclick="kbType('=')">=</button>
             </div>
-            <div class="keyboard-row">
-                <button class="keyboard-key" data-key="_">_</button>
-                <button class="keyboard-key" data-key="\">\</button>
-                <button class="keyboard-key" data-key="|">|</button>
-                <button class="keyboard-key" data-key="~">~</button>
-                <button class="keyboard-key" data-key="<">&lt;</button>
-                <button class="keyboard-key" data-key=">">&gt;</button>
-                <button class="keyboard-key" data-key="$">$</button>
-                <button class="keyboard-key" data-key="£">£</button>
-                <button class="keyboard-key" data-key="¥">¥</button>
-                <button class="keyboard-key" data-key="•">•</button>
+            <div class="kb-row">
+                <button class="kb-key" onclick="kbType('_')">_</button>
+                <button class="kb-key" onclick="kbType('\\')">\</button>
+                <button class="kb-key" onclick="kbType('|')">|</button>
+                <button class="kb-key" onclick="kbType('~')">~</button>
+                <button class="kb-key" onclick="kbType('<')">&lt;</button>
+                <button class="kb-key" onclick="kbType('>')">&gt;</button>
+                <button class="kb-key" onclick="kbType('$')">$</button>
+                <button class="kb-key" onclick="kbType('£')">£</button>
+                <button class="kb-key" onclick="kbType('¥')">¥</button>
+                <button class="kb-key" onclick="kbType('•')">•</button>
             </div>
-            <div class="keyboard-row">
-                <button class="keyboard-key wide" onclick="switchKeyboardTab('numbers')">123</button>
-                <button class="keyboard-key" data-key=".">.</button>
-                <button class="keyboard-key" data-key=",">,</button>
-                <button class="keyboard-key" data-key="?">?</button>
-                <button class="keyboard-key" data-key="!">!</button>
-                <button class="keyboard-key" data-key="'">'</button>
-                <button class="keyboard-key wide" onclick="keyboardBackspace()">⌫</button>
+            <div class="kb-row">
+                <button class="kb-key w2" onclick="kbShowLayout('123')">123</button>
+                <button class="kb-key" onclick="kbType('.')">.</button>
+                <button class="kb-key" onclick="kbType(',')">,</button>
+                <button class="kb-key" onclick="kbType('?')">?</button>
+                <button class="kb-key" onclick="kbType('!')">!</button>
+                <button class="kb-key" onclick="kbType('\'')">\'</button>
+                <button class="kb-key w2" onclick="kbBackspace()">⌫</button>
             </div>
-            <div class="keyboard-row">
-                <button class="keyboard-key wide" onclick="switchKeyboardTab('letters')">ABC</button>
-                <button class="keyboard-key" data-key="-">-</button>
-                <button class="keyboard-key space" data-key=" ">space</button>
-                <button class="keyboard-key" data-key=".">.</button>
-                <button class="keyboard-key wide action" onclick="keyboardDone()">Done</button>
+            <div class="kb-row">
+                <button class="kb-key w2" onclick="kbShowLayout('abc')">ABC</button>
+                <button class="kb-key" onclick="kbType('-')">-</button>
+                <button class="kb-key space" onclick="kbType(' ')">space</button>
+                <button class="kb-key" onclick="kbType('.')">.</button>
+                <button class="kb-key w2 done" onclick="kbDone()">Done</button>
             </div>
         </div>
     </div>
@@ -2301,150 +2241,75 @@
         }
 
         // =====================================================
-        // ON-SCREEN KEYBOARD
+        // ON-SCREEN KEYBOARD (only for modals)
         // =====================================================
-        let activeKeyboardInput = null;
-        let keyboardShiftActive = false;
+        var kbInput = null;
+        var kbShiftOn = false;
 
-        function initKeyboard() {
-            // Add click handlers to all keyboard keys with data-key attribute
-            document.querySelectorAll('.keyboard-key[data-key]').forEach(key => {
-                key.addEventListener('click', () => {
-                    const char = key.getAttribute('data-key');
-                    keyboardType(char);
-                });
-            });
-
-            // Add focus handlers to all text inputs (delayed to not block other events)
-            setTimeout(() => {
-                document.querySelectorAll('input[type="text"], input[type="url"]').forEach(input => {
-                    input.setAttribute('readonly', 'readonly'); // Prevent native keyboard
-                    input.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        openKeyboard(input);
-                    });
-                });
-            }, 500);
+        function kbOpen(input) {
+            kbInput = input;
+            document.getElementById('kbLabel').textContent = (input.placeholder || 'Input') + ':';
+            kbUpdatePreview();
+            document.getElementById('keyboard').classList.add('visible');
+            kbShowLayout('abc');
         }
 
-        function openKeyboard(inputElement) {
-            activeKeyboardInput = inputElement;
-            activeKeyboardInput.removeAttribute('readonly'); // Allow value changes
-            
-            // Get label from associated label or placeholder
-            const label = inputElement.placeholder || 'Input';
-            document.getElementById('keyboardLabel').textContent = label + ':';
-            
-            // Show current value
-            updateKeyboardPreview();
-            
-            // Show keyboard
-            document.getElementById('keyboardOverlay').classList.add('active');
-            
-            // Switch to appropriate tab based on input type
-            const inputMode = inputElement.getAttribute('inputmode');
-            if (inputMode === 'numeric') {
-                switchKeyboardTab('numbers');
-            } else if (inputMode === 'url') {
-                switchKeyboardTab('letters');
+        function kbClose() {
+            document.getElementById('keyboard').classList.remove('visible');
+            kbInput = null;
+        }
+
+        function kbDone() {
+            kbClose();
+        }
+
+        function kbType(c) {
+            if (!kbInput) return;
+            var char = kbShiftOn ? c.toUpperCase() : c;
+            kbInput.value = (kbInput.value || '') + char;
+            kbInput.dispatchEvent(new Event('input', {bubbles: true}));
+            if (kbShiftOn && c.match(/[a-z]/i)) {
+                kbShiftOn = false;
+                document.getElementById('kbShift').style.background = '';
+            }
+            kbUpdatePreview();
+        }
+
+        function kbBackspace() {
+            if (!kbInput) return;
+            kbInput.value = kbInput.value.slice(0, -1);
+            kbInput.dispatchEvent(new Event('input', {bubbles: true}));
+            kbUpdatePreview();
+        }
+
+        function kbShift() {
+            kbShiftOn = !kbShiftOn;
+            document.getElementById('kbShift').style.background = kbShiftOn ? 'rgba(74,222,128,0.4)' : '';
+        }
+
+        function kbShowLayout(layout) {
+            document.getElementById('kbAbc').style.display = 'none';
+            document.getElementById('kb123').style.display = 'none';
+            document.getElementById('kbSym').style.display = 'none';
+            document.getElementById('kbTabAbc').classList.remove('active');
+            document.getElementById('kbTab123').classList.remove('active');
+            document.getElementById('kbTabSym').classList.remove('active');
+            if (layout === 'abc') {
+                document.getElementById('kbAbc').style.display = 'block';
+                document.getElementById('kbTabAbc').classList.add('active');
+            } else if (layout === '123') {
+                document.getElementById('kb123').style.display = 'block';
+                document.getElementById('kbTab123').classList.add('active');
             } else {
-                switchKeyboardTab('letters');
+                document.getElementById('kbSym').style.display = 'block';
+                document.getElementById('kbTabSym').classList.add('active');
             }
         }
 
-        function closeKeyboard() {
-            document.getElementById('keyboardOverlay').classList.remove('active');
-            if (activeKeyboardInput) {
-                activeKeyboardInput.setAttribute('readonly', 'readonly');
-                activeKeyboardInput.blur();
-            }
-            activeKeyboardInput = null;
-            keyboardShiftActive = false;
-            updateShiftDisplay();
+        function kbUpdatePreview() {
+            var v = kbInput ? kbInput.value : '';
+            document.getElementById('kbPreview').innerHTML = escapeHtml(v) + '<span class="keyboard-cursor"></span>';
         }
-
-        function keyboardType(char) {
-            if (!activeKeyboardInput) return;
-            
-            let typedChar = char;
-            if (keyboardShiftActive && char.length === 1 && char.match(/[a-z]/i)) {
-                typedChar = char.toUpperCase();
-                keyboardShiftActive = false;
-                updateShiftDisplay();
-            }
-            
-            // Insert character at cursor position
-            const value = activeKeyboardInput.value || '';
-            activeKeyboardInput.value = value + typedChar;
-            
-            // Trigger input event
-            activeKeyboardInput.dispatchEvent(new Event('input', { bubbles: true }));
-            
-            updateKeyboardPreview();
-        }
-
-        function keyboardBackspace() {
-            if (!activeKeyboardInput) return;
-            
-            const value = activeKeyboardInput.value || '';
-            if (value.length > 0) {
-                activeKeyboardInput.value = value.substring(0, value.length - 1);
-                activeKeyboardInput.dispatchEvent(new Event('input', { bubbles: true }));
-                updateKeyboardPreview();
-            }
-        }
-
-        function keyboardDone() {
-            closeKeyboard();
-        }
-
-        function toggleShift() {
-            keyboardShiftActive = !keyboardShiftActive;
-            updateShiftDisplay();
-        }
-
-        function updateShiftDisplay() {
-            const shiftKey = document.getElementById('shiftKey');
-            if (shiftKey) {
-                shiftKey.classList.toggle('active', keyboardShiftActive);
-            }
-            
-            // Update letter keys display
-            document.querySelectorAll('#keyboardLetters .keyboard-key[data-key]').forEach(key => {
-                const char = key.getAttribute('data-key');
-                if (char && char.length === 1 && char.match(/[a-z]/i)) {
-                    key.textContent = keyboardShiftActive ? char.toUpperCase() : char.toLowerCase();
-                }
-            });
-        }
-
-        function switchKeyboardTab(tab) {
-            document.querySelectorAll('.keyboard-tab').forEach(t => t.classList.remove('active'));
-            document.getElementById('keyboardLetters').style.display = 'none';
-            document.getElementById('keyboardNumbers').style.display = 'none';
-            document.getElementById('keyboardSymbols').style.display = 'none';
-            
-            if (tab === 'letters') {
-                document.getElementById('tabLetters').classList.add('active');
-                document.getElementById('keyboardLetters').style.display = 'block';
-            } else if (tab === 'numbers') {
-                document.getElementById('tabNumbers').classList.add('active');
-                document.getElementById('keyboardNumbers').style.display = 'block';
-            } else {
-                document.getElementById('tabSymbols').classList.add('active');
-                document.getElementById('keyboardSymbols').style.display = 'block';
-            }
-        }
-
-        function updateKeyboardPreview() {
-            if (!activeKeyboardInput) return;
-            const value = activeKeyboardInput.value || '';
-            const preview = document.getElementById('keyboardValue');
-            preview.innerHTML = escapeHtml(value) + '<span class="keyboard-input-cursor"></span>';
-        }
-
-        // Initialize keyboard after a short delay to not interfere with page load
-        setTimeout(initKeyboard, 1000);
 
         function escapeHtml(text) {
             const div = document.createElement('div');
