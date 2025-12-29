@@ -102,27 +102,59 @@
 
         /* ===== DASHBOARD LAYOUT ===== */
         .dashboard {
-            display: grid; grid-template-columns: 1fr 380px;
-            grid-template-rows: auto 1fr; height: 100vh; padding: 25px; gap: 20px;
+            display: grid;
+            grid-template-rows: auto auto auto 1fr;
+            height: 100vh;
+            padding: 20px;
+            gap: 15px;
         }
 
         .header {
-            grid-column: 1 / -1; display: flex;
-            justify-content: space-between; align-items: flex-start;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header > div:first-child {
+            flex: 1;
+        }
+
+        .header > .dashboard-title {
+            flex: 2;
+            text-align: center;
+        }
+
+        .header > .settings-btn {
+            flex: 0 0 auto;
+        }
+
+        .dashboard-title {
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            opacity: 0.9;
+        }
+
+        .dashboard-title .family-name {
+            font-weight: 500;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .time-section { display: flex; align-items: baseline; gap: 8px; }
 
         .time {
-            font-size: 4.5rem; font-weight: 300; letter-spacing: -3px; line-height: 1;
+            font-size: 3.5rem; font-weight: 300; letter-spacing: -3px; line-height: 1;
             background: linear-gradient(180deg, #ffffff 0%, #a0a0a0 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        .seconds { font-size: 1.6rem; font-weight: 200; opacity: 0.4; }
-        .date-greeting { margin-left: 20px; }
-        .greeting { font-size: 1.2rem; font-weight: 200; opacity: 0.8; }
-        .date { font-size: 1rem; font-weight: 300; opacity: 0.7; margin-top: 4px; }
+        .seconds { font-size: 1.4rem; font-weight: 200; opacity: 0.4; }
+        .date-greeting { margin-left: 15px; }
+        .greeting { font-size: 1.1rem; font-weight: 200; opacity: 0.8; }
+        .date { font-size: 0.9rem; font-weight: 300; opacity: 0.7; margin-top: 2px; }
 
         .settings-btn {
             width: 42px; height: 42px; border-radius: 50%;
@@ -133,8 +165,35 @@
         }
         .settings-btn:hover { background: rgba(255,255,255,0.2); transform: rotate(45deg); }
 
-        .main-content, .sidebar {
-            display: flex; flex-direction: column; gap: 20px; overflow: hidden;
+        /* ===== WEATHER ROW (Full Width) ===== */
+        .weather-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 15px 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* ===== CONTENT ROW (Calendar & Todo Side by Side) ===== */
+        .content-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        /* ===== PHOTO ROW (Full Width Bottom) ===== */
+        .photo-row {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /* ===== CARDS ===== */
@@ -166,21 +225,28 @@
         }
         .add-btn:hover { background: rgba(255,255,255,0.25); transform: scale(1.1); }
 
-        /* ===== WEATHER CARD ===== */
-        .weather-card { flex-shrink: 0; }
-
+        /* ===== WEATHER SECTION ===== */
         .weather-current {
-            display: flex; align-items: center; gap: 15px;
-            padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-right: 20px;
+            border-right: 1px solid rgba(255,255,255,0.15);
         }
 
-        .weather-icon-large { font-size: 2.8rem; }
-        .weather-current-info { flex: 1; }
-        .weather-temp-large { font-size: 2.2rem; font-weight: 300; }
-        .weather-condition { font-size: 0.85rem; opacity: 0.7; }
+        .weather-icon-large { font-size: 2.5rem; }
+        .weather-current-info { }
+        .weather-temp-large { font-size: 2rem; font-weight: 300; }
+        .weather-condition { font-size: 0.8rem; opacity: 0.7; }
 
-        .weather-location-wrapper { text-align: right; }
-        .weather-location { font-size: 0.9rem; opacity: 0.9; display: flex; align-items: center; gap: 5px; justify-content: flex-end; }
+        .weather-location-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding-right: 20px;
+            border-right: 1px solid rgba(255,255,255,0.15);
+        }
+        .weather-location { font-size: 0.85rem; opacity: 0.9; display: flex; align-items: center; gap: 5px; }
 
         .weather-location-btn {
             background: rgba(255,255,255,0.1); border: none; color: white;
@@ -189,30 +255,37 @@
         }
         .weather-location-btn:hover { background: rgba(255,255,255,0.2); }
 
-        .weather-hi-lo { font-size: 0.8rem; opacity: 0.5; margin-top: 3px; }
+        .weather-hi-lo { font-size: 0.75rem; opacity: 0.5; margin-left: 5px; }
 
-        .weather-forecast { display: flex; gap: 6px; }
+        .weather-forecast {
+            display: flex;
+            gap: 8px;
+            flex: 1;
+            justify-content: space-around;
+        }
 
         .weather-day {
-            flex: 1; text-align: center; padding: 10px 4px;
-            border-radius: 10px; background: rgba(255,255,255,0.05); transition: all 0.2s;
+            text-align: center;
+            padding: 8px 12px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.05);
+            transition: all 0.2s;
         }
         .weather-day:hover { background: rgba(255,255,255,0.1); }
 
-        .weather-day-name { font-size: 0.65rem; opacity: 0.6; margin-bottom: 5px; text-transform: uppercase; }
-        .weather-day-icon { font-size: 1.3rem; margin-bottom: 5px; }
-        .weather-day-temp { font-size: 0.85rem; font-weight: 500; }
-        .weather-day-low { font-size: 0.7rem; opacity: 0.5; }
+        .weather-day-name { font-size: 0.65rem; opacity: 0.6; margin-bottom: 4px; text-transform: uppercase; }
+        .weather-day-icon { font-size: 1.2rem; margin-bottom: 4px; }
+        .weather-day-temp { font-size: 0.8rem; font-weight: 500; }
+        .weather-day-low { font-size: 0.65rem; opacity: 0.5; }
 
-        /* ===== PHOTO CARD ===== */
-        .photo-card { flex: 2.5; min-height: 0; }
-
+        /* ===== PHOTO SECTION ===== */
         .photo-container {
-            flex: 1; display: flex; align-items: center; justify-content: center;
-            overflow: hidden; border-radius: 14px; background: rgba(0,0,0,0.3); position: relative;
+            width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            position: relative;
         }
 
-        .photo-container img { width: 100%; height: 100%; object-fit: cover; }
+        .photo-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
 
         .photo-placeholder {
             text-align: center; opacity: 0.5; padding: 40px;
@@ -220,7 +293,7 @@
         .photo-placeholder-icon { font-size: 4rem; margin-bottom: 15px; }
 
         .photo-nav {
-            position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+            position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%);
             display: flex; gap: 6px;
         }
 
@@ -228,7 +301,7 @@
         .photo-dot.active { background: white; width: 20px; border-radius: 4px; }
 
         /* ===== CALENDAR CARD ===== */
-        .calendar-card { flex: 1; min-height: 0; }
+        .calendar-card { min-height: 0; }
 
         .event-item {
             display: flex; align-items: flex-start; gap: 10px;
@@ -257,7 +330,7 @@
         .event-day-header:first-child { margin-top: 0; }
 
         /* ===== TODO CARD ===== */
-        .todo-card { flex: 0.7; min-height: 0; }
+        .todo-card { min-height: 0; }
 
         .todo-item {
             display: flex; align-items: center; gap: 10px;
@@ -588,6 +661,7 @@
 
     <!-- ===== MAIN DASHBOARD ===== -->
     <div class="dashboard" id="dashboard" style="display: none;">
+        <!-- Row 1: Header -->
         <div class="header">
             <div style="display: flex; align-items: center;">
                 <div class="time-section">
@@ -599,47 +673,34 @@
                     <div class="date" id="date">Loading...</div>
                 </div>
             </div>
+            <div class="dashboard-title">🏠 The <span class="family-name">Van den Boskes</span> Family Dashboard</div>
             <button class="settings-btn" onclick="openModal('settings')" title="Settings">⚙️</button>
         </div>
 
-        <div class="main-content">
-            <!-- Weather -->
-            <div class="card weather-card">
-                <div class="weather-current">
-                    <div class="weather-icon-large" id="weatherIcon">🌡️</div>
-                    <div class="weather-current-info">
-                        <div class="weather-temp-large" id="weatherTemp">--°</div>
-                        <div class="weather-condition" id="weatherCondition">Loading...</div>
-                    </div>
-                    <div class="weather-location-wrapper">
-                        <div class="weather-location">
-                            <span>📍</span>
-                            <span id="weatherLocationName">Loading...</span>
-                            <button class="weather-location-btn" onclick="openModal('settings'); setTimeout(() => switchSettingsTab('weather'), 100);">Change</button>
-                        </div>
-                        <div class="weather-hi-lo" id="weatherHiLo">H:--° L:--°</div>
-                    </div>
-                </div>
-                <div class="weather-forecast" id="weatherForecast">
-                    <div class="weather-day"><div class="loading-spinner" style="width:20px;height:20px;border-width:2px;"></div></div>
+        <!-- Row 2: Weather (Full Width) -->
+        <div class="weather-row">
+            <div class="weather-current">
+                <div class="weather-icon-large" id="weatherIcon">🌡️</div>
+                <div class="weather-current-info">
+                    <div class="weather-temp-large" id="weatherTemp">--°</div>
+                    <div class="weather-condition" id="weatherCondition">Loading...</div>
                 </div>
             </div>
-
-            <!-- Photos -->
-            <div class="card photo-card">
-                <div class="card-header">
-                    <div class="card-title">📸 Family Photos</div>
+            <div class="weather-location-wrapper">
+                <div class="weather-location">
+                    <span>📍</span>
+                    <span id="weatherLocationName">Loading...</span>
+                    <button class="weather-location-btn" onclick="openModal('settings'); setTimeout(() => switchSettingsTab('weather'), 100);">Change</button>
                 </div>
-                <div class="photo-container" id="photoContainer">
-                    <div class="photo-placeholder">
-                        <div class="photo-placeholder-icon">🖼️</div>
-                        <div>Configure photos in Settings<br><small style="opacity:0.7;">iCloud Shared Album supported</small></div>
-                    </div>
-                </div>
+                <div class="weather-hi-lo" id="weatherHiLo">H:--° L:--°</div>
+            </div>
+            <div class="weather-forecast" id="weatherForecast">
+                <div class="weather-day"><div class="loading-spinner" style="width:20px;height:20px;border-width:2px;"></div></div>
             </div>
         </div>
 
-        <div class="sidebar">
+        <!-- Row 3: Calendar & Todo (Side by Side) -->
+        <div class="content-row">
             <!-- Calendar -->
             <div class="card calendar-card">
                 <div class="card-header">
@@ -659,6 +720,16 @@
                 </div>
                 <div class="card-content" id="todoContent">
                     <div class="loading"><div class="loading-spinner"></div>Loading tasks...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 4: Photos (Full Width Bottom) -->
+        <div class="photo-row">
+            <div class="photo-container" id="photoContainer">
+                <div class="photo-placeholder">
+                    <div class="photo-placeholder-icon">🖼️</div>
+                    <div>Configure photos in Settings<br><small style="opacity:0.7;">iCloud Shared Album supported</small></div>
                 </div>
             </div>
         </div>
