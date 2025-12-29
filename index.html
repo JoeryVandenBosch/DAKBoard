@@ -1933,19 +1933,19 @@
         </div>
 
         <!-- Row 3: Scoreboard (Full Width) -->
-        <div class="card" style="grid-column: 1 / -1;">
+        <div class="card" style="grid-column: 1 / -1; display: block; visibility: visible; opacity: 1;">
             <div class="card-header">
                 <div class="card-title">🏆 Weekly Scoreboard</div>
                 <button type="button" class="reset-btn" onclick="requestPinForAction('resetWeek')">
                     <span class="lock-icon">🔒</span> Reset Week
                 </button>
             </div>
-            <div class="scoreboard" id="scoreboard"></div>
+            <div class="scoreboard" id="scoreboard" style="display: flex; visibility: visible; opacity: 1;"></div>
 
-            <div class="jackpot-section">
+            <div class="jackpot-section" style="display: block; visibility: visible; opacity: 1;">
                 <div class="jackpot-title">
                     🎰 Super Ultimate Jackpot 
-                    <div class="year-buttons" id="yearButtons">
+                    <div class="year-buttons" id="yearButtons" style="display: flex; visibility: visible;">
                         <button type="button" class="year-btn" onclick="changeYearTo(2024)">2024</button>
                         <button type="button" class="year-btn active" onclick="changeYearTo(2025)">2025</button>
                         <button type="button" class="year-btn" onclick="changeYearTo(2026)">2026</button>
@@ -1953,20 +1953,20 @@
                         <button type="button" class="year-btn" onclick="changeYearTo(2028)">2028</button>
                     </div>
                 </div>
-                <div class="jackpot-cards" id="jackpotCards"></div>
+                <div class="jackpot-cards" id="jackpotCards" style="display: flex; visibility: visible; opacity: 1;"></div>
             </div>
         </div>
 
         <!-- Row 4: Monthly Table (Full Width) -->
-        <div class="card" style="grid-column: 1 / -1;">
+        <div class="card" style="grid-column: 1 / -1; display: block; visibility: visible; opacity: 1;">
             <div class="card-header">
                 <div class="card-title">📅 Monthly Points <span id="monthlyYearLabel">2025</span></div>
                 <button type="button" class="reset-btn" onclick="requestPinForAction('resetYear')">
                     <span class="lock-icon">🔒</span> Reset Year
                 </button>
             </div>
-            <div class="monthly-table-container">
-                <table class="monthly-table" id="monthlyTable"></table>
+            <div class="monthly-table-container" style="display: block; visibility: visible; opacity: 1; overflow-x: auto;">
+                <table class="monthly-table" id="monthlyTable" style="display: table; visibility: visible; opacity: 1; width: 100%;"></table>
             </div>
         </div>
 
@@ -2815,7 +2815,7 @@
         }
 
         async function refreshAccessToken() {
-            if (!authTokens?.refresh_token || !apiConfig.functionUrl) throw new Error('Cannot refresh');
+            if (!authTokens || !authTokens.refresh_token || !apiConfig.functionUrl) throw new Error('Cannot refresh');
 
             const resp = await fetch(`${apiConfig.functionUrl}/api/auth/refresh?code=${apiConfig.functionKey}`, {
                 method: 'POST',
@@ -2965,7 +2965,7 @@
                 const resp = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(name)}&count=1`);
                 const data = await resp.json();
 
-                if (!data.results?.length) { showToast('City not found', true); return; }
+                if (!data.results || !data.results.length) { showToast('City not found', true); return; }
 
                 const city = data.results[0];
                 weatherLocations.forEach(l => l.active = false);
@@ -3092,7 +3092,7 @@
 
                 const events = await callGraphAPI(`/me/calendarView?startDateTime=${now.toISOString()}&endDateTime=${endDate.toISOString()}&$orderby=start/dateTime&$top=50`);
 
-                if (!events.value?.length) {
+                if (!events.value || !events.value.length) {
                     content.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📅</div><div>No upcoming events</div></div>';
                     return;
                 }
@@ -3110,7 +3110,7 @@
                     dayEvents.forEach(event => {
                         const start = new Date(event.start.dateTime + 'Z').toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
                         const end = new Date(event.end.dateTime + 'Z').toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
-                        html += `<div class="event-item"><div class="event-time"><div class="event-time-start">${start}</div><div class="event-time-end">${end}</div></div><div class="event-divider"></div><div class="event-details"><div class="event-title">${escapeHtml(event.subject)}</div>${event.location?.displayName ? `<div class="event-location">📍 ${escapeHtml(event.location.displayName)}</div>` : ''}</div></div>`;
+                        html += `<div class="event-item"><div class="event-time"><div class="event-time-start">${start}</div><div class="event-time-end">${end}</div></div><div class="event-divider"></div><div class="event-details"><div class="event-title">${escapeHtml(event.subject)}</div>${event.location && event.location.displayName ? `<div class="event-location">📍 ${escapeHtml(event.location.displayName)}</div>` : ''}</div></div>`;
                     });
                 });
                 content.innerHTML = html;
@@ -3548,7 +3548,7 @@
             
             // Clean task title for notification (remove @mentions for cleaner message)
             const cleanTitle = taskTitle.replace(/@[\w\s]+/g, '').trim();
-            const message = `📋 New task assigned to you:\n\n${cleanTitle || taskTitle}\n\nFrom: ${currentUser?.displayName || 'Family Dashboard'}`;
+            const message = `📋 New task assigned to you:\n\n${cleanTitle || taskTitle}\n\nFrom: ${currentUser && currentUser.displayName ? currentUser.displayName : 'Family Dashboard'}`;
             
             try {
                 // Use the testNotification endpoint with a custom message
@@ -3703,7 +3703,7 @@
                 if (resp.ok) {
                     const data = await resp.json();
                     dot.className = 'api-status-dot connected';
-                    text.textContent = `Connected - ${data.config?.enabledContacts || 0} contacts`;
+                    text.textContent = `Connected - ${data.config && data.config.enabledContacts ? data.config.enabledContacts : 0} contacts`;
                 } else throw new Error();
             } catch (e) {
                 dot.className = 'api-status-dot error';
@@ -3802,64 +3802,83 @@
         }
 
         function initAudio() {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            } catch(e) {
+                console.log('Audio not supported');
+            }
         }
 
         function playSuccessSound() {
-            if (!soundEnabled) return;
-            if (!audioContext) initAudio();
-            [523.25, 659.25, 783.99].forEach((freq, i) => {
-                setTimeout(() => {
-                    const osc = audioContext.createOscillator();
-                    const gain = audioContext.createGain();
-                    osc.connect(gain);
-                    gain.connect(audioContext.destination);
-                    osc.frequency.setValueAtTime(freq, audioContext.currentTime);
-                    osc.type = 'sine';
-                    gain.gain.setValueAtTime(0.2, audioContext.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-                    osc.start(audioContext.currentTime);
-                    osc.stop(audioContext.currentTime + 0.3);
-                }, i * 100);
-            });
+            try {
+                if (!soundEnabled) return;
+                if (!audioContext) initAudio();
+                if (!audioContext) return;
+                [523.25, 659.25, 783.99].forEach(function(freq, i) {
+                    setTimeout(function() {
+                        try {
+                            var osc = audioContext.createOscillator();
+                            var gain = audioContext.createGain();
+                            osc.connect(gain);
+                            gain.connect(audioContext.destination);
+                            osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+                            osc.type = 'sine';
+                            gain.gain.setValueAtTime(0.2, audioContext.currentTime);
+                            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                            osc.start(audioContext.currentTime);
+                            osc.stop(audioContext.currentTime + 0.3);
+                        } catch(e) {}
+                    }, i * 100);
+                });
+            } catch(e) {}
         }
 
         function playRewardSound() {
-            if (!soundEnabled) return;
-            if (!audioContext) initAudio();
-            [659.25, 783.99, 987.77, 1174.66].forEach((freq, i) => {
-                setTimeout(() => {
-                    const osc = audioContext.createOscillator();
-                    const gain = audioContext.createGain();
-                    osc.connect(gain);
-                    gain.connect(audioContext.destination);
-                    osc.frequency.setValueAtTime(freq, audioContext.currentTime);
-                    osc.type = 'triangle';
-                    gain.gain.setValueAtTime(0.25, audioContext.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
-                    osc.start(audioContext.currentTime);
-                    osc.stop(audioContext.currentTime + 0.4);
-                }, i * 120);
-            });
+            try {
+                if (!soundEnabled) return;
+                if (!audioContext) initAudio();
+                if (!audioContext) return;
+                [659.25, 783.99, 987.77, 1174.66].forEach(function(freq, i) {
+                    setTimeout(function() {
+                        try {
+                            var osc = audioContext.createOscillator();
+                            var gain = audioContext.createGain();
+                            osc.connect(gain);
+                            gain.connect(audioContext.destination);
+                            osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+                            osc.type = 'triangle';
+                            gain.gain.setValueAtTime(0.25, audioContext.currentTime);
+                            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+                            osc.start(audioContext.currentTime);
+                            osc.stop(audioContext.currentTime + 0.4);
+                        } catch(e) {}
+                    }, i * 120);
+                });
+            } catch(e) {}
         }
 
         function playJackpotSound() {
-            if (!soundEnabled) return;
-            if (!audioContext) initAudio();
-            [523.25, 659.25, 783.99, 1046.50, 783.99, 1046.50, 1318.51, 1567.98].forEach((freq, i) => {
-                setTimeout(() => {
-                    const osc = audioContext.createOscillator();
-                    const gain = audioContext.createGain();
-                    osc.connect(gain);
-                    gain.connect(audioContext.destination);
-                    osc.frequency.setValueAtTime(freq, audioContext.currentTime);
-                    osc.type = 'triangle';
-                    gain.gain.setValueAtTime(0.3, audioContext.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-                    osc.start(audioContext.currentTime);
-                    osc.stop(audioContext.currentTime + 0.5);
-                }, i * 150);
-            });
+            try {
+                if (!soundEnabled) return;
+                if (!audioContext) initAudio();
+                if (!audioContext) return;
+                [523.25, 659.25, 783.99, 1046.50, 783.99, 1046.50, 1318.51, 1567.98].forEach(function(freq, i) {
+                    setTimeout(function() {
+                        try {
+                            var osc = audioContext.createOscillator();
+                            var gain = audioContext.createGain();
+                            osc.connect(gain);
+                            gain.connect(audioContext.destination);
+                            osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+                            osc.type = 'triangle';
+                            gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+                            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                            osc.start(audioContext.currentTime);
+                            osc.stop(audioContext.currentTime + 0.5);
+                        } catch(e) {}
+                    }, i * 150);
+                });
+            } catch(e) {}
         }
 
         function toggleSound() {
@@ -4124,7 +4143,7 @@
         function renderScoreboard() {
             const container = document.getElementById('scoreboard');
             if (!container) return;
-            const sorted = [...familyMembers].sort((a, b) => b.weeklyPoints - a.weeklyPoints);
+            var sorted = familyMembers.slice().sort(function(a, b) { return b.weeklyPoints - a.weeklyPoints; });
             const leader = sorted[0];
 
             container.innerHTML = familyMembers.map(member => {
