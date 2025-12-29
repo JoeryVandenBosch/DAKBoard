@@ -273,7 +273,7 @@
             display: flex; align-items: center; justify-content: center; transition: all 0.2s;
         }
         .todo-item:hover .todo-checkbox { border-color: #4ade80; background: rgba(74,222,128,0.1); }
-        .todo-checkbox::after { content: '\u2713'; opacity: 0; color: #4ade80; font-size: 0.7rem; }
+        .todo-checkbox::after { content: '✓'; opacity: 0; color: #4ade80; font-size: 0.7rem; }
         .todo-item:hover .todo-checkbox::after { opacity: 0.5; }
 
         .todo-text { flex: 1; font-size: 0.85rem; }
@@ -370,7 +370,7 @@
             flex-shrink: 0; transition: all 0.2s;
         }
         .contact-checkbox.checked { background: #4ade80; border-color: #4ade80; }
-        .contact-checkbox.checked::after { content: '\u2713'; color: #1a1a2e; font-size: 0.8rem; font-weight: bold; }
+        .contact-checkbox.checked::after { content: '✓'; color: #1a1a2e; font-size: 0.8rem; font-weight: bold; }
 
         .contact-avatar {
             width: 36px; height: 36px; border-radius: 50%;
@@ -535,7 +535,7 @@
 
     <!-- ===== LOGIN SCREEN ===== -->
     <div class="login-screen" id="loginScreen">
-        <div class="login-logo">\ud83c\udfe0</div>
+        <div class="login-logo">🏠</div>
         <div class="login-title">The <span class="family-name">Van den Boskes</span> Family Dashboard</div>
         <div class="login-subtitle">Connect your Microsoft 365 account to get started</div>
         
@@ -560,7 +560,7 @@
 
     <!-- ===== DEVICE CODE SCREEN ===== -->
     <div class="login-screen" id="deviceCodeScreen" style="display: none;">
-        <div class="login-logo">\ud83d\udd10</div>
+        <div class="login-logo">🔐</div>
         <div class="login-title">Sign In</div>
         <div class="login-subtitle">Use another device to complete sign-in</div>
         
@@ -599,25 +599,25 @@
                     <div class="date" id="date">Loading...</div>
                 </div>
             </div>
-            <button class="settings-btn" onclick="openModal('settings')" title="Settings">\u2699\ufe0f</button>
+            <button class="settings-btn" onclick="openModal('settings')" title="Settings">⚙️</button>
         </div>
 
         <div class="main-content">
             <!-- Weather -->
             <div class="card weather-card">
                 <div class="weather-current">
-                    <div class="weather-icon-large" id="weatherIcon">\ud83c\udf21\ufe0f</div>
+                    <div class="weather-icon-large" id="weatherIcon">🌡️</div>
                     <div class="weather-current-info">
-                        <div class="weather-temp-large" id="weatherTemp">--\u00b0</div>
+                        <div class="weather-temp-large" id="weatherTemp">--°</div>
                         <div class="weather-condition" id="weatherCondition">Loading...</div>
                     </div>
                     <div class="weather-location-wrapper">
                         <div class="weather-location">
-                            <span>\ud83d\udccd</span>
+                            <span>📍</span>
                             <span id="weatherLocationName">Loading...</span>
                             <button class="weather-location-btn" onclick="openModal('settings'); setTimeout(() => switchSettingsTab('weather'), 100);">Change</button>
                         </div>
-                        <div class="weather-hi-lo" id="weatherHiLo">H:--\u00b0 L:--\u00b0</div>
+                        <div class="weather-hi-lo" id="weatherHiLo">H:--° L:--°</div>
                     </div>
                 </div>
                 <div class="weather-forecast" id="weatherForecast">
@@ -628,11 +628,11 @@
             <!-- Photos -->
             <div class="card photo-card">
                 <div class="card-header">
-                    <div class="card-title">\ud83d\udcf8 Family Photos</div>
+                    <div class="card-title">📸 Family Photos</div>
                 </div>
                 <div class="photo-container" id="photoContainer">
                     <div class="photo-placeholder">
-                        <div class="photo-placeholder-icon">\ud83d\uddbc\ufe0f</div>
+                        <div class="photo-placeholder-icon">🖼️</div>
                         <div>Configure photos in Settings<br><small style="opacity:0.7;">iCloud Shared Album supported</small></div>
                     </div>
                 </div>
@@ -643,7 +643,7 @@
             <!-- Calendar -->
             <div class="card calendar-card">
                 <div class="card-header">
-                    <div class="card-title">\ud83d\udcc5 Calendar</div>
+                    <div class="card-title">📅 Calendar</div>
                     <button class="add-btn" onclick="openModal('event')">+</button>
                 </div>
                 <div class="card-content" id="calendarContent">
@@ -654,7 +654,7 @@
             <!-- ToDo -->
             <div class="card todo-card">
                 <div class="card-header">
-                    <div class="card-title">\u2705 To Do</div>
+                    <div class="card-title">✅ To Do</div>
                     <button class="add-btn" onclick="openModal('todo')">+</button>
                 </div>
                 <div class="card-content" id="todoContent">
@@ -666,7 +666,7 @@
 
     <!-- User Info -->
     <div class="user-info" id="userInfo" style="display: none;">
-        <div class="user-avatar">\ud83d\udc64</div>
+        <div class="user-avatar">👤</div>
         <span id="userName">User</span>
         <button class="logout-btn" onclick="signOut()">Sign out</button>
     </div>
@@ -675,8 +675,8 @@
     <div class="modal-overlay" id="eventModal">
         <div class="modal">
             <div class="modal-header">
-                <div class="modal-title">\ud83d\udcc5 New Event</div>
-                <button class="modal-close" onclick="closeModal('event')">\u00d7</button>
+                <div class="modal-title">📅 New Event</div>
+                <button class="modal-close" onclick="closeModal('event')">×</button>
             </div>
             <form id="eventForm" onsubmit="createEvent(event)">
                 <div class="form-group">
@@ -712,8 +712,8 @@
     <div class="modal-overlay" id="todoModal">
         <div class="modal">
             <div class="modal-header">
-                <div class="modal-title">\u2705 New Task</div>
-                <button class="modal-close" onclick="closeModal('todo')">\u00d7</button>
+                <div class="modal-title">✅ New Task</div>
+                <button class="modal-close" onclick="closeModal('todo')">×</button>
             </div>
             <form id="todoForm" onsubmit="createTodo(event)">
                 <div class="form-group">
@@ -749,22 +749,22 @@
     <div class="modal-overlay" id="settingsModal">
         <div class="modal wide">
             <div class="modal-header">
-                <div class="modal-title">\u2699\ufe0f Settings</div>
-                <button class="modal-close" onclick="closeModal('settings')">\u00d7</button>
+                <div class="modal-title">⚙️ Settings</div>
+                <button class="modal-close" onclick="closeModal('settings')">×</button>
             </div>
 
             <div class="settings-tabs">
-                <button class="settings-tab active" onclick="switchSettingsTab('contacts')">\ud83d\udc65 Contacts</button>
-                <button class="settings-tab" onclick="switchSettingsTab('notifications')">\ud83d\udd14 Reminders</button>
-                <button class="settings-tab" onclick="switchSettingsTab('weather')">\ud83c\udf24\ufe0f Weather</button>
-                <button class="settings-tab" onclick="switchSettingsTab('photos')">\ud83d\udcf8 Photos</button>
-                <button class="settings-tab" onclick="switchSettingsTab('api')">\ud83d\udd17 API</button>
+                <button class="settings-tab active" onclick="switchSettingsTab('contacts')">👥 Contacts</button>
+                <button class="settings-tab" onclick="switchSettingsTab('notifications')">🔔 Reminders</button>
+                <button class="settings-tab" onclick="switchSettingsTab('weather')">🌤️ Weather</button>
+                <button class="settings-tab" onclick="switchSettingsTab('photos')">📸 Photos</button>
+                <button class="settings-tab" onclick="switchSettingsTab('api')">🔗 API</button>
             </div>
 
             <!-- Contacts Tab -->
             <div class="settings-section active" id="contactsSection">
                 <div class="info-card">
-                    <h4>\ud83d\udcf1 How to get Telegram Chat ID</h4>
+                    <h4>📱 How to get Telegram Chat ID</h4>
                     <p>Each family member needs to:<br>
                     1. Open Telegram and search for your bot<br>
                     2. Send <code>/start</code> to the bot<br>
@@ -782,7 +782,7 @@
                 <div class="contact-list" id="contactList"></div>
 
                 <div class="add-contact-form">
-                    <div style="font-size:0.9rem;margin-bottom:12px;opacity:0.8;">\u2795 Add New Contact</div>
+                    <div style="font-size:0.9rem;margin-bottom:12px;opacity:0.8;">➕ Add New Contact</div>
                     <div class="form-row" style="margin-bottom:12px;">
                         <div class="form-group" style="margin-bottom:0;">
                             <input type="text" class="form-input" id="newContactName" placeholder="Name">
@@ -802,7 +802,7 @@
                 <div class="notification-option">
                     <div class="notification-option-info">
                         <div class="toggle-switch active" id="toggleReminder1" onclick="toggleReminder(1)"></div>
-                        <div><div class="notification-option-title">\ud83d\udd14 Reminder 1</div></div>
+                        <div><div class="notification-option-title">🔔 Reminder 1</div></div>
                     </div>
                     <select class="form-select" id="reminder1Time" style="width:140px;" onchange="saveReminderSettings()">
                         <option value="168">1 week</option>
@@ -822,7 +822,7 @@
                 <div class="notification-option">
                     <div class="notification-option-info">
                         <div class="toggle-switch active" id="toggleReminder2" onclick="toggleReminder(2)"></div>
-                        <div><div class="notification-option-title">\ud83d\udd14 Reminder 2</div></div>
+                        <div><div class="notification-option-title">🔔 Reminder 2</div></div>
                     </div>
                     <select class="form-select" id="reminder2Time" style="width:140px;" onchange="saveReminderSettings()">
                         <option value="168">1 week</option>
@@ -842,7 +842,7 @@
                 <div class="notification-option">
                     <div class="notification-option-info">
                         <div class="toggle-switch" id="toggleReminder3" onclick="toggleReminder(3)"></div>
-                        <div><div class="notification-option-title">\ud83d\udd14 Reminder 3</div></div>
+                        <div><div class="notification-option-title">🔔 Reminder 3</div></div>
                     </div>
                     <select class="form-select" id="reminder3Time" style="width:140px;" onchange="saveReminderSettings()">
                         <option value="168">1 week</option>
@@ -863,13 +863,13 @@
                     <div class="notification-option-info">
                         <div class="toggle-switch" id="toggleTodo" onclick="toggleReminder('todo')"></div>
                         <div>
-                            <div class="notification-option-title">\u2705 ToDo Reminders</div>
+                            <div class="notification-option-title">✅ ToDo Reminders</div>
                             <div class="notification-option-desc">Notify when tasks are due</div>
                         </div>
                     </div>
                 </div>
 
-                <button class="submit-btn telegram" style="margin-top:20px;" onclick="testNotification()">\ud83d\udcf1 Send Test Notification</button>
+                <button class="submit-btn telegram" style="margin-top:20px;" onclick="testNotification()">📱 Send Test Notification</button>
             </div>
 
             <!-- Weather Tab -->
@@ -879,7 +879,7 @@
                 <div id="weatherLocationsList"></div>
 
                 <div class="add-contact-form" style="margin-top:15px;">
-                    <div style="font-size:0.9rem;margin-bottom:12px;opacity:0.8;">\u2795 Add Location</div>
+                    <div style="font-size:0.9rem;margin-bottom:12px;opacity:0.8;">➕ Add Location</div>
                     <div class="form-row" style="margin-bottom:12px;">
                         <div class="form-group" style="margin-bottom:0;flex:2;">
                             <input type="text" class="form-input" id="newLocationName" placeholder="City name (e.g., Antwerpen)">
@@ -894,17 +894,17 @@
                 <p style="margin-bottom:15px;opacity:0.8;font-size:0.9rem;">Choose your photo source:</p>
 
                 <div class="photo-source-option" id="photoSourceIcloud" onclick="selectPhotoSource('icloud')">
-                    <h4>\u2601\ufe0f iCloud Shared Album</h4>
+                    <h4>☁️ iCloud Shared Album</h4>
                     <p>Use photos from an iCloud Shared Album (public link required)</p>
                 </div>
 
                 <div class="photo-source-option" id="photoSourceUrl" onclick="selectPhotoSource('url')">
-                    <h4>\ud83d\udd17 Custom URL</h4>
+                    <h4>🔗 Custom URL</h4>
                     <p>Load photos from a web URL or your own server</p>
                 </div>
 
                 <div class="photo-source-option" id="photoSourceNone" onclick="selectPhotoSource('none')">
-                    <h4>\u274c None</h4>
+                    <h4>❌ None</h4>
                     <p>Don't show photos</p>
                 </div>
 
@@ -986,7 +986,7 @@
         };
         // PRE-CONFIGURED API SETTINGS (no need to enter manually!)
         const DEFAULT_FUNCTION_URL = "https://family-dashboard-notify-gqfjdsddf9dbevbf.westeurope-01.azurewebsites.net";
-        const DEFAULT_FUNCTION_KEY = "ceeb2a9b-e2b7-4684-86e0-f0533851cae1";
+        const DEFAULT_FUNCTION_KEY = "7frpt55ys9-2_e739rIDGSSSvRzyAsWC7CNJ0zSdtP09AzFuNtps7A==";
         let apiConfig = { functionUrl: DEFAULT_FUNCTION_URL, functionKey: DEFAULT_FUNCTION_KEY };
         let authTokens = null;
         let currentUser = null;
@@ -1224,14 +1224,14 @@
                 const resp = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto`);
                 const data = await resp.json();
 
-                const icons = {0:'\u2600\ufe0f',1:'\ud83c\udf24\ufe0f',2:'\u26c5',3:'\u2601\ufe0f',45:'\ud83c\udf2b\ufe0f',48:'\ud83c\udf2b\ufe0f',51:'\ud83c\udf27\ufe0f',53:'\ud83c\udf27\ufe0f',55:'\ud83c\udf27\ufe0f',61:'\ud83c\udf27\ufe0f',63:'\ud83c\udf27\ufe0f',65:'\ud83c\udf27\ufe0f',71:'\ud83c\udf28\ufe0f',73:'\ud83c\udf28\ufe0f',75:'\ud83c\udf28\ufe0f',80:'\ud83c\udf26\ufe0f',81:'\ud83c\udf26\ufe0f',82:'\ud83c\udf26\ufe0f',95:'\u26c8\ufe0f',96:'\u26c8\ufe0f',99:'\u26c8\ufe0f'};
+                const icons = {0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌧️',53:'🌧️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',71:'🌨️',73:'🌨️',75:'🌨️',80:'🌦️',81:'🌦️',82:'🌦️',95:'⛈️',96:'⛈️',99:'⛈️'};
                 const conditions = {0:'Clear',1:'Mostly Clear',2:'Partly Cloudy',3:'Overcast',45:'Foggy',48:'Foggy',51:'Drizzle',53:'Drizzle',55:'Drizzle',61:'Rain',63:'Rain',65:'Heavy Rain',71:'Snow',73:'Snow',75:'Heavy Snow',80:'Showers',81:'Showers',82:'Heavy Showers',95:'Thunderstorm',96:'Thunderstorm',99:'Severe Storm'};
 
                 const code = data.current_weather.weathercode;
-                document.getElementById('weatherIcon').textContent = icons[code] || '\ud83c\udf21\ufe0f';
-                document.getElementById('weatherTemp').textContent = Math.round(data.current_weather.temperature) + '\u00b0';
+                document.getElementById('weatherIcon').textContent = icons[code] || '🌡️';
+                document.getElementById('weatherTemp').textContent = Math.round(data.current_weather.temperature) + '°';
                 document.getElementById('weatherCondition').textContent = conditions[code] || 'Unknown';
-                document.getElementById('weatherHiLo').textContent = `H:${Math.round(data.daily.temperature_2m_max[0])}\u00b0 L:${Math.round(data.daily.temperature_2m_min[0])}\u00b0`;
+                document.getElementById('weatherHiLo').textContent = `H:${Math.round(data.daily.temperature_2m_max[0])}° L:${Math.round(data.daily.temperature_2m_min[0])}°`;
 
                 const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
                 let forecastHtml = '';
@@ -1242,9 +1242,9 @@
                     forecastHtml += `
                         <div class="weather-day">
                             <div class="weather-day-name">${dayName}</div>
-                            <div class="weather-day-icon">${icons[dayCode] || '\ud83c\udf21\ufe0f'}</div>
-                            <div class="weather-day-temp">${Math.round(data.daily.temperature_2m_max[i])}\u00b0</div>
-                            <div class="weather-day-low">${Math.round(data.daily.temperature_2m_min[i])}\u00b0</div>
+                            <div class="weather-day-icon">${icons[dayCode] || '🌡️'}</div>
+                            <div class="weather-day-temp">${Math.round(data.daily.temperature_2m_max[i])}°</div>
+                            <div class="weather-day-low">${Math.round(data.daily.temperature_2m_min[i])}°</div>
                         </div>`;
                 }
                 document.getElementById('weatherForecast').innerHTML = forecastHtml;
@@ -1299,7 +1299,7 @@
                 <div class="location-item ${loc.active ? 'active' : ''}">
                     <span class="location-name">${loc.name}</span>
                     ${loc.active ? '<span style="color:#4ade80;font-size:0.8rem;">Active</span>' : `<button class="location-btn" onclick="setActiveLocation(${i})">Set Active</button>`}
-                    <button class="location-btn delete" onclick="deleteWeatherLocation(${i})">\ud83d\uddd1\ufe0f</button>
+                    <button class="location-btn delete" onclick="deleteWeatherLocation(${i})">🗑️</button>
                 </div>
             `).join('');
         }
@@ -1333,7 +1333,7 @@
             const container = document.getElementById('photoContainer');
 
             if (photoConfig.source === 'none' || (!photoConfig.icloudUrl && !photoConfig.customUrl)) {
-                container.innerHTML = `<div class="photo-placeholder"><div class="photo-placeholder-icon">\ud83d\uddbc\ufe0f</div><div>Configure photos in Settings</div></div>`;
+                container.innerHTML = `<div class="photo-placeholder"><div class="photo-placeholder-icon">🖼️</div><div>Configure photos in Settings</div></div>`;
                 return;
             }
 
@@ -1342,10 +1342,10 @@
                 try {
                     // Note: Direct iCloud access is limited; this is a placeholder
                     // In reality, you'd need a proxy or the direct image URLs
-                    container.innerHTML = `<div class="photo-placeholder"><div class="photo-placeholder-icon">\u2601\ufe0f</div><div>iCloud Album Connected<br><small>Photos will rotate</small></div></div>`;
+                    container.innerHTML = `<div class="photo-placeholder"><div class="photo-placeholder-icon">☁️</div><div>iCloud Album Connected<br><small>Photos will rotate</small></div></div>`;
                     showToast('iCloud album connected');
                 } catch (e) {
-                    container.innerHTML = `<div class="photo-placeholder"><div class="photo-placeholder-icon">\u26a0\ufe0f</div><div>Could not load iCloud album</div></div>`;
+                    container.innerHTML = `<div class="photo-placeholder"><div class="photo-placeholder-icon">⚠️</div><div>Could not load iCloud album</div></div>`;
                 }
             } else if (photoConfig.source === 'url' && photoConfig.customUrl) {
                 try {
@@ -1353,7 +1353,7 @@
                     photos = await resp.json();
                     if (photos.length) showPhoto(0);
                 } catch (e) {
-                    container.innerHTML = `<div class="photo-placeholder"><div class="photo-placeholder-icon">\u26a0\ufe0f</div><div>Could not load photos</div></div>`;
+                    container.innerHTML = `<div class="photo-placeholder"><div class="photo-placeholder-icon">⚠️</div><div>Could not load photos</div></div>`;
                 }
             }
         }
@@ -1390,7 +1390,7 @@
                 const events = await callGraphAPI(`/me/calendarView?startDateTime=${now.toISOString()}&endDateTime=${endDate.toISOString()}&$orderby=start/dateTime&$top=50`);
 
                 if (!events.value?.length) {
-                    content.innerHTML = '<div class="empty-state"><div class="empty-state-icon">\ud83d\udcc5</div><div>No upcoming events</div></div>';
+                    content.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📅</div><div>No upcoming events</div></div>';
                     return;
                 }
 
@@ -1407,13 +1407,13 @@
                     dayEvents.forEach(event => {
                         const start = new Date(event.start.dateTime + 'Z').toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
                         const end = new Date(event.end.dateTime + 'Z').toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
-                        html += `<div class="event-item"><div class="event-time"><div class="event-time-start">${start}</div><div class="event-time-end">${end}</div></div><div class="event-divider"></div><div class="event-details"><div class="event-title">${escapeHtml(event.subject)}</div>${event.location?.displayName ? `<div class="event-location">\ud83d\udccd ${escapeHtml(event.location.displayName)}</div>` : ''}</div></div>`;
+                        html += `<div class="event-item"><div class="event-time"><div class="event-time-start">${start}</div><div class="event-time-end">${end}</div></div><div class="event-divider"></div><div class="event-details"><div class="event-title">${escapeHtml(event.subject)}</div>${event.location?.displayName ? `<div class="event-location">📍 ${escapeHtml(event.location.displayName)}</div>` : ''}</div></div>`;
                     });
                 });
                 content.innerHTML = html;
             } catch (e) {
                 console.error('Calendar error:', e);
-                content.innerHTML = '<div class="empty-state"><div class="empty-state-icon">\u26a0\ufe0f</div><div>Could not load calendar</div></div>';
+                content.innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div><div>Could not load calendar</div></div>';
             }
         }
 
@@ -1467,7 +1467,7 @@
                 }
 
                 if (!allTasks.length) {
-                    content.innerHTML = '<div class="empty-state"><div class="empty-state-icon">\u2705</div><div>All done!</div></div>';
+                    content.innerHTML = '<div class="empty-state"><div class="empty-state-icon">✅</div><div>All done!</div></div>';
                     return;
                 }
 
@@ -1482,7 +1482,7 @@
                 }).join('');
             } catch (e) {
                 console.error('Todo error:', e);
-                content.innerHTML = '<div class="empty-state"><div class="empty-state-icon">\u26a0\ufe0f</div><div>Could not load tasks</div></div>';
+                content.innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div><div>Could not load tasks</div></div>';
             }
         }
 
@@ -1490,7 +1490,7 @@
             element.classList.add('completing');
             try {
                 await callGraphAPI(`/me/todo/lists/${listId}/tasks/${taskId}`, 'PATCH', { status: 'completed' });
-                setTimeout(() => { element.remove(); showToast('Task completed! \ud83c\udf89'); }, 300);
+                setTimeout(() => { element.remove(); showToast('Task completed! 🎉'); }, 300);
             } catch (e) { element.classList.remove('completing'); showToast('Failed to complete', true); }
         }
 
@@ -1519,7 +1519,7 @@
         function renderContacts() {
             const container = document.getElementById('contactList');
             if (!contacts.length) {
-                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">\ud83d\udc65</div><div>No contacts yet</div></div>';
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">👥</div><div>No contacts yet</div></div>';
                 updateSelectedCount();
                 return;
             }
@@ -1530,8 +1530,8 @@
                     <div class="contact-avatar">${c.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}</div>
                     <div class="contact-info"><div class="contact-name">${escapeHtml(c.name)}</div><div class="contact-phone">${escapeHtml(c.chatId)}</div></div>
                     <div class="contact-actions">
-                        <button class="contact-action-btn" onclick="editContact(${i})">\u270f\ufe0f</button>
-                        <button class="contact-action-btn delete" onclick="deleteContact(${i})">\ud83d\uddd1\ufe0f</button>
+                        <button class="contact-action-btn" onclick="editContact(${i})">✏️</button>
+                        <button class="contact-action-btn delete" onclick="deleteContact(${i})">🗑️</button>
                     </div>
                 </div>
             `).join('');
