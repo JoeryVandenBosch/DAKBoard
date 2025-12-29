@@ -546,16 +546,7 @@
             Sign in with Microsoft
         </button>
 
-        <div class="setup-info" id="setupInfoConfigured" style="display: none;">
-            <h3 style="color: #4ade80;">✅ Ready to Sign In</h3>
-            <ol>
-                <li>Click <strong>Sign in with Microsoft</strong> above</li>
-                <li>Enter the code on your phone at microsoft.com/devicelogin</li>
-                <li>Once signed in, add family members in ⚙️ Settings</li>
-            </ol>
-        </div>
-
-        <div class="setup-info" id="setupInfoNotConfigured">
+        <div class="setup-info">
             <h3>⚠️ First Time Setup Required</h3>
             <ol>
                 <li><strong>Configure API first!</strong> Click the button below</li>
@@ -968,11 +959,9 @@
 
     <script>
         // =====================================================
-        // CONFIGURATION - EDIT THESE BEFORE UPLOADING
+        // CONFIGURATION
         // =====================================================
         const clientId = "ceeb2a9b-e2b7-4684-86e0-f0533851cae1"; // Replace with your Azure AD App A Client ID
-        const functionUrl = "https://family-dashboard-notify-gqfjdsddf9dbevbf.westeurope-01.azurewebsites.net"; // Replace with your Azure Function URL (e.g., https://family-dashboard-notify.azurewebsites.net)
-        const functionKey = "7frpt55ys9-2_e739rIDGSSSvRzyAsWC7CNJ0zSdtP09AzFuNtps7A=="; // Replace with your Azure Function Host Key
         const graphScopes = "Calendars.ReadWrite Tasks.ReadWrite User.Read offline_access";
 
         // =====================================================
@@ -995,10 +984,7 @@
             reminder3: { enabled: false, hours: 0.5 },
             reminderTodo: false
         };
-        let apiConfig = { 
-            functionUrl: functionUrl !== "YOUR_FUNCTION_URL_HERE" ? functionUrl : '', 
-            functionKey: functionKey !== "YOUR_FUNCTION_KEY_HERE" ? functionKey : '' 
-        };
+        let apiConfig = { functionUrl: '', functionKey: '' };
         let authTokens = null;
         let currentUser = null;
         let todoLists = [];
@@ -1028,12 +1014,6 @@
 
         document.addEventListener('DOMContentLoaded', async () => {
             loadSavedData();
-            
-            // Show correct setup info based on whether API is pre-configured
-            const apiPreConfigured = apiConfig.functionUrl && apiConfig.functionKey;
-            document.getElementById('setupInfoConfigured').style.display = apiPreConfigured ? 'block' : 'none';
-            document.getElementById('setupInfoNotConfigured').style.display = apiPreConfigured ? 'none' : 'block';
-            
             if (authTokens && authTokens.refresh_token && apiConfig.functionUrl) {
                 try {
                     await refreshAccessToken();
@@ -1055,7 +1035,7 @@
         // AUTHENTICATION
         // =====================================================
         async function signIn() {
-            if (!apiConfig.functionUrl || !apiConfig.functionKey) {
+            if (!apiConfig.functionUrl) {
                 showToast('Please configure API settings first!', true);
                 openModal('settings');
                 setTimeout(() => switchSettingsTab('api'), 100);
