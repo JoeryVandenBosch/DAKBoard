@@ -103,7 +103,7 @@
         /* ===== DASHBOARD LAYOUT ===== */
         .dashboard {
             display: grid;
-            grid-template-rows: auto auto auto 1fr;
+            grid-template-rows: auto auto 1fr 1fr;
             height: 100vh;
             padding: 20px;
             gap: 15px;
@@ -182,6 +182,8 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
+            min-height: 0;
+            overflow: hidden;
         }
 
         /* ===== PHOTO ROW (Full Width Bottom) ===== */
@@ -194,6 +196,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            min-height: 200px;
         }
 
         /* ===== CARDS ===== */
@@ -201,7 +204,9 @@
             background: rgba(255,255,255,0.08); backdrop-filter: blur(20px);
             border-radius: 18px; padding: 18px;
             border: 1px solid rgba(255,255,255,0.1);
-            display: flex; flex-direction: column; overflow: hidden;
+            display: flex; flex-direction: column; 
+            overflow: hidden;
+            min-height: 0;
         }
 
         .card-header {
@@ -211,7 +216,7 @@
 
         .card-title { font-size: 1rem; font-weight: 400; display: flex; align-items: center; gap: 8px; }
 
-        .card-content { flex: 1; overflow-y: auto; padding-right: 5px; }
+        .card-content { flex: 1; overflow-y: auto; padding-right: 5px; min-height: 0; }
         .card-content::-webkit-scrollbar { width: 4px; }
         .card-content::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 2px; }
         .card-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 2px; }
@@ -301,7 +306,7 @@
         .photo-dot.active { background: white; width: 20px; border-radius: 4px; }
 
         /* ===== CALENDAR CARD ===== */
-        .calendar-card { min-height: 0; }
+        .calendar-card { min-height: 0; height: 100%; }
 
         .event-item {
             display: flex; align-items: flex-start; gap: 10px;
@@ -330,7 +335,7 @@
         .event-day-header:first-child { margin-top: 0; }
 
         /* ===== TODO CARD ===== */
-        .todo-card { min-height: 0; }
+        .todo-card { min-height: 0; height: 100%; }
 
         .todo-item {
             display: flex; align-items: center; gap: 10px;
