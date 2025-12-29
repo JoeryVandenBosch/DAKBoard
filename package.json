@@ -1,0 +1,16 @@
+{
+  "name": "family-dashboard-notifications",
+  "version": "1.0.0",
+  "description": "Azure Function for Van den Boskes Family Dashboard notifications",
+  "main": "src/functions/*.js",
+  "scripts": {
+    "start": "func start",
+    "test": "echo \"No tests yet\""
+  },
+  "dependencies": {
+    "@azure/functions": "^4.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
