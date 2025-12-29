@@ -677,6 +677,122 @@
             0%, 100% { transform: translate(0, 0); }
             50% { transform: translate(30px, 30px); }
         }
+
+        /* ===== TASK CONFIRMATION MODAL ===== */
+        .confirm-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+            z-index: 1500; align-items: center; justify-content: center;
+        }
+        .confirm-overlay.active { display: flex; }
+
+        .confirm-modal {
+            background: linear-gradient(135deg, #1e2a4a 0%, #16213e 100%);
+            border-radius: 24px; padding: 35px; text-align: center;
+            border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5); max-width: 380px;
+            animation: confirmPop 0.3s ease;
+        }
+
+        @keyframes confirmPop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .confirm-icon { font-size: 3.5rem; margin-bottom: 15px; }
+        .confirm-title { font-size: 1.4rem; font-weight: 500; margin-bottom: 10px; }
+
+        .confirm-task {
+            font-size: 1.1rem; opacity: 0.8; margin-bottom: 25px;
+            padding: 12px 20px; background: rgba(255,255,255,0.05); border-radius: 10px;
+        }
+
+        .confirm-buttons { display: flex; gap: 12px; }
+
+        .confirm-btn {
+            flex: 1; padding: 14px 20px; border-radius: 12px; border: none;
+            font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 500;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+
+        .confirm-btn.cancel { background: rgba(255,255,255,0.1); color: white; }
+        .confirm-btn.cancel:hover { background: rgba(255,255,255,0.2); }
+
+        .confirm-btn.complete { background: linear-gradient(135deg, #4ade80, #22c55e); color: #1a1a2e; }
+        .confirm-btn.complete:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(74,222,128,0.4); }
+
+        /* ===== CELEBRATION OVERLAY ===== */
+        .celebration-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2000; pointer-events: none;
+        }
+        .celebration-overlay.active { display: block; }
+
+        .celebration-content {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); text-align: center;
+            animation: celebrationPop 0.5s ease;
+        }
+
+        @keyframes celebrationPop {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            50% { transform: translate(-50%, -50%) scale(1.2); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .celebration-emoji { font-size: 5rem; animation: celebrationBounce 0.6s ease infinite alternate; }
+
+        @keyframes celebrationBounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-20px); }
+        }
+
+        .celebration-text {
+            font-size: 2.5rem; font-weight: 600; margin-top: 15px;
+            background: linear-gradient(135deg, #ffd700, #ff6b6b, #4ade80, #00d4ff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            animation: gradientShift 2s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .celebration-subtext { font-size: 1.2rem; opacity: 0.8; margin-top: 10px; color: white; }
+
+        .confetti { position: absolute; width: 10px; height: 10px; opacity: 0; }
+        .confetti.active { animation: confettiFall 3s ease-out forwards; }
+
+        @keyframes confettiFall {
+            0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+            100% { opacity: 0; transform: translateY(100vh) rotate(720deg); }
+        }
+
+        .firework { position: absolute; width: 6px; height: 6px; border-radius: 50%; }
+
+        .sparkle { position: absolute; font-size: 1.5rem; opacity: 0; pointer-events: none; }
+        .sparkle.active { animation: sparkleAnim 1.5s ease-out forwards; }
+
+        @keyframes sparkleAnim {
+            0% { opacity: 1; transform: scale(0) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1.5) rotate(180deg); }
+            100% { opacity: 0; transform: scale(0) rotate(360deg); }
+        }
+
+        .todo-item.completing { opacity: 0.5; transform: translateX(30px); }
+
+        /* Celebration style selector buttons */
+        .celebration-style-btn {
+            padding: 8px 16px; border-radius: 8px; border: none;
+            background: rgba(255,255,255,0.1); color: white;
+            font-family: 'Outfit', sans-serif; font-size: 0.85rem;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .celebration-style-btn:hover { background: rgba(255,255,255,0.2); }
+        .celebration-style-btn.active { background: linear-gradient(135deg, #4ade80, #22c55e); color: #1a1a2e; }
     </style>
 </head>
 <body>
@@ -1018,6 +1134,15 @@
                     </div>
                 </div>
 
+                <div style="margin-top:20px;border-top:1px solid rgba(255,255,255,0.1);padding-top:20px;">
+                    <div style="font-size:0.95rem;margin-bottom:12px;">🎉 Task Completion Celebration</div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <button class="celebration-style-btn active" id="celebStyleConfetti" onclick="setCelebrationStyle('confetti')">🎊 Confetti</button>
+                        <button class="celebration-style-btn" id="celebStyleFireworks" onclick="setCelebrationStyle('fireworks')">🎆 Fireworks</button>
+                        <button class="celebration-style-btn" id="celebStyleMinimal" onclick="setCelebrationStyle('minimal')">✨ Minimal</button>
+                    </div>
+                </div>
+
                 <button class="submit-btn telegram" style="margin-top:20px;" onclick="testNotification()">📱 Send Test Notification</button>
             </div>
 
@@ -1100,6 +1225,28 @@
 
                 <button class="submit-btn secondary" onclick="saveApiSettings()">Save & Test Connection</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Task Confirmation Modal -->
+    <div class="confirm-overlay" id="confirmOverlay" onclick="closeTaskConfirm(event)">
+        <div class="confirm-modal" onclick="event.stopPropagation()">
+            <div class="confirm-icon">✅</div>
+            <div class="confirm-title">Complete this task?</div>
+            <div class="confirm-task" id="confirmTaskName">Task name here</div>
+            <div class="confirm-buttons">
+                <button class="confirm-btn cancel" onclick="closeTaskConfirm()">Cancel</button>
+                <button class="confirm-btn complete" onclick="confirmCompleteTask()">Yes, done! 🎉</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Celebration Overlay -->
+    <div class="celebration-overlay" id="celebrationOverlay">
+        <div class="celebration-content">
+            <div class="celebration-emoji" id="celebrationEmoji">🎉</div>
+            <div class="celebration-text" id="celebrationText">Well Done!</div>
+            <div class="celebration-subtext" id="celebrationSubtext">You're crushing it! 💪</div>
         </div>
     </div>
 
@@ -1627,7 +1774,7 @@
 
                 content.innerHTML = allTasks.slice(0, 8).map(task => {
                     const due = task.dueDateTime ? new Date(task.dueDateTime.dateTime).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '';
-                    return `<div class="todo-item" onclick="completeTask('${task.listId}','${task.id}',this)"><div class="todo-checkbox"></div><div class="todo-text">${escapeHtml(task.title)}</div>${due ? `<div class="todo-due">${due}</div>` : ''}</div>`;
+                    return `<div class="todo-item" onclick="showTaskConfirm('${task.listId}','${task.id}','${escapeHtml(task.title).replace(/'/g, "\\'")}',this)"><div class="todo-checkbox"></div><div class="todo-text">${escapeHtml(task.title)}</div>${due ? `<div class="todo-due">${due}</div>` : ''}</div>`;
                 }).join('');
             } catch (e) {
                 console.error('Todo error:', e);
@@ -1635,12 +1782,199 @@
             }
         }
 
-        async function completeTask(listId, taskId, element) {
+        // =====================================================
+        // TASK CONFIRMATION & CELEBRATION
+        // =====================================================
+        let pendingTask = { listId: null, taskId: null, element: null };
+        let celebrationStyle = localStorage.getItem('celebrationStyle') || 'confetti';
+        
+        const celebrations = [
+            { emoji: '🎉', text: 'Well Done!', subtext: "You're crushing it! 💪" },
+            { emoji: '🌟', text: 'Amazing!', subtext: 'Keep up the great work!' },
+            { emoji: '🔥', text: 'On Fire!', subtext: "You're unstoppable!" },
+            { emoji: '💪', text: 'Great Job!', subtext: 'Another one bites the dust!' },
+            { emoji: '🚀', text: 'Awesome!', subtext: 'To infinity and beyond!' },
+            { emoji: '👏', text: 'Fantastic!', subtext: "You're a productivity machine!" },
+            { emoji: '🏆', text: 'Champion!', subtext: 'Winners get things done!' },
+            { emoji: '⭐', text: 'Superstar!', subtext: 'Nothing can stop you!' },
+        ];
+        
+        const confettiColors = ['#ff6b6b', '#4ade80', '#ffd700', '#00d4ff', '#ff69b4', '#9b59b6', '#3498db', '#e74c3c'];
+
+        function showTaskConfirm(listId, taskId, title, element) {
+            pendingTask = { listId, taskId, element };
+            document.getElementById('confirmTaskName').textContent = title;
+            document.getElementById('confirmOverlay').classList.add('active');
+        }
+
+        function closeTaskConfirm(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('confirmOverlay').classList.remove('active');
+            pendingTask = { listId: null, taskId: null, element: null };
+        }
+
+        async function confirmCompleteTask() {
+            if (!pendingTask.element) return;
+            
+            const { listId, taskId, element } = pendingTask;
+            
+            // Close confirmation
+            document.getElementById('confirmOverlay').classList.remove('active');
+            
+            // Animate task
             element.classList.add('completing');
+            
             try {
                 await callGraphAPI(`/me/todo/lists/${listId}/tasks/${taskId}`, 'PATCH', { status: 'completed' });
-                setTimeout(() => { element.remove(); showToast('Task completed! 🎉'); }, 300);
-            } catch (e) { element.classList.remove('completing'); showToast('Failed to complete', true); }
+                
+                // Show celebration after short delay
+                setTimeout(() => {
+                    showCelebration();
+                    
+                    // Remove task after celebration starts
+                    setTimeout(() => {
+                        element.style.height = element.offsetHeight + 'px';
+                        element.style.overflow = 'hidden';
+                        element.style.transition = 'all 0.3s ease';
+                        
+                        setTimeout(() => {
+                            element.style.height = '0';
+                            element.style.padding = '0';
+                            element.style.margin = '0';
+                            element.style.opacity = '0';
+                        }, 50);
+                        
+                        setTimeout(() => element.remove(), 350);
+                    }, 500);
+                }, 300);
+            } catch (e) {
+                element.classList.remove('completing');
+                showToast('Failed to complete', true);
+            }
+            
+            pendingTask = { listId: null, taskId: null, element: null };
+        }
+
+        function showCelebration() {
+            const overlay = document.getElementById('celebrationOverlay');
+            const celebration = celebrations[Math.floor(Math.random() * celebrations.length)];
+
+            document.getElementById('celebrationEmoji').textContent = celebration.emoji;
+            document.getElementById('celebrationText').textContent = celebration.text;
+            document.getElementById('celebrationSubtext').textContent = celebration.subtext;
+
+            overlay.classList.add('active');
+
+            // Create effects based on style
+            if (celebrationStyle === 'confetti') {
+                createConfetti();
+            } else if (celebrationStyle === 'fireworks') {
+                createFireworks();
+            } else {
+                createSparkles();
+            }
+
+            // Hide after 2.5 seconds
+            setTimeout(() => {
+                overlay.classList.remove('active');
+            }, 2500);
+        }
+
+        function createConfetti() {
+            const overlay = document.getElementById('celebrationOverlay');
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = '-20px';
+                confetti.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+                confetti.style.width = (Math.random() * 10 + 5) + 'px';
+                confetti.style.height = (Math.random() * 10 + 5) + 'px';
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                confetti.style.animationDelay = (Math.random() * 0.5) + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                
+                overlay.appendChild(confetti);
+                
+                setTimeout(() => confetti.classList.add('active'), 10);
+                setTimeout(() => confetti.remove(), 4000);
+            }
+        }
+
+        function createFireworks() {
+            const overlay = document.getElementById('celebrationOverlay');
+            
+            for (let burst = 0; burst < 5; burst++) {
+                setTimeout(() => {
+                    const centerX = Math.random() * 80 + 10;
+                    const centerY = Math.random() * 60 + 10;
+                    const color = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+                    
+                    for (let i = 0; i < 20; i++) {
+                        const firework = document.createElement('div');
+                        firework.className = 'firework';
+                        
+                        const angle = (i / 20) * Math.PI * 2;
+                        const distance = Math.random() * 100 + 50;
+                        const endX = centerX + Math.cos(angle) * (distance / 10);
+                        const endY = centerY + Math.sin(angle) * (distance / 10);
+                        
+                        firework.style.left = centerX + 'vw';
+                        firework.style.top = centerY + 'vh';
+                        firework.style.backgroundColor = color;
+                        firework.style.boxShadow = `0 0 10px ${color}, 0 0 20px ${color}`;
+                        
+                        overlay.appendChild(firework);
+                        
+                        setTimeout(() => {
+                            firework.style.transition = 'all 0.8s ease-out';
+                            firework.style.opacity = '1';
+                            firework.style.left = endX + 'vw';
+                            firework.style.top = endY + 'vh';
+                            firework.style.transform = 'scale(0.5)';
+                        }, 10);
+                        
+                        setTimeout(() => { firework.style.opacity = '0'; }, 600);
+                        setTimeout(() => firework.remove(), 1500);
+                    }
+                }, burst * 300);
+            }
+        }
+
+        function createSparkles() {
+            const overlay = document.getElementById('celebrationOverlay');
+            const sparkleEmojis = ['✨', '⭐', '🌟', '💫', '⚡'];
+            
+            for (let i = 0; i < 20; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.textContent = sparkleEmojis[Math.floor(Math.random() * sparkleEmojis.length)];
+                sparkle.style.left = (Math.random() * 80 + 10) + 'vw';
+                sparkle.style.top = (Math.random() * 80 + 10) + 'vh';
+                sparkle.style.animationDelay = (Math.random() * 0.5) + 's';
+                
+                overlay.appendChild(sparkle);
+                
+                setTimeout(() => sparkle.classList.add('active'), 10);
+                setTimeout(() => sparkle.remove(), 2000);
+            }
+        }
+
+        function setCelebrationStyle(style) {
+            celebrationStyle = style;
+            localStorage.setItem('celebrationStyle', style);
+            
+            document.querySelectorAll('.celebration-style-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`celebStyle${style.charAt(0).toUpperCase() + style.slice(1)}`).classList.add('active');
+        }
+
+        function initCelebrationButtons() {
+            const saved = localStorage.getItem('celebrationStyle') || 'confetti';
+            celebrationStyle = saved;
+            document.querySelectorAll('.celebration-style-btn').forEach(btn => btn.classList.remove('active'));
+            const btn = document.getElementById(`celebStyle${saved.charAt(0).toUpperCase() + saved.slice(1)}`);
+            if (btn) btn.classList.add('active');
         }
 
         async function createTodo(e) {
@@ -2011,6 +2345,7 @@
                 renderContacts();
                 renderNotificationSettings();
                 renderWeatherLocations();
+                initCelebrationButtons();
                 document.getElementById('functionUrl').value = apiConfig.functionUrl;
                 document.getElementById('functionKey').value = apiConfig.functionKey;
                 document.getElementById('icloudAlbumUrl').value = photoConfig.icloudUrl || '';
