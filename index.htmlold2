@@ -527,128 +527,6 @@
             0%, 100% { transform: translate(0, 0); }
             50% { transform: translate(30px, 30px); }
         }
-
-        /* ===== TASK CONFIRMATION MODAL ===== */
-        .confirm-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
-            z-index: 1500; align-items: center; justify-content: center;
-        }
-        .confirm-overlay.active { display: flex; }
-
-        .confirm-modal {
-            background: linear-gradient(135deg, #1e2a4a 0%, #16213e 100%);
-            border-radius: 24px; padding: 35px; text-align: center;
-            border: 1px solid rgba(255,255,255,0.15);
-            box-shadow: 0 25px 60px rgba(0,0,0,0.5); max-width: 380px;
-            animation: confirmPop 0.3s ease;
-        }
-
-        @keyframes confirmPop {
-            0% { transform: scale(0.8); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .confirm-icon { font-size: 3.5rem; margin-bottom: 15px; }
-        .confirm-title { font-size: 1.4rem; font-weight: 500; margin-bottom: 10px; }
-
-        .confirm-task {
-            font-size: 1.1rem; opacity: 0.8; margin-bottom: 25px;
-            padding: 12px 20px; background: rgba(255,255,255,0.05); border-radius: 10px;
-        }
-
-        .confirm-buttons { display: flex; gap: 12px; }
-
-        .confirm-btn {
-            flex: 1; padding: 14px 20px; border-radius: 12px; border: none;
-            font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 500;
-            cursor: pointer; transition: all 0.3s ease;
-        }
-
-        .confirm-btn.cancel { background: rgba(255,255,255,0.1); color: white; }
-        .confirm-btn.cancel:hover { background: rgba(255,255,255,0.2); }
-
-        .confirm-btn.complete { background: linear-gradient(135deg, #4ade80, #22c55e); color: #1a1a2e; }
-        .confirm-btn.complete:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(74,222,128,0.4); }
-
-        /* ===== CELEBRATION OVERLAY ===== */
-        .celebration-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 2000; pointer-events: none;
-        }
-        .celebration-overlay.active { display: block; }
-
-        .celebration-content {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%); text-align: center;
-            animation: celebrationPop 0.5s ease;
-        }
-
-        @keyframes celebrationPop {
-            0% { transform: translate(-50%, -50%) scale(0); }
-            50% { transform: translate(-50%, -50%) scale(1.2); }
-            100% { transform: translate(-50%, -50%) scale(1); }
-        }
-
-        .celebration-emoji { font-size: 5rem; animation: bounce 0.6s ease infinite alternate; }
-
-        @keyframes bounce {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-20px); }
-        }
-
-        .celebration-text {
-            font-size: 2.5rem; font-weight: 600; margin-top: 15px;
-            background: linear-gradient(135deg, #ffd700, #ff6b6b, #4ade80, #00d4ff);
-            background-size: 300% 300%;
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-            animation: gradientShift 2s ease infinite;
-        }
-
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .celebration-subtext { font-size: 1.2rem; opacity: 0.8; margin-top: 10px; color: white; }
-
-        .confetti {
-            position: absolute; width: 10px; height: 10px; opacity: 0;
-        }
-        .confetti.active { animation: confettiFall 3s ease-out forwards; }
-
-        @keyframes confettiFall {
-            0% { opacity: 1; transform: translateY(0) rotate(0deg); }
-            100% { opacity: 0; transform: translateY(100vh) rotate(720deg); }
-        }
-
-        .firework {
-            position: absolute; width: 6px; height: 6px; border-radius: 50%;
-        }
-
-        .sparkle {
-            position: absolute; font-size: 1.5rem; opacity: 0; pointer-events: none;
-        }
-        .sparkle.active { animation: sparkleAnim 1.5s ease-out forwards; }
-
-        @keyframes sparkleAnim {
-            0% { opacity: 1; transform: scale(0) rotate(0deg); }
-            50% { opacity: 1; transform: scale(1.5) rotate(180deg); }
-            100% { opacity: 0; transform: scale(0) rotate(360deg); }
-        }
-
-        /* Celebration Style Buttons */
-        .celebration-style-btn {
-            padding: 10px 16px; border-radius: 10px;
-            background: rgba(255,255,255,0.1); border: 2px solid transparent;
-            color: white; cursor: pointer; font-family: 'Outfit', sans-serif;
-            font-size: 0.9rem; transition: all 0.2s;
-        }
-        .celebration-style-btn:hover { background: rgba(255,255,255,0.15); }
-        .celebration-style-btn.active { 
-            border-color: #4ade80; background: rgba(74,222,128,0.15);
-        }
     </style>
 </head>
 <body>
@@ -812,7 +690,7 @@
             <form id="eventForm" onsubmit="createEvent(event)">
                 <div class="form-group">
                     <label class="form-label">Event Title</label>
-                    <input type="text" class="form-input" id="eventTitle" placeholder="What's happening?" required autocomplete="off" inputmode="text" enterkeyhint="next">
+                    <input type="text" class="form-input" id="eventTitle" placeholder="What's happening?" required>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
@@ -832,7 +710,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Location (optional)</label>
-                    <input type="text" class="form-input" id="eventLocation" placeholder="Where?" autocomplete="off" inputmode="text" enterkeyhint="done">
+                    <input type="text" class="form-input" id="eventLocation" placeholder="Where?">
                 </div>
                 <button type="submit" class="submit-btn" id="eventSubmitBtn">Create Event</button>
             </form>
@@ -849,7 +727,7 @@
             <form id="todoForm" onsubmit="createTodo(event)">
                 <div class="form-group">
                     <label class="form-label">Task</label>
-                    <input type="text" class="form-input" id="todoTitle" placeholder="What needs to be done?" required autocomplete="off" inputmode="text" enterkeyhint="next">
+                    <input type="text" class="form-input" id="todoTitle" placeholder="What needs to be done?" required>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
@@ -916,10 +794,10 @@
                     <div style="font-size:0.9rem;margin-bottom:12px;opacity:0.8;">➕ Add New Contact</div>
                     <div class="form-row" style="margin-bottom:12px;">
                         <div class="form-group" style="margin-bottom:0;">
-                            <input type="text" class="form-input" id="newContactName" placeholder="Name" autocomplete="off" inputmode="text" enterkeyhint="next">
+                            <input type="text" class="form-input" id="newContactName" placeholder="Name">
                         </div>
                         <div class="form-group" style="margin-bottom:0;">
-                            <input type="text" class="form-input" id="newContactChatId" placeholder="Telegram Chat ID" autocomplete="off" inputmode="numeric" enterkeyhint="done">
+                            <input type="text" class="form-input" id="newContactChatId" placeholder="Telegram Chat ID">
                         </div>
                     </div>
                     <button type="button" class="submit-btn telegram" onclick="addContact()">Add Contact</button>
@@ -1000,15 +878,6 @@
                     </div>
                 </div>
 
-                <div style="margin-top:20px;border-top:1px solid rgba(255,255,255,0.1);padding-top:20px;">
-                    <div style="font-size:0.95rem;margin-bottom:12px;">🎉 Task Completion Celebration</div>
-                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                        <button class="celebration-style-btn active" id="celebStyleConfetti" onclick="setCelebrationStyle('confetti')">🎊 Confetti</button>
-                        <button class="celebration-style-btn" id="celebStyleFireworks" onclick="setCelebrationStyle('fireworks')">🎆 Fireworks</button>
-                        <button class="celebration-style-btn" id="celebStyleMinimal" onclick="setCelebrationStyle('minimal')">✨ Minimal</button>
-                    </div>
-                </div>
-
                 <button class="submit-btn telegram" style="margin-top:20px;" onclick="testNotification()">📱 Send Test Notification</button>
             </div>
 
@@ -1022,7 +891,7 @@
                     <div style="font-size:0.9rem;margin-bottom:12px;opacity:0.8;">➕ Add Location</div>
                     <div class="form-row" style="margin-bottom:12px;">
                         <div class="form-group" style="margin-bottom:0;flex:2;">
-                            <input type="text" class="form-input" id="newLocationName" placeholder="City name (e.g., Antwerpen)" autocomplete="off" inputmode="text" enterkeyhint="search">
+                            <input type="text" class="form-input" id="newLocationName" placeholder="City name (e.g., Antwerpen)">
                         </div>
                     </div>
                     <button type="button" class="submit-btn" onclick="addWeatherLocation()">Search & Add</button>
@@ -1057,7 +926,7 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">iCloud Shared Album URL</label>
-                        <input type="url" class="form-input" id="icloudAlbumUrl" placeholder="https://www.icloud.com/sharedalbum/..." autocomplete="off" inputmode="url" enterkeyhint="done">
+                        <input type="text" class="form-input" id="icloudAlbumUrl" placeholder="https://www.icloud.com/sharedalbum/...">
                     </div>
                     <button class="submit-btn" onclick="savePhotoSettings()">Save Photo Settings</button>
                 </div>
@@ -1065,7 +934,7 @@
                 <div id="photoConfigUrl" style="display:none;margin-top:15px;">
                     <div class="form-group">
                         <label class="form-label">Photos JSON URL</label>
-                        <input type="url" class="form-input" id="customPhotosUrl" placeholder="https://yoursite.com/photos.json" autocomplete="off" inputmode="url" enterkeyhint="done">
+                        <input type="text" class="form-input" id="customPhotosUrl" placeholder="https://yoursite.com/photos.json">
                     </div>
                     <p style="font-size:0.8rem;opacity:0.6;margin-bottom:15px;">JSON should be an array of image URLs</p>
                     <button class="submit-btn" onclick="savePhotoSettings()">Save Photo Settings</button>
@@ -1081,38 +950,16 @@
 
                 <div class="form-group">
                     <label class="form-label">Azure Function URL</label>
-                    <input type="url" class="form-input" id="functionUrl" placeholder="https://your-function.azurewebsites.net" autocomplete="off" inputmode="url" enterkeyhint="next">
+                    <input type="text" class="form-input" id="functionUrl" placeholder="https://your-function.azurewebsites.net">
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Function Host Key</label>
-                    <input type="text" class="form-input" id="functionKey" placeholder="Your function host key" autocomplete="off" inputmode="text" enterkeyhint="done">
+                    <input type="password" class="form-input" id="functionKey" placeholder="Your function host key">
                 </div>
 
                 <button class="submit-btn secondary" onclick="saveApiSettings()">Save & Test Connection</button>
             </div>
-        </div>
-    </div>
-
-    <!-- Task Confirmation Modal -->
-    <div class="confirm-overlay" id="confirmOverlay" onclick="closeTaskConfirm(event)">
-        <div class="confirm-modal" onclick="event.stopPropagation()">
-            <div class="confirm-icon">✅</div>
-            <div class="confirm-title">Complete this task?</div>
-            <div class="confirm-task" id="confirmTaskName">Task name here</div>
-            <div class="confirm-buttons">
-                <button class="confirm-btn cancel" onclick="closeTaskConfirm()">Cancel</button>
-                <button class="confirm-btn complete" onclick="confirmCompleteTask()">Yes, done! 🎉</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Celebration Overlay -->
-    <div class="celebration-overlay" id="celebrationOverlay">
-        <div class="celebration-content">
-            <div class="celebration-emoji" id="celebrationEmoji">🎉</div>
-            <div class="celebration-text" id="celebrationText">Well Done!</div>
-            <div class="celebration-subtext" id="celebrationSubtext">You're crushing it! 💪</div>
         </div>
     </div>
 
@@ -1138,15 +985,10 @@
             AUTH_TOKENS: 'vdbDashboard_authTokens',
             USER_INFO: 'vdbDashboard_userInfo',
             WEATHER_LOCATIONS: 'vdbDashboard_weatherLocations',
-            PHOTO_CONFIG: 'vdbDashboard_photoConfig',
-            CELEBRATION_STYLE: 'vdbDashboard_celebrationStyle'
+            PHOTO_CONFIG: 'vdbDashboard_photoConfig'
         };
 
         let contacts = [];
-        let celebrationStyle = 'confetti';
-        let pendingTaskElement = null;
-        let pendingTaskListId = null;
-        let pendingTaskId = null;
         let notificationSettings = {
             reminder1: { enabled: true, hours: 24 },
             reminder2: { enabled: true, hours: 2 },
@@ -1179,7 +1021,6 @@
                 currentUser = saved(STORAGE_KEYS.USER_INFO);
                 weatherLocations = saved(STORAGE_KEYS.WEATHER_LOCATIONS) || weatherLocations;
                 photoConfig = saved(STORAGE_KEYS.PHOTO_CONFIG) || photoConfig;
-                celebrationStyle = saved(STORAGE_KEYS.CELEBRATION_STYLE) || 'confetti';
             } catch (e) { console.error('Error loading data:', e); }
         }
 
@@ -1659,179 +1500,12 @@
             }
         }
 
-        function showTaskConfirm(listId, taskId, taskName, element) {
-            pendingTaskListId = listId;
-            pendingTaskId = taskId;
-            pendingTaskElement = element;
-            document.getElementById('confirmTaskName').textContent = taskName;
-            document.getElementById('confirmOverlay').classList.add('active');
-        }
-
-        function closeTaskConfirm(event) {
-            if (event && event.target !== event.currentTarget) return;
-            document.getElementById('confirmOverlay').classList.remove('active');
-            pendingTaskElement = null;
-            pendingTaskListId = null;
-            pendingTaskId = null;
-        }
-
-        async function confirmCompleteTask() {
-            if (!pendingTaskElement || !pendingTaskListId || !pendingTaskId) return;
-            
-            document.getElementById('confirmOverlay').classList.remove('active');
-            pendingTaskElement.classList.add('completing');
-
-            try {
-                await callGraphAPI(`/me/todo/lists/${pendingTaskListId}/tasks/${pendingTaskId}`, 'PATCH', { status: 'completed' });
-                
-                setTimeout(() => {
-                    showCelebration();
-                    pendingTaskElement.style.height = pendingTaskElement.offsetHeight + 'px';
-                    pendingTaskElement.style.overflow = 'hidden';
-                    pendingTaskElement.style.transition = 'all 0.3s ease';
-                    
-                    setTimeout(() => {
-                        pendingTaskElement.style.height = '0';
-                        pendingTaskElement.style.padding = '0';
-                        pendingTaskElement.style.margin = '0';
-                        pendingTaskElement.style.opacity = '0';
-                    }, 50);
-                    
-                    setTimeout(() => {
-                        pendingTaskElement.remove();
-                        pendingTaskElement = null;
-                    }, 350);
-                }, 300);
-            } catch (e) {
-                pendingTaskElement.classList.remove('completing');
-                showToast('Failed to complete', true);
-            }
-        }
-
-        // Legacy function for backwards compatibility
         async function completeTask(listId, taskId, element) {
-            const taskName = element.querySelector('.todo-text')?.textContent || 'this task';
-            showTaskConfirm(listId, taskId, taskName, element);
-        }
-
-        // =====================================================
-        // CELEBRATION
-        // =====================================================
-        const celebrations = [
-            { emoji: '🎉', text: 'Well Done!', subtext: "You're crushing it! 💪" },
-            { emoji: '🌟', text: 'Amazing!', subtext: 'Keep up the great work!' },
-            { emoji: '🔥', text: 'On Fire!', subtext: "You're unstoppable!" },
-            { emoji: '💪', text: 'Great Job!', subtext: 'Another one bites the dust!' },
-            { emoji: '🚀', text: 'Awesome!', subtext: 'To infinity and beyond!' },
-            { emoji: '👏', text: 'Fantastic!', subtext: "You're a productivity machine!" },
-            { emoji: '🏆', text: 'Champion!', subtext: 'Winners get things done!' },
-            { emoji: '⭐', text: 'Superstar!', subtext: 'Nothing can stop you!' },
-        ];
-
-        const confettiColors = ['#ff6b6b', '#4ade80', '#ffd700', '#00d4ff', '#ff69b4', '#9b59b6', '#3498db', '#e74c3c'];
-
-        function setCelebrationStyle(style) {
-            celebrationStyle = style;
-            saveData(STORAGE_KEYS.CELEBRATION_STYLE, style);
-            document.querySelectorAll('.celebration-style-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(`celebStyle${style.charAt(0).toUpperCase() + style.slice(1)}`).classList.add('active');
-        }
-
-        function showCelebration() {
-            const overlay = document.getElementById('celebrationOverlay');
-            const celebration = celebrations[Math.floor(Math.random() * celebrations.length)];
-
-            document.getElementById('celebrationEmoji').textContent = celebration.emoji;
-            document.getElementById('celebrationText').textContent = celebration.text;
-            document.getElementById('celebrationSubtext').textContent = celebration.subtext;
-
-            overlay.classList.add('active');
-
-            if (celebrationStyle === 'confetti') createConfetti();
-            else if (celebrationStyle === 'fireworks') createFireworks();
-            else createSparkles();
-
-            setTimeout(() => overlay.classList.remove('active'), 2500);
-        }
-
-        function createConfetti() {
-            const overlay = document.getElementById('celebrationOverlay');
-            
-            for (let i = 0; i < 100; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.top = '-20px';
-                confetti.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
-                confetti.style.width = (Math.random() * 10 + 5) + 'px';
-                confetti.style.height = (Math.random() * 10 + 5) + 'px';
-                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-                confetti.style.animationDelay = (Math.random() * 0.5) + 's';
-                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                
-                overlay.appendChild(confetti);
-                setTimeout(() => confetti.classList.add('active'), 10);
-                setTimeout(() => confetti.remove(), 4000);
-            }
-        }
-
-        function createFireworks() {
-            const overlay = document.getElementById('celebrationOverlay');
-            
-            for (let burst = 0; burst < 5; burst++) {
-                setTimeout(() => {
-                    const centerX = Math.random() * 80 + 10;
-                    const centerY = Math.random() * 60 + 10;
-                    const color = confettiColors[Math.floor(Math.random() * confettiColors.length)];
-                    
-                    for (let i = 0; i < 20; i++) {
-                        const firework = document.createElement('div');
-                        firework.className = 'firework';
-                        
-                        const angle = (i / 20) * Math.PI * 2;
-                        const distance = Math.random() * 100 + 50;
-                        const endX = centerX + Math.cos(angle) * (distance / 10);
-                        const endY = centerY + Math.sin(angle) * (distance / 10);
-                        
-                        firework.style.left = centerX + 'vw';
-                        firework.style.top = centerY + 'vh';
-                        firework.style.backgroundColor = color;
-                        firework.style.boxShadow = `0 0 10px ${color}, 0 0 20px ${color}`;
-                        firework.style.opacity = '0';
-                        
-                        overlay.appendChild(firework);
-                        
-                        setTimeout(() => {
-                            firework.style.transition = 'all 0.8s ease-out';
-                            firework.style.opacity = '1';
-                            firework.style.left = endX + 'vw';
-                            firework.style.top = endY + 'vh';
-                            firework.style.transform = 'scale(0.5)';
-                        }, 10);
-                        
-                        setTimeout(() => firework.style.opacity = '0', 600);
-                        setTimeout(() => firework.remove(), 1500);
-                    }
-                }, burst * 300);
-            }
-        }
-
-        function createSparkles() {
-            const overlay = document.getElementById('celebrationOverlay');
-            const sparkleEmojis = ['✨', '⭐', '🌟', '💫', '⚡'];
-            
-            for (let i = 0; i < 20; i++) {
-                const sparkle = document.createElement('div');
-                sparkle.className = 'sparkle';
-                sparkle.textContent = sparkleEmojis[Math.floor(Math.random() * sparkleEmojis.length)];
-                sparkle.style.left = (Math.random() * 80 + 10) + 'vw';
-                sparkle.style.top = (Math.random() * 80 + 10) + 'vh';
-                sparkle.style.animationDelay = (Math.random() * 0.5) + 's';
-                
-                overlay.appendChild(sparkle);
-                setTimeout(() => sparkle.classList.add('active'), 10);
-                setTimeout(() => sparkle.remove(), 2000);
-            }
+            element.classList.add('completing');
+            try {
+                await callGraphAPI(`/me/todo/lists/${listId}/tasks/${taskId}`, 'PATCH', { status: 'completed' });
+                setTimeout(() => { element.remove(); showToast('Task completed! 🎉'); }, 300);
+            } catch (e) { element.classList.remove('completing'); showToast('Failed to complete', true); }
         }
 
         async function createTodo(e) {
@@ -2033,10 +1707,6 @@
                 document.getElementById('icloudAlbumUrl').value = photoConfig.icloudUrl || '';
                 document.getElementById('customPhotosUrl').value = photoConfig.customUrl || '';
                 if (photoConfig.source) selectPhotoSource(photoConfig.source);
-                // Update celebration style buttons
-                document.querySelectorAll('.celebration-style-btn').forEach(btn => btn.classList.remove('active'));
-                const celebBtn = document.getElementById(`celebStyle${celebrationStyle.charAt(0).toUpperCase() + celebrationStyle.slice(1)}`);
-                if (celebBtn) celebBtn.classList.add('active');
                 checkApiConnection();
             }
         }
