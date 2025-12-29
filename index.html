@@ -649,47 +649,6 @@
         .celebration-style-btn.active { 
             border-color: #4ade80; background: rgba(74,222,128,0.15);
         }
-
-        /* ===== ON-SCREEN KEYBOARD ===== */
-        .keyboard-container {
-            display: none; position: fixed; bottom: 0; left: 0; width: 100%;
-            background: linear-gradient(180deg, rgba(22,33,62,0.98) 0%, rgba(15,52,96,0.99) 100%);
-            border-top: 1px solid rgba(255,255,255,0.2);
-            padding: 12px; z-index: 3000;
-            box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
-        }
-        .keyboard-container.visible { display: block; }
-
-        .keyboard-preview {
-            display: flex; align-items: center; gap: 10px;
-            margin-bottom: 10px; padding: 8px 12px;
-            background: rgba(255,255,255,0.1); border-radius: 8px;
-        }
-        .keyboard-preview-label { font-size: 0.75rem; opacity: 0.6; }
-        .keyboard-preview-value { flex: 1; font-size: 1rem; font-family: monospace; min-height: 20px; }
-        .keyboard-cursor { display: inline-block; width: 2px; height: 1em; background: #4ade80; animation: blink 1s infinite; }
-        @keyframes blink { 0%,50% { opacity: 1; } 51%,100% { opacity: 0; } }
-
-        .keyboard-close-btn {
-            position: absolute; top: 8px; right: 12px;
-            background: rgba(255,255,255,0.1); border: none; color: white;
-            width: 32px; height: 32px; border-radius: 50%; font-size: 1.1rem; cursor: pointer;
-        }
-
-        .kb-row { display: flex; justify-content: center; gap: 5px; margin-bottom: 5px; }
-        .kb-key {
-            min-width: 38px; height: 44px; border-radius: 6px;
-            background: rgba(255,255,255,0.12); border: none; color: white;
-            font-family: 'Outfit', sans-serif; font-size: 1rem; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .kb-key:active { background: rgba(74,222,128,0.4); }
-        .kb-key.w2 { min-width: 60px; font-size: 0.8rem; }
-        .kb-key.space { flex: 1; max-width: 200px; }
-        .kb-key.done { background: linear-gradient(135deg, #4ade80, #22c55e); color: #1a1a2e; font-weight: 500; }
-        .kb-tabs { display: flex; gap: 6px; margin-bottom: 8px; justify-content: center; }
-        .kb-tab { padding: 6px 14px; border-radius: 6px; background: rgba(255,255,255,0.1); border: none; color: white; font-size: 0.8rem; cursor: pointer; }
-        .kb-tab.active { background: rgba(74,222,128,0.3); }
     </style>
 </head>
 <body>
@@ -853,7 +812,7 @@
             <form id="eventForm" onsubmit="createEvent(event)">
                 <div class="form-group">
                     <label class="form-label">Event Title</label>
-                    <input type="text" class="form-input" id="eventTitle" placeholder="What's happening?" required autocomplete="off" inputmode="text" enterkeyhint="next" onclick="kbOpen(this)">
+                    <input type="text" class="form-input" id="eventTitle" placeholder="What's happening?" required autocomplete="off" inputmode="text" enterkeyhint="next">
                 </div>
                 <div class="form-row">
                     <div class="form-group">
@@ -873,7 +832,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Location (optional)</label>
-                    <input type="text" class="form-input" id="eventLocation" placeholder="Where?" autocomplete="off" inputmode="text" enterkeyhint="done" onclick="kbOpen(this)">
+                    <input type="text" class="form-input" id="eventLocation" placeholder="Where?" autocomplete="off" inputmode="text" enterkeyhint="done">
                 </div>
                 <button type="submit" class="submit-btn" id="eventSubmitBtn">Create Event</button>
             </form>
@@ -890,7 +849,7 @@
             <form id="todoForm" onsubmit="createTodo(event)">
                 <div class="form-group">
                     <label class="form-label">Task</label>
-                    <input type="text" class="form-input" id="todoTitle" placeholder="What needs to be done?" required autocomplete="off" inputmode="text" enterkeyhint="next" onclick="kbOpen(this)">
+                    <input type="text" class="form-input" id="todoTitle" placeholder="What needs to be done?" required autocomplete="off" inputmode="text" enterkeyhint="next">
                 </div>
                 <div class="form-row">
                     <div class="form-group">
@@ -957,10 +916,10 @@
                     <div style="font-size:0.9rem;margin-bottom:12px;opacity:0.8;">➕ Add New Contact</div>
                     <div class="form-row" style="margin-bottom:12px;">
                         <div class="form-group" style="margin-bottom:0;">
-                            <input type="text" class="form-input" id="newContactName" placeholder="Name" autocomplete="off" inputmode="text" enterkeyhint="next" onclick="kbOpen(this)">
+                            <input type="text" class="form-input" id="newContactName" placeholder="Name" autocomplete="off" inputmode="text" enterkeyhint="next">
                         </div>
                         <div class="form-group" style="margin-bottom:0;">
-                            <input type="text" class="form-input" id="newContactChatId" placeholder="Telegram Chat ID" autocomplete="off" inputmode="numeric" enterkeyhint="done" onclick="kbOpen(this)">
+                            <input type="text" class="form-input" id="newContactChatId" placeholder="Telegram Chat ID" autocomplete="off" inputmode="numeric" enterkeyhint="done">
                         </div>
                     </div>
                     <button type="button" class="submit-btn telegram" onclick="addContact()">Add Contact</button>
@@ -1063,7 +1022,7 @@
                     <div style="font-size:0.9rem;margin-bottom:12px;opacity:0.8;">➕ Add Location</div>
                     <div class="form-row" style="margin-bottom:12px;">
                         <div class="form-group" style="margin-bottom:0;flex:2;">
-                            <input type="text" class="form-input" id="newLocationName" placeholder="City name (e.g., Antwerpen)" autocomplete="off" inputmode="text" enterkeyhint="search" onclick="kbOpen(this)">
+                            <input type="text" class="form-input" id="newLocationName" placeholder="City name (e.g., Antwerpen)" autocomplete="off" inputmode="text" enterkeyhint="search">
                         </div>
                     </div>
                     <button type="button" class="submit-btn" onclick="addWeatherLocation()">Search & Add</button>
@@ -1098,7 +1057,7 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">iCloud Shared Album URL</label>
-                        <input type="url" class="form-input" id="icloudAlbumUrl" placeholder="https://www.icloud.com/sharedalbum/..." autocomplete="off" inputmode="url" enterkeyhint="done" onclick="kbOpen(this)">
+                        <input type="url" class="form-input" id="icloudAlbumUrl" placeholder="https://www.icloud.com/sharedalbum/..." autocomplete="off" inputmode="url" enterkeyhint="done">
                     </div>
                     <button class="submit-btn" onclick="savePhotoSettings()">Save Photo Settings</button>
                 </div>
@@ -1106,7 +1065,7 @@
                 <div id="photoConfigUrl" style="display:none;margin-top:15px;">
                     <div class="form-group">
                         <label class="form-label">Photos JSON URL</label>
-                        <input type="url" class="form-input" id="customPhotosUrl" placeholder="https://yoursite.com/photos.json" autocomplete="off" inputmode="url" enterkeyhint="done" onclick="kbOpen(this)">
+                        <input type="url" class="form-input" id="customPhotosUrl" placeholder="https://yoursite.com/photos.json" autocomplete="off" inputmode="url" enterkeyhint="done">
                     </div>
                     <p style="font-size:0.8rem;opacity:0.6;margin-bottom:15px;">JSON should be an array of image URLs</p>
                     <button class="submit-btn" onclick="savePhotoSettings()">Save Photo Settings</button>
@@ -1122,12 +1081,12 @@
 
                 <div class="form-group">
                     <label class="form-label">Azure Function URL</label>
-                    <input type="url" class="form-input" id="functionUrl" placeholder="https://your-function.azurewebsites.net" autocomplete="off" inputmode="url" enterkeyhint="next" onclick="kbOpen(this)">
+                    <input type="url" class="form-input" id="functionUrl" placeholder="https://your-function.azurewebsites.net" autocomplete="off" inputmode="url" enterkeyhint="next">
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Function Host Key</label>
-                    <input type="text" class="form-input" id="functionKey" placeholder="Your function host key" autocomplete="off" inputmode="text" enterkeyhint="done" onclick="kbOpen(this)">
+                    <input type="text" class="form-input" id="functionKey" placeholder="Your function host key" autocomplete="off" inputmode="text" enterkeyhint="done">
                 </div>
 
                 <button class="submit-btn secondary" onclick="saveApiSettings()">Save & Test Connection</button>
@@ -1160,146 +1119,6 @@
     <!-- Toast -->
     <div class="toast" id="toast"></div>
 
-    <!-- On-Screen Keyboard -->
-    <div class="keyboard-container" id="keyboard">
-        <button class="keyboard-close-btn" onclick="kbClose()">×</button>
-        <div class="keyboard-preview">
-            <span class="keyboard-preview-label" id="kbLabel">Input:</span>
-            <span class="keyboard-preview-value" id="kbPreview"><span class="keyboard-cursor"></span></span>
-        </div>
-        <div class="kb-tabs">
-            <button class="kb-tab active" id="kbTabAbc" onclick="kbShowLayout('abc')">ABC</button>
-            <button class="kb-tab" id="kbTab123" onclick="kbShowLayout('123')">123</button>
-            <button class="kb-tab" id="kbTabSym" onclick="kbShowLayout('sym')">@#$</button>
-        </div>
-        <div id="kbAbc">
-            <div class="kb-row">
-                <button class="kb-key" onclick="kbType('q')">q</button>
-                <button class="kb-key" onclick="kbType('w')">w</button>
-                <button class="kb-key" onclick="kbType('e')">e</button>
-                <button class="kb-key" onclick="kbType('r')">r</button>
-                <button class="kb-key" onclick="kbType('t')">t</button>
-                <button class="kb-key" onclick="kbType('y')">y</button>
-                <button class="kb-key" onclick="kbType('u')">u</button>
-                <button class="kb-key" onclick="kbType('i')">i</button>
-                <button class="kb-key" onclick="kbType('o')">o</button>
-                <button class="kb-key" onclick="kbType('p')">p</button>
-            </div>
-            <div class="kb-row">
-                <button class="kb-key" onclick="kbType('a')">a</button>
-                <button class="kb-key" onclick="kbType('s')">s</button>
-                <button class="kb-key" onclick="kbType('d')">d</button>
-                <button class="kb-key" onclick="kbType('f')">f</button>
-                <button class="kb-key" onclick="kbType('g')">g</button>
-                <button class="kb-key" onclick="kbType('h')">h</button>
-                <button class="kb-key" onclick="kbType('j')">j</button>
-                <button class="kb-key" onclick="kbType('k')">k</button>
-                <button class="kb-key" onclick="kbType('l')">l</button>
-            </div>
-            <div class="kb-row">
-                <button class="kb-key w2" id="kbShift" onclick="kbShift()">⇧</button>
-                <button class="kb-key" onclick="kbType('z')">z</button>
-                <button class="kb-key" onclick="kbType('x')">x</button>
-                <button class="kb-key" onclick="kbType('c')">c</button>
-                <button class="kb-key" onclick="kbType('v')">v</button>
-                <button class="kb-key" onclick="kbType('b')">b</button>
-                <button class="kb-key" onclick="kbType('n')">n</button>
-                <button class="kb-key" onclick="kbType('m')">m</button>
-                <button class="kb-key w2" onclick="kbBackspace()">⌫</button>
-            </div>
-            <div class="kb-row">
-                <button class="kb-key w2" onclick="kbShowLayout('123')">123</button>
-                <button class="kb-key" onclick="kbType('-')">-</button>
-                <button class="kb-key space" onclick="kbType(' ')">space</button>
-                <button class="kb-key" onclick="kbType('.')">.</button>
-                <button class="kb-key w2 done" onclick="kbDone()">Done</button>
-            </div>
-        </div>
-        <div id="kb123" style="display:none;">
-            <div class="kb-row">
-                <button class="kb-key" onclick="kbType('1')">1</button>
-                <button class="kb-key" onclick="kbType('2')">2</button>
-                <button class="kb-key" onclick="kbType('3')">3</button>
-                <button class="kb-key" onclick="kbType('4')">4</button>
-                <button class="kb-key" onclick="kbType('5')">5</button>
-                <button class="kb-key" onclick="kbType('6')">6</button>
-                <button class="kb-key" onclick="kbType('7')">7</button>
-                <button class="kb-key" onclick="kbType('8')">8</button>
-                <button class="kb-key" onclick="kbType('9')">9</button>
-                <button class="kb-key" onclick="kbType('0')">0</button>
-            </div>
-            <div class="kb-row">
-                <button class="kb-key" onclick="kbType('-')">-</button>
-                <button class="kb-key" onclick="kbType('/')">/</button>
-                <button class="kb-key" onclick="kbType(':')">:</button>
-                <button class="kb-key" onclick="kbType(';')">;</button>
-                <button class="kb-key" onclick="kbType('(')">(</button>
-                <button class="kb-key" onclick="kbType(')')">)</button>
-                <button class="kb-key" onclick="kbType('€')">€</button>
-                <button class="kb-key" onclick="kbType('@')">@</button>
-                <button class="kb-key" onclick="kbType('?')">?</button>
-                <button class="kb-key" onclick="kbType('!')">!</button>
-            </div>
-            <div class="kb-row">
-                <button class="kb-key w2" onclick="kbShowLayout('sym')">#+=</button>
-                <button class="kb-key" onclick="kbType('.')">.</button>
-                <button class="kb-key" onclick="kbType(',')">,</button>
-                <button class="kb-key" onclick="kbType('_')">_</button>
-                <button class="kb-key" onclick="kbType('&amp;')">&amp;</button>
-                <button class="kb-key" onclick="kbType('&quot;')">"</button>
-                <button class="kb-key w2" onclick="kbBackspace()">⌫</button>
-            </div>
-            <div class="kb-row">
-                <button class="kb-key w2" onclick="kbShowLayout('abc')">ABC</button>
-                <button class="kb-key" onclick="kbType('&#39;')">'</button>
-                <button class="kb-key space" onclick="kbType(' ')">space</button>
-                <button class="kb-key" onclick="kbType('.')">.</button>
-                <button class="kb-key w2 done" onclick="kbDone()">Done</button>
-            </div>
-        </div>
-        <div id="kbSym" style="display:none;">
-            <div class="kb-row">
-                <button class="kb-key" onclick="kbType('[')">[</button>
-                <button class="kb-key" onclick="kbType(']')">]</button>
-                <button class="kb-key" onclick="kbType('{')">{</button>
-                <button class="kb-key" onclick="kbType('}')">}</button>
-                <button class="kb-key" onclick="kbType('#')">#</button>
-                <button class="kb-key" onclick="kbType('%')">%</button>
-                <button class="kb-key" onclick="kbType('^')">^</button>
-                <button class="kb-key" onclick="kbType('*')">*</button>
-                <button class="kb-key" onclick="kbType('+')">+</button>
-                <button class="kb-key" onclick="kbType('=')">=</button>
-            </div>
-            <div class="kb-row">
-                <button class="kb-key" onclick="kbType('_')">_</button>
-                <button class="kb-key" onclick="kbType('&#92;')">\</button>
-                <button class="kb-key" onclick="kbType('|')">|</button>
-                <button class="kb-key" onclick="kbType('~')">~</button>
-                <button class="kb-key" onclick="kbType('&lt;')">&lt;</button>
-                <button class="kb-key" onclick="kbType('&gt;')">&gt;</button>
-                <button class="kb-key" onclick="kbType('$')">$</button>
-                <button class="kb-key" onclick="kbType('£')">£</button>
-                <button class="kb-key" onclick="kbType('¥')">¥</button>
-                <button class="kb-key" onclick="kbType('•')">•</button>
-            </div>
-            <div class="kb-row">
-                <button class="kb-key w2" onclick="kbShowLayout('123')">123</button>
-                <button class="kb-key" onclick="kbType('.')">.</button>
-                <button class="kb-key" onclick="kbType(',')">,</button>
-                <button class="kb-key" onclick="kbType('?')">?</button>
-                <button class="kb-key" onclick="kbType('!')">!</button>
-                <button class="kb-key" onclick="kbType('&#39;')">'</button>
-                <button class="kb-key w2" onclick="kbBackspace()">⌫</button>
-            </div>
-            <div class="kb-row">
-                <button class="kb-key w2" onclick="kbShowLayout('abc')">ABC</button>
-                <button class="kb-key" onclick="kbType('-')">-</button>
-                <button class="kb-key space" onclick="kbType(' ')">space</button>
-                <button class="kb-key" onclick="kbType('.')">.</button>
-                <button class="kb-key w2 done" onclick="kbDone()">Done</button>
-            </div>
-        </div>
-    </div>
 
     <script>
         // =====================================================
@@ -2238,77 +2057,6 @@
             toast.className = 'toast' + (isError ? ' error' : '');
             toast.classList.add('active');
             setTimeout(() => toast.classList.remove('active'), 3000);
-        }
-
-        // =====================================================
-        // ON-SCREEN KEYBOARD (only for modals)
-        // =====================================================
-        var kbInput = null;
-        var kbShiftOn = false;
-
-        function kbOpen(input) {
-            kbInput = input;
-            document.getElementById('kbLabel').textContent = (input.placeholder || 'Input') + ':';
-            kbUpdatePreview();
-            document.getElementById('keyboard').classList.add('visible');
-            kbShowLayout('abc');
-        }
-
-        function kbClose() {
-            document.getElementById('keyboard').classList.remove('visible');
-            kbInput = null;
-        }
-
-        function kbDone() {
-            kbClose();
-        }
-
-        function kbType(c) {
-            if (!kbInput) return;
-            var char = kbShiftOn ? c.toUpperCase() : c;
-            kbInput.value = (kbInput.value || '') + char;
-            kbInput.dispatchEvent(new Event('input', {bubbles: true}));
-            if (kbShiftOn && c.match(/[a-z]/i)) {
-                kbShiftOn = false;
-                document.getElementById('kbShift').style.background = '';
-            }
-            kbUpdatePreview();
-        }
-
-        function kbBackspace() {
-            if (!kbInput) return;
-            kbInput.value = kbInput.value.slice(0, -1);
-            kbInput.dispatchEvent(new Event('input', {bubbles: true}));
-            kbUpdatePreview();
-        }
-
-        function kbShift() {
-            kbShiftOn = !kbShiftOn;
-            document.getElementById('kbShift').style.background = kbShiftOn ? 'rgba(74,222,128,0.4)' : '';
-        }
-
-        function kbShowLayout(layout) {
-            document.getElementById('kbAbc').style.display = 'none';
-            document.getElementById('kb123').style.display = 'none';
-            document.getElementById('kbSym').style.display = 'none';
-            document.getElementById('kbTabAbc').classList.remove('active');
-            document.getElementById('kbTab123').classList.remove('active');
-            document.getElementById('kbTabSym').classList.remove('active');
-            if (layout === 'abc') {
-                document.getElementById('kbAbc').style.display = 'block';
-                document.getElementById('kbTabAbc').classList.add('active');
-            } else if (layout === '123') {
-                document.getElementById('kb123').style.display = 'block';
-                document.getElementById('kbTab123').classList.add('active');
-            } else {
-                document.getElementById('kbSym').style.display = 'block';
-                document.getElementById('kbTabSym').classList.add('active');
-            }
-        }
-
-        function kbUpdatePreview() {
-            var v = kbInput ? kbInput.value : '';
-            document.getElementById('kbPreview').innerHTML = escapeHtml(v) + '<span class="keyboard-cursor"></span>';
         }
 
         function escapeHtml(text) {
