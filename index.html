@@ -851,17 +851,46 @@
             font-size: 0.95rem;
         }
 
-        /* Chores Row Layout */
+        /* Chores Row Layout - 3 columns */
         .chores-row {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 15px;
             min-height: 0;
             overflow: hidden;
         }
 
+        @media (max-width: 1200px) {
+            .chores-row { grid-template-columns: 1fr 1fr; }
+        }
+
         @media (max-width: 900px) {
             .chores-row { grid-template-columns: 1fr; }
+        }
+
+        /* Scrollable content areas */
+        .scrollable-content {
+            max-height: 280px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .scrollable-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .scrollable-content::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+            border-radius: 3px;
+        }
+
+        .scrollable-content::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+        }
+
+        .scrollable-content::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.3);
         }
 
         /* Weekly Scoreboard */
@@ -1946,11 +1975,17 @@
                 <div class="jackpot-title">
                     🎰 Super Ultimate Jackpot 
                     <div class="year-buttons" id="yearButtons" style="display: flex; visibility: visible;">
-                        <button type="button" class="year-btn" onclick="changeYearTo(2024)">2024</button>
                         <button type="button" class="year-btn active" onclick="changeYearTo(2025)">2025</button>
                         <button type="button" class="year-btn" onclick="changeYearTo(2026)">2026</button>
                         <button type="button" class="year-btn" onclick="changeYearTo(2027)">2027</button>
                         <button type="button" class="year-btn" onclick="changeYearTo(2028)">2028</button>
+                        <button type="button" class="year-btn" onclick="changeYearTo(2029)">2029</button>
+                        <button type="button" class="year-btn" onclick="changeYearTo(2030)">2030</button>
+                        <button type="button" class="year-btn" onclick="changeYearTo(2031)">2031</button>
+                        <button type="button" class="year-btn" onclick="changeYearTo(2032)">2032</button>
+                        <button type="button" class="year-btn" onclick="changeYearTo(2033)">2033</button>
+                        <button type="button" class="year-btn" onclick="changeYearTo(2034)">2034</button>
+                        <button type="button" class="year-btn" onclick="changeYearTo(2035)">2035</button>
                     </div>
                 </div>
                 <div class="jackpot-cards" id="jackpotCards" style="display: flex; visibility: visible; opacity: 1;"></div>
@@ -1970,7 +2005,7 @@
             </div>
         </div>
 
-        <!-- Row 5: Chores & Calendar & Todo -->
+        <!-- Row 5: Chores & Calendar & Todo (3 columns) -->
         <div class="chores-row">
             <!-- Chores Card -->
             <div class="card chores-card">
@@ -1984,7 +2019,7 @@
                         <button type="button" class="add-btn" onclick="openAddChoreModal()">+</button>
                     </div>
                 </div>
-                <div id="choresList"></div>
+                <div id="choresList" class="scrollable-content"></div>
                 <div class="section-divider">
                     <button type="button" class="reset-btn" onclick="requestPinForAction('resetDay')" style="width:100%;">
                         <span class="lock-icon">🔒</span> New Day - Reset Chores
@@ -1998,20 +2033,20 @@
                     <div class="card-title">📅 Calendar</div>
                     <button class="add-btn" onclick="openModal('event')">+</button>
                 </div>
-                <div class="card-content" id="calendarContent">
+                <div class="card-content scrollable-content" id="calendarContent">
                     <div class="loading"><div class="loading-spinner"></div>Loading events...</div>
                 </div>
             </div>
-        </div>
 
-        <!-- Row 6: Microsoft To Do (Full Width) -->
-        <div class="card" style="grid-column: 1 / -1;">
-            <div class="card-header">
-                <div class="card-title">✅ Microsoft To Do</div>
-                <button class="add-btn" onclick="openModal('todo')">+</button>
-            </div>
-            <div class="card-content" id="todoContent">
-                <div class="loading"><div class="loading-spinner"></div>Loading tasks...</div>
+            <!-- Microsoft To Do -->
+            <div class="card todo-card">
+                <div class="card-header">
+                    <div class="card-title">✅ Microsoft To Do</div>
+                    <button class="add-btn" onclick="openModal('todo')">+</button>
+                </div>
+                <div class="card-content scrollable-content" id="todoContent">
+                    <div class="loading"><div class="loading-spinner"></div>Loading tasks...</div>
+                </div>
             </div>
         </div>
     </div>
