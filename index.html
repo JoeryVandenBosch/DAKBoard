@@ -2878,10 +2878,23 @@
             updateGreeting();
             loadWeather();
             loadCalendarEvents();
-            loadTodoLists().then(() => loadTodoTasks());
+            loadTodoLists().then(function() { loadTodoTasks(); });
             
-            // V12 Scoreboard System
-            renderAllV12();
+            // V12 Scoreboard System - render immediately and again after delay
+            try {
+                renderAllV12();
+            } catch(e) {
+                console.error('Initial renderAllV12 error:', e);
+            }
+            
+            // Render again after DOM is fully ready
+            setTimeout(function() {
+                try {
+                    renderAllV12();
+                } catch(e) {
+                    console.error('Delayed renderAllV12 error:', e);
+                }
+            }, 500);
 
             setInterval(updateTime, 1000);
             setInterval(updateDate, 60000);
@@ -4124,16 +4137,28 @@
         }
 
         function confirmDeleteChore(choreId) {
-            const chore = chores.find(c => c.id === choreId);
+            var chore = null;
+            for (var i = 0; i < chores.length; i++) {
+                if (chores[i].id === choreId) {
+                    chore = chores[i];
+                    break;
+                }
+            }
             if (!chore) return;
             
             showConfirmModalV12('🗑️', 'Delete Chore?', 
-                `Are you sure you want to delete "<strong>${chore.name}</strong>"?<br><span style="color:#ef4444;">This cannot be undone!</span>`,
+                'Are you sure you want to delete "<strong>' + chore.name + '</strong>"?<br><span style="color:#ef4444;">This cannot be undone!</span>',
                 'confirmDelete_' + choreId);
             
-            document.getElementById('confirmActionBtnV12').onclick = () => {
+            document.getElementById('confirmActionBtnV12').onclick = function() {
                 closeConfirmModalV12();
-                chores = chores.filter(c => c.id !== choreId);
+                var newChores = [];
+                for (var j = 0; j < chores.length; j++) {
+                    if (chores[j].id !== choreId) {
+                        newChores.push(chores[j]);
+                    }
+                }
+                chores = newChores;
                 saveV12Data();
                 renderChoresV12();
                 showToast('🗑️ Chore deleted');
@@ -4141,186 +4166,287 @@
         }
 
         function renderScoreboard() {
-            const container = document.getElementById('scoreboard');
-            if (!container) return;
-            var sorted = familyMembers.slice().sort(function(a, b) { return b.weeklyPoints - a.weeklyPoints; });
-            const leader = sorted[0];
+            try {
+                var container = document.getElementById('scoreboard');
+                if (!container) return;
+                var sorted = familyMembers.slice().sort(function(a, b) { return b.weeklyPoints - a.weeklyPoints; });
+                var leader = sorted[0];
 
-            container.innerHTML = familyMembers.map(member => {
-                const isLeader = member.name === leader.name && leader.weeklyPoints > 0;
-                const progress = Math.min((member.weeklyPoints / member.rewardPoints) * 100, 100);
-                const rewardsEarned = Math.floor(member.weeklyPoints / member.rewardPoints);
-                const pointsToReward = member.rewardPoints - (member.weeklyPoints % member.rewardPoints);
+                var html = '';
+                for (var i = 0; i < familyMembers.length; i++) {
+                    var member = familyMembers[i];
+                    var isLeader = member.name === leader.name && leader.weeklyPoints > 0;
+                    var progress = Math.min((member.weeklyPoints / member.rewardPoints) * 100, 100);
+                    var rewardsEarned = Math.floor(member.weeklyPoints / member.rewardPoints);
+                    var pointsToReward = member.rewardPoints - (member.weeklyPoints % member.rewardPoints);
 
-                return `
-                    <div class="score-item ${isLeader ? 'leader' : ''}" onclick="openEditRewardModal('${member.name}')">
-                        <div class="score-avatar">${member.emoji}</div>
-                        <div class="score-name">${member.name}</div>
-                        <div class="score-points">${member.weeklyPoints}</div>
-                        <div class="score-label">points this week</div>
-                        <div class="score-progress">
-                            <div class="score-progress-bar" style="width: ${progress}%"></div>
-                        </div>
-                        ${rewardsEarned > 0 
-                            ? `<div class="reward-earned-badge">🎁 ${rewardsEarned} reward${rewardsEarned > 1 ? 's' : ''} earned!</div>` 
-                            : `<div class="score-reward-goal"><strong>${pointsToReward}</strong> pts to: 🎁 ${member.rewardGoal}</div>`}
-                        <button type="button" class="edit-goal-btn" onclick="event.stopPropagation(); openEditRewardModal('${member.name}')">✏️ Edit Goal</button>
-                    </div>
-                `;
-            }).join('');
+                    html += '<div class="score-item ' + (isLeader ? 'leader' : '') + '" onclick="openEditRewardModal(\'' + member.name + '\')" style="display:block;visibility:visible;opacity:1;">';
+                    html += '<div class="score-avatar">' + member.emoji + '</div>';
+                    html += '<div class="score-name">' + member.name + '</div>';
+                    html += '<div class="score-points">' + member.weeklyPoints + '</div>';
+                    html += '<div class="score-label">points this week</div>';
+                    html += '<div class="score-progress"><div class="score-progress-bar" style="width:' + progress + '%"></div></div>';
+                    if (rewardsEarned > 0) {
+                        html += '<div class="reward-earned-badge">🎁 ' + rewardsEarned + ' reward' + (rewardsEarned > 1 ? 's' : '') + ' earned!</div>';
+                    } else {
+                        html += '<div class="score-reward-goal"><strong>' + pointsToReward + '</strong> pts to: 🎁 ' + member.rewardGoal + '</div>';
+                    }
+                    html += '<button type="button" class="edit-goal-btn" onclick="event.stopPropagation(); openEditRewardModal(\'' + member.name + '\')">✏️ Edit Goal</button>';
+                    html += '</div>';
+                }
+                container.innerHTML = html;
+            } catch(e) {
+                console.error('renderScoreboard error:', e);
+            }
         }
 
         function renderJackpotCards() {
-            const container = document.getElementById('jackpotCards');
-            if (!container) return;
-            container.innerHTML = familyMembers.map(member => {
-                const yearlyTotal = getYearlyTotal(member);
-                const progress = Math.min((yearlyTotal / member.jackpotPoints) * 100, 100);
-                const pointsNeeded = Math.max(member.jackpotPoints - yearlyTotal, 0);
-                const jackpotWon = member.jackpotWon[selectedYear] || yearlyTotal >= member.jackpotPoints;
-                return `
-                    <div class="jackpot-card" onclick="requestJackpotEdit('${member.name}')">
-                        <div class="name">${member.emoji} ${member.name}</div>
-                        <div class="yearly-total">${yearlyTotal}</div>
-                        <div class="yearly-label">points in ${selectedYear}</div>
-                        <div class="jackpot-progress"><div class="jackpot-progress-bar" style="width: ${progress}%"></div></div>
-                        ${jackpotWon 
-                            ? `<div class="jackpot-earned">🎰 JACKPOT WON!</div>`
-                            : `<div class="jackpot-goal"><strong>${pointsNeeded}</strong> to jackpot</div>`}
-                        <div class="jackpot-reward">🎁 ${member.jackpotGoal}</div>
-                        <button type="button" class="edit-jackpot-btn" onclick="event.stopPropagation(); requestJackpotEdit('${member.name}')">🔒 Edit (Parent)</button>
-                    </div>
-                `;
-            }).join('');
+            try {
+                var container = document.getElementById('jackpotCards');
+                if (!container) return;
+                var html = '';
+                for (var i = 0; i < familyMembers.length; i++) {
+                    var member = familyMembers[i];
+                    var yearlyTotal = getYearlyTotal(member);
+                    var progress = Math.min((yearlyTotal / member.jackpotPoints) * 100, 100);
+                    var pointsNeeded = Math.max(member.jackpotPoints - yearlyTotal, 0);
+                    var jackpotWon = member.jackpotWon[selectedYear] || yearlyTotal >= member.jackpotPoints;
+                    
+                    html += '<div class="jackpot-card" onclick="requestJackpotEdit(\'' + member.name + '\')" style="display:block;visibility:visible;opacity:1;">';
+                    html += '<div class="name">' + member.emoji + ' ' + member.name + '</div>';
+                    html += '<div class="yearly-total">' + yearlyTotal + '</div>';
+                    html += '<div class="yearly-label">points in ' + selectedYear + '</div>';
+                    html += '<div class="jackpot-progress"><div class="jackpot-progress-bar" style="width:' + progress + '%"></div></div>';
+                    if (jackpotWon) {
+                        html += '<div class="jackpot-earned">🎰 JACKPOT WON!</div>';
+                    } else {
+                        html += '<div class="jackpot-goal"><strong>' + pointsNeeded + '</strong> to jackpot</div>';
+                    }
+                    html += '<div class="jackpot-reward">🎁 ' + member.jackpotGoal + '</div>';
+                    html += '<button type="button" class="edit-jackpot-btn" onclick="event.stopPropagation(); requestJackpotEdit(\'' + member.name + '\')">🔒 Edit (Parent)</button>';
+                    html += '</div>';
+                }
+                container.innerHTML = html;
+            } catch(e) {
+                console.error('renderJackpotCards error:', e);
+            }
         }
 
         function renderMonthlyTable() {
-            const table = document.getElementById('monthlyTable');
-            if (!table) return;
-            table.innerHTML = `
-                <thead><tr><th>Name</th>${MONTHS.map((m, i) => `<th class="${i === CURRENT_MONTH && selectedYear === CURRENT_YEAR ? 'current-month' : ''}">${m}</th>`).join('')}<th>Total</th></tr></thead>
-                <tbody>${familyMembers.map(member => {
-                    const monthlyPoints = getMonthlyPoints(member);
-                    return `
-                    <tr>
-                        <td><div class="member-name"><div class="mini-avatar">${member.emoji}</div>${member.name}</div></td>
-                        ${monthlyPoints.map((pts, i) => `<td class="${i === CURRENT_MONTH && selectedYear === CURRENT_YEAR ? 'current-month' : ''}">${pts}</td>`).join('')}
-                        <td class="total-cell">${getYearlyTotal(member)}</td>
-                    </tr>
-                `}).join('')}</tbody>
-            `;
+            try {
+                var table = document.getElementById('monthlyTable');
+                if (!table) return;
+                
+                var html = '<thead><tr><th>Name</th>';
+                for (var m = 0; m < MONTHS.length; m++) {
+                    var monthClass = (m === CURRENT_MONTH && selectedYear === CURRENT_YEAR) ? 'current-month' : '';
+                    html += '<th class="' + monthClass + '">' + MONTHS[m] + '</th>';
+                }
+                html += '<th>Total</th></tr></thead><tbody>';
+                
+                for (var i = 0; i < familyMembers.length; i++) {
+                    var member = familyMembers[i];
+                    var monthlyPoints = getMonthlyPoints(member);
+                    html += '<tr>';
+                    html += '<td><div class="member-name"><div class="mini-avatar">' + member.emoji + '</div>' + member.name + '</div></td>';
+                    for (var j = 0; j < monthlyPoints.length; j++) {
+                        var cellClass = (j === CURRENT_MONTH && selectedYear === CURRENT_YEAR) ? 'current-month' : '';
+                        html += '<td class="' + cellClass + '">' + monthlyPoints[j] + '</td>';
+                    }
+                    html += '<td class="total-cell">' + getYearlyTotal(member) + '</td>';
+                    html += '</tr>';
+                }
+                html += '</tbody>';
+                table.innerHTML = html;
+            } catch(e) {
+                console.error('renderMonthlyTable error:', e);
+            }
         }
 
         function renderChoresV12() {
-            const container = document.getElementById('choresList');
-            if (!container) return;
-            container.innerHTML = chores.map(chore => `
-                <div class="chore-item" onclick="handleChoreClick(${chore.id})">
-                    <div class="chore-checkbox"></div>
-                    <div class="chore-content">
-                        <div class="chore-text">${chore.name}</div>
-                        <div class="chore-points">+${chore.points} point${chore.points > 1 ? 's' : ''}</div>
-                    </div>
-                    ${chore.completedBy.length > 0 ? `<div class="chore-completed-by">${chore.completedBy.map(n => `<span class="completed-tag">✓ ${n}</span>`).join('')}</div>` : ''}
-                    <button type="button" class="delete-chore-btn" onclick="deleteChore(${chore.id}, event)" title="Delete chore">🗑️</button>
-                </div>
-            `).join('');
+            try {
+                var container = document.getElementById('choresList');
+                if (!container) return;
+                
+                var html = '';
+                for (var i = 0; i < chores.length; i++) {
+                    var chore = chores[i];
+                    html += '<div class="chore-item" onclick="handleChoreClick(' + chore.id + ')" style="display:flex;visibility:visible;opacity:1;">';
+                    html += '<div class="chore-checkbox"></div>';
+                    html += '<div class="chore-content">';
+                    html += '<div class="chore-text">' + chore.name + '</div>';
+                    html += '<div class="chore-points">+' + chore.points + ' point' + (chore.points > 1 ? 's' : '') + '</div>';
+                    html += '</div>';
+                    if (chore.completedBy && chore.completedBy.length > 0) {
+                        html += '<div class="chore-completed-by">';
+                        for (var j = 0; j < chore.completedBy.length; j++) {
+                            html += '<span class="completed-tag">✓ ' + chore.completedBy[j] + '</span>';
+                        }
+                        html += '</div>';
+                    }
+                    html += '<button type="button" class="delete-chore-btn" onclick="deleteChore(' + chore.id + ', event)" title="Delete chore">🗑️</button>';
+                    html += '</div>';
+                }
+                container.innerHTML = html;
+            } catch(e) {
+                console.error('renderChoresV12 error:', e);
+            }
         }
 
         function handleChoreClick(choreId) {
-            if (editMode) return;
-            
-            const chore = chores.find(c => c.id === choreId);
-            if (!chore) return;
-            currentChoreId = choreId;
-            document.getElementById('whoTaskName').textContent = chore.name;
-            document.getElementById('whoButtons').innerHTML = familyMembers.map(m => `
-                <button type="button" class="who-btn" onclick="completeChoreAs('${m.name}')">
-                    <div class="avatar">${m.emoji}</div><span>${m.name}</span><span class="points-preview">+${chore.points} pts</span>
-                </button>
-            `).join('');
-            document.getElementById('whoModal').classList.add('active');
+            try {
+                if (editMode) return;
+                
+                var chore = null;
+                for (var i = 0; i < chores.length; i++) {
+                    if (chores[i].id === choreId) {
+                        chore = chores[i];
+                        break;
+                    }
+                }
+                if (!chore) return;
+                currentChoreId = choreId;
+                document.getElementById('whoTaskName').textContent = chore.name;
+                
+                var buttonsHtml = '';
+                for (var j = 0; j < familyMembers.length; j++) {
+                    var m = familyMembers[j];
+                    buttonsHtml += '<button type="button" class="who-btn" onclick="completeChoreAs(\'' + m.name + '\')">';
+                    buttonsHtml += '<div class="avatar">' + m.emoji + '</div><span>' + m.name + '</span><span class="points-preview">+' + chore.points + ' pts</span>';
+                    buttonsHtml += '</button>';
+                }
+                document.getElementById('whoButtons').innerHTML = buttonsHtml;
+                document.getElementById('whoModal').classList.add('active');
+            } catch(e) {
+                console.error('handleChoreClick error:', e);
+            }
         }
 
-        function closeWhoModal() { document.getElementById('whoModal').classList.remove('active'); currentChoreId = null; }
+        function closeWhoModal() { 
+            document.getElementById('whoModal').classList.remove('active'); 
+            currentChoreId = null; 
+        }
 
         function completeChoreAs(memberName) {
-            const chore = chores.find(c => c.id === currentChoreId);
-            const member = familyMembers.find(m => m.name === memberName);
-            if (!chore || !member) return;
-            closeWhoModal();
-            chore.completedBy.push(member.name);
-            
-            const oldRewardsCount = Math.floor(member.weeklyPoints / member.rewardPoints);
-            const oldYearlyTotal = getYearlyTotal(member);
-            
-            member.weeklyPoints += chore.points;
-            ensureYearData(member, CURRENT_YEAR);
-            member.yearlyData[CURRENT_YEAR][CURRENT_MONTH] += chore.points;
-            
-            const newRewardsCount = Math.floor(member.weeklyPoints / member.rewardPoints);
-            const earnedNewReward = newRewardsCount > oldRewardsCount;
-            
-            const newYearlyTotal = getYearlyTotal(member);
-            const justWonJackpot = oldYearlyTotal < member.jackpotPoints && newYearlyTotal >= member.jackpotPoints && !member.jackpotWon[CURRENT_YEAR];
-            
-            if (earnedNewReward) {
-                playRewardSound();
-                showRewardCelebration(chore.points, member);
-            } else {
-                playSuccessSound();
-                showChoreCelebration(chore.points, member.name);
-            }
-            
-            saveV12Data();
-            renderAllV12();
-            
-            if (justWonJackpot) {
-                member.jackpotWon[CURRENT_YEAR] = true;
+            try {
+                var chore = null;
+                for (var i = 0; i < chores.length; i++) {
+                    if (chores[i].id === currentChoreId) {
+                        chore = chores[i];
+                        break;
+                    }
+                }
+                var member = null;
+                for (var j = 0; j < familyMembers.length; j++) {
+                    if (familyMembers[j].name === memberName) {
+                        member = familyMembers[j];
+                        break;
+                    }
+                }
+                if (!chore || !member) return;
+                closeWhoModal();
+                chore.completedBy.push(member.name);
+                
+                var oldRewardsCount = Math.floor(member.weeklyPoints / member.rewardPoints);
+                var oldYearlyTotal = getYearlyTotal(member);
+                
+                member.weeklyPoints += chore.points;
+                ensureYearData(member, CURRENT_YEAR);
+                member.yearlyData[CURRENT_YEAR][CURRENT_MONTH] += chore.points;
+                
+                var newRewardsCount = Math.floor(member.weeklyPoints / member.rewardPoints);
+                var earnedNewReward = newRewardsCount > oldRewardsCount;
+                
+                var newYearlyTotal = getYearlyTotal(member);
+                var justWonJackpot = oldYearlyTotal < member.jackpotPoints && newYearlyTotal >= member.jackpotPoints && !member.jackpotWon[CURRENT_YEAR];
+                
+                if (earnedNewReward) {
+                    playRewardSound();
+                    showRewardCelebration(chore.points, member);
+                } else {
+                    playSuccessSound();
+                    showChoreCelebration(chore.points, member.name);
+                }
+                
                 saveV12Data();
-                setTimeout(() => showJackpotCelebration(member), 2500);
+                renderAllV12();
+                
+                if (justWonJackpot) {
+                    member.jackpotWon[CURRENT_YEAR] = true;
+                    saveV12Data();
+                    setTimeout(function() { showJackpotCelebration(member); }, 2500);
+                }
+            } catch(e) {
+                console.error('completeChoreAs error:', e);
             }
         }
 
         function showChoreCelebration(points, name) {
-            const overlay = document.getElementById('choreCelebrationOverlay');
-            document.getElementById('choreCelebrationEmoji').textContent = ['🎉', '⭐', '🌟', '💪', '🔥'][Math.floor(Math.random() * 5)];
-            document.getElementById('choreCelebrationText').textContent = ['Great Job!', 'Awesome!', 'Well Done!', 'Amazing!'][Math.floor(Math.random() * 4)];
-            document.getElementById('choreCelebrationPoints').textContent = `+${points} point${points > 1 ? 's' : ''} for ${name}!`;
-            document.getElementById('choreCelebrationReward').textContent = '';
-            overlay.classList.add('active');
-            createChoreConfetti(50);
-            setTimeout(() => overlay.classList.remove('active'), 2200);
+            try {
+                var emojis = ['🎉', '⭐', '🌟', '💪', '🔥'];
+                var texts = ['Great Job!', 'Awesome!', 'Well Done!', 'Amazing!'];
+                var overlay = document.getElementById('choreCelebrationOverlay');
+                document.getElementById('choreCelebrationEmoji').textContent = emojis[Math.floor(Math.random() * 5)];
+                document.getElementById('choreCelebrationText').textContent = texts[Math.floor(Math.random() * 4)];
+                document.getElementById('choreCelebrationPoints').textContent = '+' + points + ' point' + (points > 1 ? 's' : '') + ' for ' + name + '!';
+                document.getElementById('choreCelebrationReward').textContent = '';
+                overlay.classList.add('active');
+                createChoreConfetti(50);
+                setTimeout(function() { overlay.classList.remove('active'); }, 2200);
+            } catch(e) {
+                console.error('showChoreCelebration error:', e);
+            }
         }
 
         function showRewardCelebration(points, member) {
-            const overlay = document.getElementById('choreCelebrationOverlay');
-            document.getElementById('choreCelebrationEmoji').textContent = '🎁';
-            document.getElementById('choreCelebrationText').textContent = 'REWARD EARNED!';
-            document.getElementById('choreCelebrationPoints').textContent = `+${points} point${points > 1 ? 's' : ''} for ${member.name}!`;
-            document.getElementById('choreCelebrationReward').textContent = `🎁 ${member.rewardGoal}`;
-            overlay.classList.add('active');
-            createChoreConfetti(80);
-            setTimeout(() => overlay.classList.remove('active'), 3000);
+            try {
+                var overlay = document.getElementById('choreCelebrationOverlay');
+                document.getElementById('choreCelebrationEmoji').textContent = '🎁';
+                document.getElementById('choreCelebrationText').textContent = 'REWARD EARNED!';
+                document.getElementById('choreCelebrationPoints').textContent = '+' + points + ' point' + (points > 1 ? 's' : '') + ' for ' + member.name + '!';
+                document.getElementById('choreCelebrationReward').textContent = '🎁 ' + member.rewardGoal;
+                overlay.classList.add('active');
+                createChoreConfetti(80);
+                setTimeout(function() { overlay.classList.remove('active'); }, 3000);
+            } catch(e) {
+                console.error('showRewardCelebration error:', e);
+            }
         }
 
         function createChoreConfetti(count) {
-            const overlay = document.getElementById('choreCelebrationOverlay');
-            for (let i = 0; i < count; i++) {
-                const c = document.createElement('div');
-                c.className = 'chore-confetti';
-                c.style.cssText = `left:${Math.random()*100}vw;top:-20px;background:${confettiColors[Math.floor(Math.random()*6)]};width:${Math.random()*10+5}px;height:${Math.random()*10+5}px;border-radius:${Math.random()>0.5?'50%':'2px'};animation-delay:${Math.random()*0.5}s;animation-duration:${Math.random()*2+2}s`;
-                overlay.appendChild(c);
-                setTimeout(() => c.classList.add('active'), 10);
-                setTimeout(() => c.remove(), 4000);
+            try {
+                var overlay = document.getElementById('choreCelebrationOverlay');
+                for (var i = 0; i < count; i++) {
+                    var c = document.createElement('div');
+                    c.className = 'chore-confetti';
+                    var left = Math.random() * 100;
+                    var bg = confettiColors[Math.floor(Math.random() * 6)];
+                    var width = Math.random() * 10 + 5;
+                    var height = Math.random() * 10 + 5;
+                    var radius = Math.random() > 0.5 ? '50%' : '2px';
+                    var delay = Math.random() * 0.5;
+                    var duration = Math.random() * 2 + 2;
+                    c.style.cssText = 'left:' + left + 'vw;top:-20px;background:' + bg + ';width:' + width + 'px;height:' + height + 'px;border-radius:' + radius + ';animation-delay:' + delay + 's;animation-duration:' + duration + 's';
+                    overlay.appendChild(c);
+                    (function(confetti) {
+                        setTimeout(function() { confetti.classList.add('active'); }, 10);
+                        setTimeout(function() { confetti.remove(); }, 4000);
+                    })(c);
+                }
+            } catch(e) {
+                console.error('createChoreConfetti error:', e);
             }
         }
 
         function showJackpotCelebration(member) {
-            document.getElementById('jackpotWinnerName').textContent = `${member.emoji} ${member.name}`;
-            document.getElementById('jackpotPrizeText').textContent = `🎁 ${member.jackpotGoal}`;
-            document.getElementById('jackpotOverlay').classList.add('active');
-            playJackpotSound();
+            try {
+                document.getElementById('jackpotWinnerName').textContent = member.emoji + ' ' + member.name;
+                document.getElementById('jackpotPrizeText').textContent = '🎁 ' + member.jackpotGoal;
+                document.getElementById('jackpotOverlay').classList.add('active');
+                playJackpotSound();
+            } catch(e) {
+                console.error('showJackpotCelebration error:', e);
+            }
         }
 
         function closeJackpotCelebration() { document.getElementById('jackpotOverlay').classList.remove('active'); }
@@ -4333,9 +4459,9 @@
         function closeAddChoreModal() { document.getElementById('addChoreModal').classList.remove('active'); }
 
         function addChore() {
-            const name = document.getElementById('choreNameInput').value.trim();
+            var name = document.getElementById('choreNameInput').value.trim();
             if (!name) { showToast('⚠️ Enter a name', true); return; }
-            chores.push({ id: Date.now(), name, points: parseInt(document.getElementById('chorePointsSelect').value), completedBy: [] });
+            chores.push({ id: Date.now(), name: name, points: parseInt(document.getElementById('chorePointsSelect').value), completedBy: [] });
             saveV12Data();
             renderChoresV12();
             closeAddChoreModal();
@@ -4394,10 +4520,18 @@
         }
 
         function renderAllV12() { 
-            renderScoreboard(); 
-            renderJackpotCards(); 
-            renderMonthlyTable(); 
-            renderChoresV12();
+            try {
+                renderScoreboard(); 
+            } catch(e) { console.error('renderScoreboard error:', e); }
+            try {
+                renderJackpotCards(); 
+            } catch(e) { console.error('renderJackpotCards error:', e); }
+            try {
+                renderMonthlyTable(); 
+            } catch(e) { console.error('renderMonthlyTable error:', e); }
+            try {
+                renderChoresV12();
+            } catch(e) { console.error('renderChoresV12 error:', e); }
         }
 
         // =====================================================
