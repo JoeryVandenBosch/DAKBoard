@@ -192,13 +192,14 @@
 
         /* ===== WEATHER ROW (Full Width) ===== */
         .weather-row {
+            display: -webkit-flex;
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
             background: rgba(255,255,255,0.08);
             backdrop-filter: blur(20px);
-            border-radius: 16px;
-            padding: 15px 20px;
+            border-radius: 12px;
+            padding: 10px 15px;
             border: 1px solid rgba(255,255,255,0.1);
         }
 
@@ -264,10 +265,10 @@
             border-right: 1px solid rgba(255,255,255,0.15);
         }
 
-        .weather-icon-large { font-size: 2.5rem; }
+        .weather-icon-large { font-size: 2rem; }
         .weather-current-info { }
-        .weather-temp-large { font-size: 2rem; font-weight: 300; }
-        .weather-condition { font-size: 0.8rem; opacity: 0.7; }
+        .weather-temp-large { font-size: 1.8rem; font-weight: 300; }
+        .weather-condition { font-size: 0.75rem; opacity: 0.7; }
 
         .weather-location-wrapper {
             display: flex;
@@ -288,25 +289,26 @@
         .weather-hi-lo { font-size: 0.75rem; opacity: 0.5; margin-left: 5px; }
 
         .weather-forecast {
+            display: -webkit-flex;
             display: flex;
-            gap: 8px;
+            gap: 6px;
             flex: 1;
             justify-content: space-around;
         }
 
         .weather-day {
             text-align: center;
-            padding: 8px 12px;
-            border-radius: 10px;
+            padding: 5px 8px;
+            border-radius: 8px;
             background: rgba(255,255,255,0.05);
             transition: all 0.2s;
         }
         .weather-day:hover { background: rgba(255,255,255,0.1); }
 
-        .weather-day-name { font-size: 0.65rem; opacity: 0.6; margin-bottom: 4px; text-transform: uppercase; }
-        .weather-day-icon { font-size: 1.2rem; margin-bottom: 4px; }
-        .weather-day-temp { font-size: 0.8rem; font-weight: 500; }
-        .weather-day-low { font-size: 0.65rem; opacity: 0.5; }
+        .weather-day-name { font-size: 0.6rem; opacity: 0.6; margin-bottom: 2px; text-transform: uppercase; }
+        .weather-day-icon { font-size: 1rem; margin-bottom: 2px; }
+        .weather-day-temp { font-size: 0.7rem; font-weight: 500; }
+        .weather-day-low { font-size: 0.6rem; opacity: 0.5; }
 
         /* ===== PHOTO SECTION ===== */
         .photo-container {
@@ -851,21 +853,28 @@
             font-size: 0.95rem;
         }
 
-        /* Chores Row Layout - 3 columns */
+        /* Chores Row Layout - 2 columns */
         .chores-row {
+            display: -webkit-flex;
+            display: flex;
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr;
             gap: 15px;
             min-height: 0;
             overflow: hidden;
         }
 
-        @media (max-width: 1200px) {
-            .chores-row { grid-template-columns: 1fr 1fr; }
-        }
-
         @media (max-width: 900px) {
             .chores-row { grid-template-columns: 1fr; }
+        }
+
+        /* Full width To Do card */
+        .todo-card-full {
+            max-height: 200px;
+        }
+
+        .todo-card-full .card-content {
+            max-height: 140px;
         }
 
         /* Scrollable content areas */
@@ -2005,7 +2014,7 @@
             </div>
         </div>
 
-        <!-- Row 5: Chores & Calendar & Todo (3 columns) -->
+        <!-- Row 5: Chores & Calendar (2 columns) -->
         <div class="chores-row">
             <!-- Chores Card -->
             <div class="card chores-card">
@@ -2037,16 +2046,16 @@
                     <div class="loading"><div class="loading-spinner"></div>Loading events...</div>
                 </div>
             </div>
+        </div>
 
-            <!-- Microsoft To Do -->
-            <div class="card todo-card">
-                <div class="card-header">
-                    <div class="card-title">✅ Microsoft To Do</div>
-                    <button class="add-btn" onclick="openModal('todo')">+</button>
-                </div>
-                <div class="card-content scrollable-content" id="todoContent">
-                    <div class="loading"><div class="loading-spinner"></div>Loading tasks...</div>
-                </div>
+        <!-- Row 6: Microsoft To Do (Full Width) -->
+        <div class="card todo-card-full" style="grid-column: 1 / -1;">
+            <div class="card-header">
+                <div class="card-title">✅ Microsoft To Do</div>
+                <button class="add-btn" onclick="openModal('todo')">+</button>
+            </div>
+            <div class="card-content scrollable-content" id="todoContent">
+                <div class="loading"><div class="loading-spinner"></div>Loading tasks...</div>
             </div>
         </div>
     </div>
