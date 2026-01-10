@@ -1891,6 +1891,206 @@
         }
 
         /* PERFORMANCE: All backdrop-filters removed for DAKboard compatibility */
+
+        /* ===== AVATAR BUILDER ===== */
+        .avatar-display {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            position: relative;
+            margin: 0 auto 8px;
+            cursor: pointer;
+        }
+
+        .avatar-face {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: visible;
+        }
+
+        .avatar-hair {
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem;
+            z-index: 1;
+        }
+
+        .avatar-face-emoji {
+            font-size: 2.2rem;
+            margin-top: 8px;
+        }
+
+        .avatar-accessory {
+            position: absolute;
+            top: -12px;
+            right: -2px;
+            font-size: 1.1rem;
+            z-index: 2;
+        }
+
+        .avatar-edit-hint {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 20px;
+            height: 20px;
+            background: rgba(74, 222, 128, 0.9);
+            border-radius: 50%;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+        }
+
+        .avatar-display:hover .avatar-edit-hint {
+            opacity: 1;
+        }
+
+        /* Avatar Builder Modal */
+        .avatar-builder-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .avatar-builder-overlay.active {
+            display: flex;
+        }
+
+        .avatar-builder-modal {
+            background: linear-gradient(135deg, #1e2a4a 0%, #16213e 100%);
+            border-radius: 24px;
+            padding: 25px;
+            width: 90%;
+            max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .avatar-builder-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .avatar-builder-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .avatar-builder-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .avatar-preview-large {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 25px;
+            border: 4px solid rgba(255,255,255,0.2);
+            position: relative;
+        }
+
+        .avatar-preview-large .avatar-face {
+            width: 100%;
+            height: 100%;
+        }
+
+        .avatar-preview-large .avatar-hair {
+            font-size: 2.5rem;
+            top: -15px;
+        }
+
+        .avatar-preview-large .avatar-face-emoji {
+            font-size: 3.5rem;
+            margin-top: 12px;
+        }
+
+        .avatar-preview-large .avatar-accessory {
+            font-size: 1.8rem;
+            top: -20px;
+            right: -5px;
+        }
+
+        .avatar-section {
+            margin-bottom: 18px;
+        }
+
+        .avatar-section-title {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-bottom: 10px;
+        }
+
+        .avatar-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .avatar-skin-option {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            cursor: pointer;
+        }
+
+        .avatar-skin-option.selected {
+            border-color: #4ade80;
+        }
+
+        .avatar-option-btn {
+            padding: 8px 12px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid transparent;
+            cursor: pointer;
+            font-size: 1.3rem;
+        }
+
+        .avatar-option-btn.selected {
+            border-color: #4ade80;
+            background: rgba(74, 222, 128, 0.2);
+        }
+
+        .avatar-save-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            color: #1a1a2e;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -2622,6 +2822,80 @@
         </div>
     </div>
 
+    <!-- Avatar Builder Modal -->
+    <div class="avatar-builder-overlay" id="avatarBuilderOverlay">
+        <div class="avatar-builder-modal">
+            <div class="avatar-builder-header">
+                <div class="avatar-builder-title">🎨 Customize Avatar</div>
+                <button type="button" class="avatar-builder-close" onclick="closeAvatarBuilder()">✕</button>
+            </div>
+            
+            <div class="avatar-preview-large" id="avatarPreviewLarge">
+                <div class="avatar-face" id="avatarPreviewFace">
+                    <div class="avatar-hair" id="avatarPreviewHair">💇</div>
+                    <div class="avatar-face-emoji" id="avatarPreviewEmoji">😊</div>
+                    <div class="avatar-accessory" id="avatarPreviewAccessory"></div>
+                </div>
+            </div>
+            
+            <div class="avatar-section">
+                <div class="avatar-section-title">🎨 Skin Tone:</div>
+                <div class="avatar-options" id="skinToneOptions">
+                    <div class="avatar-skin-option" style="background: #FFDBAC;" onclick="setAvatarSkin('#FFDBAC', this)"></div>
+                    <div class="avatar-skin-option" style="background: #F5C7A1;" onclick="setAvatarSkin('#F5C7A1', this)"></div>
+                    <div class="avatar-skin-option" style="background: #E5A97F;" onclick="setAvatarSkin('#E5A97F', this)"></div>
+                    <div class="avatar-skin-option" style="background: #C68C53;" onclick="setAvatarSkin('#C68C53', this)"></div>
+                    <div class="avatar-skin-option" style="background: #A56B3E;" onclick="setAvatarSkin('#A56B3E', this)"></div>
+                    <div class="avatar-skin-option" style="background: #6B4423;" onclick="setAvatarSkin('#6B4423', this)"></div>
+                </div>
+            </div>
+            
+            <div class="avatar-section">
+                <div class="avatar-section-title">💇 Hair Style:</div>
+                <div class="avatar-options" id="hairOptions">
+                    <button type="button" class="avatar-option-btn" onclick="setAvatarHair('💇', this)">💇</button>
+                    <button type="button" class="avatar-option-btn" onclick="setAvatarHair('💇‍♀️', this)">💇‍♀️</button>
+                    <button type="button" class="avatar-option-btn" onclick="setAvatarHair('👱', this)">👱</button>
+                    <button type="button" class="avatar-option-btn" onclick="setAvatarHair('👱‍♀️', this)">👱‍♀️</button>
+                    <button type="button" class="avatar-option-btn" onclick="setAvatarHair('🧑‍🦱', this)">🧑‍🦱</button>
+                    <button type="button" class="avatar-option-btn" onclick="setAvatarHair('🧑‍🦰', this)">🧑‍🦰</button>
+                    <button type="button" class="avatar-option-btn" onclick="setAvatarHair('🧑‍🦳', this)">🧑‍🦳</button>
+                    <button type="button" class="avatar-option-btn" onclick="setAvatarHair('🧑‍🦲', this)">🧑‍🦲</button>
+                </div>
+            </div>
+            
+            <div class="avatar-section">
+                <div class="avatar-section-title">😊 Face Expression:</div>
+                <div class="avatar-options" id="faceOptions">
+                    <button type="button" class="avatar-option-btn" onclick="setAvatarFace('😊', this)">😊</button>
+                    <button type="button" class="avatar-option-btn" onclick="setAvatarFace('😄', this)">😄</button>
+                    <button type="button" class="avatar-option-btn" onclick="setAvatarFace('😎', this)">😎</button>
+                    <button type="button" class="avatar-option-btn" onclick="setAvatarFace('🤩', this)">🤩</button>
+                    <button type="button" class="avatar-option-btn" onclick="setAvatarFace('😇', this)">😇</button>
+                    <button type="button" class="avatar-option-btn" onclick="setAvatarFace('🥳', this)">🥳</button>
+                    <button type="button" class="avatar-option-btn" onclick="setAvatarFace('🤓', this)">🤓</button>
+                    <button type="button" class="avatar-option-btn" onclick="setAvatarFace('😜', this)">😜</button>
+                </div>
+            </div>
+            
+            <div class="avatar-section">
+                <div class="avatar-section-title">✨ Accessories:</div>
+                <div class="avatar-options" id="accessoryOptions">
+                    <button type="button" class="avatar-option-btn" onclick="setAvatarAccessory('', this)">❌</button>
+                    <button type="button" class="avatar-option-btn" onclick="setAvatarAccessory('👑', this)">👑</button>
+                    <button type="button" class="avatar-option-btn" onclick="setAvatarAccessory('🎀', this)">🎀</button>
+                    <button type="button" class="avatar-option-btn" onclick="setAvatarAccessory('🧢', this)">🧢</button>
+                    <button type="button" class="avatar-option-btn" onclick="setAvatarAccessory('🎩', this)">🎩</button>
+                    <button type="button" class="avatar-option-btn" onclick="setAvatarAccessory('🌟', this)">🌟</button>
+                    <button type="button" class="avatar-option-btn" onclick="setAvatarAccessory('🌈', this)">🌈</button>
+                    <button type="button" class="avatar-option-btn" onclick="setAvatarAccessory('🦋', this)">🦋</button>
+                </div>
+            </div>
+            
+            <button type="button" class="avatar-save-btn" onclick="saveAvatar()">✓ Save Avatar</button>
+        </div>
+    </div>
+
     <!-- PIN Keypad -->
     <div class="pin-keypad-overlay" id="pinKeypadOverlay">
         <div class="pin-keypad">
@@ -2720,7 +2994,8 @@
                     2024: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                     2025: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                 },
-                jackpotGoal: 'New video game', jackpotPoints: 600, jackpotWon: {}
+                jackpotGoal: 'New video game', jackpotPoints: 600, jackpotWon: {},
+                avatar: { skinTone: '#FFDBAC', hair: '💇', face: '😊', accessory: '' }
             },
             { 
                 name: 'Synn', emoji: '👧', weeklyPoints: 0, 
@@ -2729,7 +3004,8 @@
                     2024: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                     2025: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                 },
-                jackpotGoal: 'Shopping trip', jackpotPoints: 600, jackpotWon: {}
+                jackpotGoal: 'Shopping trip', jackpotPoints: 600, jackpotWon: {},
+                avatar: { skinTone: '#F5C7A1', hair: '👱‍♀️', face: '🤩', accessory: '👑' }
             },
             { 
                 name: 'Sam', emoji: '👧', weeklyPoints: 0, 
@@ -2738,7 +3014,8 @@
                     2024: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                     2025: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                 },
-                jackpotGoal: 'Trip to amusement park', jackpotPoints: 600, jackpotWon: {}
+                jackpotGoal: 'Trip to amusement park', jackpotPoints: 600, jackpotWon: {},
+                avatar: { skinTone: '#E5A97F', hair: '🧑‍🦱', face: '😇', accessory: '🎀' }
             }
         ];
 
@@ -4068,6 +4345,187 @@
             document.getElementById('soundText').textContent = soundEnabled ? 'Sound On' : 'Sound Off';
         }
 
+        // =====================================================
+        // AVATAR BUILDER
+        // =====================================================
+        var currentAvatarMember = null;
+        var tempAvatar = { skinTone: '#FFDBAC', hair: '💇', face: '😊', accessory: '' };
+
+        function openAvatarBuilder(memberName) {
+            // Find member
+            var member = null;
+            for (var i = 0; i < familyMembers.length; i++) {
+                if (familyMembers[i].name === memberName) {
+                    member = familyMembers[i];
+                    break;
+                }
+            }
+            if (!member) return;
+            
+            currentAvatarMember = memberName;
+            
+            // Load current avatar or defaults
+            var avatar = member.avatar || { skinTone: '#FFDBAC', hair: '💇', face: '😊', accessory: '' };
+            tempAvatar = {
+                skinTone: avatar.skinTone || '#FFDBAC',
+                hair: avatar.hair || '💇',
+                face: avatar.face || '😊',
+                accessory: avatar.accessory || ''
+            };
+            
+            // Update preview
+            updateAvatarPreview();
+            
+            // Highlight current selections
+            highlightAvatarSelections();
+            
+            // Show modal
+            document.getElementById('avatarBuilderOverlay').classList.add('active');
+        }
+
+        function closeAvatarBuilder() {
+            document.getElementById('avatarBuilderOverlay').classList.remove('active');
+            currentAvatarMember = null;
+        }
+
+        function updateAvatarPreview() {
+            document.getElementById('avatarPreviewFace').style.background = tempAvatar.skinTone;
+            document.getElementById('avatarPreviewHair').textContent = tempAvatar.hair;
+            document.getElementById('avatarPreviewEmoji').textContent = tempAvatar.face;
+            document.getElementById('avatarPreviewAccessory').textContent = tempAvatar.accessory;
+        }
+
+        function highlightAvatarSelections() {
+            // Highlight skin tone
+            var skinOptions = document.querySelectorAll('.avatar-skin-option');
+            for (var i = 0; i < skinOptions.length; i++) {
+                var option = skinOptions[i];
+                if (option.style.background === tempAvatar.skinTone || 
+                    rgbToHex(option.style.background) === tempAvatar.skinTone.toUpperCase()) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            }
+            
+            // Highlight hair
+            var hairOptions = document.querySelectorAll('#hairOptions .avatar-option-btn');
+            for (var i = 0; i < hairOptions.length; i++) {
+                var btn = hairOptions[i];
+                if (btn.textContent === tempAvatar.hair) {
+                    btn.classList.add('selected');
+                } else {
+                    btn.classList.remove('selected');
+                }
+            }
+            
+            // Highlight face
+            var faceOptions = document.querySelectorAll('#faceOptions .avatar-option-btn');
+            for (var i = 0; i < faceOptions.length; i++) {
+                var btn = faceOptions[i];
+                if (btn.textContent === tempAvatar.face) {
+                    btn.classList.add('selected');
+                } else {
+                    btn.classList.remove('selected');
+                }
+            }
+            
+            // Highlight accessory
+            var accessoryOptions = document.querySelectorAll('#accessoryOptions .avatar-option-btn');
+            for (var i = 0; i < accessoryOptions.length; i++) {
+                var btn = accessoryOptions[i];
+                var btnValue = btn.textContent === '❌' ? '' : btn.textContent;
+                if (btnValue === tempAvatar.accessory) {
+                    btn.classList.add('selected');
+                } else {
+                    btn.classList.remove('selected');
+                }
+            }
+        }
+
+        function rgbToHex(rgb) {
+            if (!rgb || rgb.indexOf('rgb') === -1) return rgb;
+            var parts = rgb.match(/\d+/g);
+            if (!parts || parts.length < 3) return rgb;
+            var r = parseInt(parts[0]).toString(16).padStart(2, '0');
+            var g = parseInt(parts[1]).toString(16).padStart(2, '0');
+            var b = parseInt(parts[2]).toString(16).padStart(2, '0');
+            return '#' + r + g + b;
+        }
+
+        function setAvatarSkin(color, el) {
+            tempAvatar.skinTone = color;
+            updateAvatarPreview();
+            
+            var options = document.querySelectorAll('.avatar-skin-option');
+            for (var i = 0; i < options.length; i++) {
+                options[i].classList.remove('selected');
+            }
+            el.classList.add('selected');
+        }
+
+        function setAvatarHair(hair, el) {
+            tempAvatar.hair = hair;
+            updateAvatarPreview();
+            
+            var options = document.querySelectorAll('#hairOptions .avatar-option-btn');
+            for (var i = 0; i < options.length; i++) {
+                options[i].classList.remove('selected');
+            }
+            el.classList.add('selected');
+        }
+
+        function setAvatarFace(face, el) {
+            tempAvatar.face = face;
+            updateAvatarPreview();
+            
+            var options = document.querySelectorAll('#faceOptions .avatar-option-btn');
+            for (var i = 0; i < options.length; i++) {
+                options[i].classList.remove('selected');
+            }
+            el.classList.add('selected');
+        }
+
+        function setAvatarAccessory(accessory, el) {
+            tempAvatar.accessory = accessory;
+            updateAvatarPreview();
+            
+            var options = document.querySelectorAll('#accessoryOptions .avatar-option-btn');
+            for (var i = 0; i < options.length; i++) {
+                options[i].classList.remove('selected');
+            }
+            el.classList.add('selected');
+        }
+
+        function saveAvatar() {
+            if (!currentAvatarMember) return;
+            
+            // Find member and update avatar
+            for (var i = 0; i < familyMembers.length; i++) {
+                if (familyMembers[i].name === currentAvatarMember) {
+                    familyMembers[i].avatar = {
+                        skinTone: tempAvatar.skinTone,
+                        hair: tempAvatar.hair,
+                        face: tempAvatar.face,
+                        accessory: tempAvatar.accessory
+                    };
+                    // Update emoji to match face for backwards compatibility
+                    familyMembers[i].emoji = tempAvatar.face;
+                    break;
+                }
+            }
+            
+            // Save and re-render
+            saveV12Data();
+            renderAllV12();
+            
+            // Close modal
+            closeAvatarBuilder();
+            
+            // Show toast
+            showToast('🎨 Avatar saved!');
+        }
+
         function renderYearButtons() {
             var container = document.getElementById('yearButtons');
             if (!container) return;
@@ -4365,9 +4823,24 @@
                     var progress = Math.min((member.weeklyPoints / member.rewardPoints) * 100, 100);
                     var rewardsEarned = Math.floor(member.weeklyPoints / member.rewardPoints);
                     var pointsToReward = member.rewardPoints - (member.weeklyPoints % member.rewardPoints);
+                    
+                    // Get avatar settings (with defaults)
+                    var avatar = member.avatar || { skinTone: '#FFDBAC', hair: '💇', face: '😊', accessory: '' };
 
                     html += '<div class="score-item ' + (isLeader ? 'leader' : '') + '" onclick="openEditRewardModal(\'' + member.name + '\')" style="display:block;visibility:visible;opacity:1;">';
-                    html += '<div class="score-avatar">' + member.emoji + '</div>';
+                    
+                    // Custom Avatar Display
+                    html += '<div class="avatar-display" onclick="event.stopPropagation(); openAvatarBuilder(\'' + member.name + '\')">';
+                    html += '<div class="avatar-face" style="background: ' + avatar.skinTone + ';">';
+                    html += '<div class="avatar-hair">' + avatar.hair + '</div>';
+                    html += '<div class="avatar-face-emoji">' + avatar.face + '</div>';
+                    if (avatar.accessory) {
+                        html += '<div class="avatar-accessory">' + avatar.accessory + '</div>';
+                    }
+                    html += '</div>';
+                    html += '<div class="avatar-edit-hint">✏️</div>';
+                    html += '</div>';
+                    
                     html += '<div class="score-name">' + member.name + '</div>';
                     html += '<div class="score-points">' + member.weeklyPoints + '</div>';
                     html += '<div class="score-label">points this week</div>';
@@ -4398,8 +4871,11 @@
                     var pointsNeeded = Math.max(member.jackpotPoints - yearlyTotal, 0);
                     var jackpotWon = member.jackpotWon[selectedYear] || yearlyTotal >= member.jackpotPoints;
                     
+                    // Get avatar settings (with defaults)
+                    var avatar = member.avatar || { skinTone: '#FFDBAC', hair: '💇', face: '😊', accessory: '' };
+                    
                     html += '<div class="jackpot-card" onclick="requestJackpotEdit(\'' + member.name + '\')" style="display:block;visibility:visible;opacity:1;">';
-                    html += '<div class="name">' + member.emoji + ' ' + member.name + '</div>';
+                    html += '<div class="name">' + avatar.face + ' ' + member.name + '</div>';
                     html += '<div class="yearly-total">' + yearlyTotal + '</div>';
                     html += '<div class="yearly-label">points in ' + selectedYear + '</div>';
                     html += '<div class="jackpot-progress"><div class="jackpot-progress-bar" style="width:' + progress + '%"></div></div>';
