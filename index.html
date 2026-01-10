@@ -2546,6 +2546,18 @@
                     <button type="button" class="key backspace" data-key="backspace">⌫</button>
                 </div>
                 <div class="keyboard-row">
+                    <button type="button" class="key" data-key="-">-</button>
+                    <button type="button" class="key" data-key="/">/</button>
+                    <button type="button" class="key" data-key=",">,</button>
+                    <button type="button" class="key" data-key="'">'</button>
+                    <button type="button" class="key" data-key="?">?</button>
+                    <button type="button" class="key" data-key="!">!</button>
+                    <button type="button" class="key" data-key="(">(</button>
+                    <button type="button" class="key" data-key=")">)</button>
+                    <button type="button" class="key" data-key=":"">:</button>
+                    <button type="button" class="key" data-key="€">€</button>
+                </div>
+                <div class="keyboard-row">
                     <button type="button" class="key" data-key="q">q</button>
                     <button type="button" class="key" data-key="w">w</button>
                     <button type="button" class="key" data-key="e">e</button>
@@ -4691,11 +4703,14 @@
         // =====================================================
         // POPUP KEYBOARD SYSTEM
         // =====================================================
-        let keyboardTarget = null;
-        let keyboardCallback = null;
-        let keyboardShift = false;
+        var keyboardTarget = null;
+        var keyboardCallback = null;
+        var keyboardShift = false;
+        var keyboardOpen = false;
 
         function openKeyboard(targetInput, callback) {
+            if (keyboardOpen) return; // Prevent double opening
+            keyboardOpen = true;
             keyboardTarget = targetInput;
             keyboardCallback = callback;
             document.getElementById('keyboardInput').value = targetInput.value || '';
@@ -4705,11 +4720,18 @@
         }
 
         function keyboardDone() {
-            const value = document.getElementById('keyboardInput').value;
+            var value = document.getElementById('keyboardInput').value;
             if (keyboardTarget) {
                 keyboardTarget.value = value;
-                // Trigger input event
-                keyboardTarget.dispatchEvent(new Event('input', { bubbles: true }));
+                // Trigger input event for compatibility
+                try {
+                    keyboardTarget.dispatchEvent(new Event('input', { bubbles: true }));
+                } catch(e) {
+                    // Fallback for older browsers
+                    var evt = document.createEvent('HTMLEvents');
+                    evt.initEvent('input', true, true);
+                    keyboardTarget.dispatchEvent(evt);
+                }
             }
             if (keyboardCallback) {
                 keyboardCallback(value);
@@ -4726,66 +4748,103 @@
             keyboardTarget = null;
             keyboardCallback = null;
             keyboardShift = false;
+            // Reset keyboard open flag after a short delay
+            setTimeout(function() {
+                keyboardOpen = false;
+            }, 300);
         }
 
         function updateShiftDisplay() {
-            const shiftKey = document.getElementById('shiftKey');
+            var shiftKey = document.getElementById('shiftKey');
             if (keyboardShift) {
                 shiftKey.classList.add('active');
             } else {
                 shiftKey.classList.remove('active');
             }
             // Update all letter keys
-            document.querySelectorAll('.key[data-key]').forEach(key => {
-                const keyVal = key.getAttribute('data-key');
+            var keys = document.querySelectorAll('.key[data-key]');
+            for (var i = 0; i < keys.length; i++) {
+                var key = keys[i];
+                var keyVal = key.getAttribute('data-key');
                 if (keyVal && keyVal.length === 1 && keyVal.match(/[a-z]/i)) {
                     key.textContent = keyboardShift ? keyVal.toUpperCase() : keyVal.toLowerCase();
                 }
-            });
+            }
         }
 
-        // Keyboard key handler
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.key').forEach(key => {
-                key.addEventListener('click', () => {
-                    const keyVal = key.getAttribute('data-key');
-                    const input = document.getElementById('keyboardInput');
-                    
-                    if (keyVal === 'backspace') {
-                        input.value = input.value.slice(0, -1);
-                    } else if (keyVal === 'shift') {
-                        keyboardShift = !keyboardShift;
-                        updateShiftDisplay();
-                    } else if (keyVal === ' ') {
-                        input.value += ' ';
-                    } else {
-                        const char = keyboardShift ? keyVal.toUpperCase() : keyVal;
-                        input.value += char;
-                        if (keyboardShift && keyVal.match(/[a-z]/i)) {
-                            keyboardShift = false;
-                            updateShiftDisplay();
-                        }
-                    }
-                });
-            });
+        function handleKeyPress(key) {
+            var keyVal = key.getAttribute('data-key');
+            var input = document.getElementById('keyboardInput');
+            
+            if (keyVal === 'backspace') {
+                input.value = input.value.slice(0, -1);
+            } else if (keyVal === 'shift') {
+                keyboardShift = !keyboardShift;
+                updateShiftDisplay();
+            } else if (keyVal === ' ') {
+                input.value += ' ';
+            } else {
+                var char = keyboardShift ? keyVal.toUpperCase() : keyVal;
+                input.value += char;
+                if (keyboardShift && keyVal.match(/[a-z]/i)) {
+                    keyboardShift = false;
+                    updateShiftDisplay();
+                }
+            }
+        }
 
-            // Auto-open keyboard on input focus (for touch devices)
-            document.addEventListener('focusin', (e) => {
-                if (e.target.matches('input[type="text"], input[type="tel"], input:not([type])')) {
+        function setupKeyboardListeners() {
+            // Setup key click handlers
+            var keys = document.querySelectorAll('.key');
+            for (var i = 0; i < keys.length; i++) {
+                (function(key) {
+                    key.onclick = function() {
+                        handleKeyPress(key);
+                    };
+                })(keys[i]);
+            }
+
+            // Handle input field clicks to open keyboard
+            document.addEventListener('click', function(e) {
+                var target = e.target;
+                
+                // Check if clicked on a text input
+                if (target.tagName === 'INPUT' && 
+                    (target.type === 'text' || target.type === 'tel' || !target.type)) {
+                    
                     // Check if it's a dashboard input (not login screen)
-                    if (document.getElementById('dashboard').style.display !== 'none') {
-                        // Don't open keyboard for PIN inputs
-                        if (!e.target.classList.contains('pin-digit')) {
-                            e.target.blur(); // Prevent native keyboard
-                            openKeyboard(e.target);
+                    var dashboard = document.getElementById('dashboard');
+                    if (dashboard && dashboard.style.display !== 'none') {
+                        // Don't open keyboard for PIN inputs or keyboard input itself
+                        if (!target.classList.contains('pin-digit') && 
+                            target.id !== 'keyboardInput') {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            target.blur(); // Prevent native keyboard
+                            setTimeout(function() {
+                                openKeyboard(target);
+                            }, 50);
                         }
                     }
                 }
-            });
-        });
+            }, true); // Use capture phase
+        }
 
-        document.querySelectorAll('.modal-overlay').forEach(overlay => {
-            overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('active'); });
+        // Initialize keyboard when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            setupKeyboardListeners();
+            
+            // Setup modal close on overlay click
+            var overlays = document.querySelectorAll('.modal-overlay');
+            for (var i = 0; i < overlays.length; i++) {
+                (function(overlay) {
+                    overlay.addEventListener('click', function(e) {
+                        if (e.target === overlay) {
+                            overlay.classList.remove('active');
+                        }
+                    });
+                })(overlays[i]);
+            }
         });
     </script>
 </body>
