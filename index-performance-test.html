@@ -1892,58 +1892,33 @@
 
         /* PERFORMANCE: All backdrop-filters removed for DAKboard compatibility */
 
-        /* ===== AVATAR BUILDER ===== */
+        /* ===== FULL BODY AVATAR BUILDER ===== */
         .avatar-display {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            position: relative;
+            width: 60px;
+            height: 85px;
             margin: 0 auto 8px;
+            border-radius: 12px;
             cursor: pointer;
-        }
-
-        .avatar-face {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
             display: flex;
-            align-items: center;
+            align-items: flex-end;
             justify-content: center;
             position: relative;
-            overflow: visible;
         }
 
-        .avatar-hair {
-            position: absolute;
-            top: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 1.5rem;
-            z-index: 1;
-        }
-
-        .avatar-face-emoji {
-            font-size: 2.2rem;
-            margin-top: 8px;
-        }
-
-        .avatar-accessory {
-            position: absolute;
-            top: -12px;
-            right: -2px;
-            font-size: 1.1rem;
-            z-index: 2;
+        .avatar-display svg {
+            width: 50px;
+            height: 75px;
         }
 
         .avatar-edit-hint {
             position: absolute;
-            bottom: -2px;
-            right: -2px;
-            width: 20px;
-            height: 20px;
+            bottom: 2px;
+            right: 2px;
+            width: 18px;
+            height: 18px;
             background: rgba(74, 222, 128, 0.9);
             border-radius: 50%;
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1959,10 +1934,12 @@
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.85);
+            background: rgba(0,0,0,0.9);
             z-index: 3000;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
+            padding: 10px;
+            overflow-y: auto;
         }
 
         .avatar-builder-overlay.active {
@@ -1971,12 +1948,10 @@
 
         .avatar-builder-modal {
             background: linear-gradient(135deg, #1e2a4a 0%, #16213e 100%);
-            border-radius: 24px;
-            padding: 25px;
-            width: 90%;
-            max-width: 400px;
-            max-height: 90vh;
-            overflow-y: auto;
+            border-radius: 20px;
+            padding: 15px;
+            width: 100%;
+            max-width: 500px;
             border: 1px solid rgba(255,255,255,0.15);
         }
 
@@ -1984,11 +1959,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .avatar-builder-title {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 500;
         }
 
@@ -2006,87 +1981,142 @@
             justify-content: center;
         }
 
-        .avatar-preview-large {
+        .avatar-preview-area {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .avatar-preview-frame {
             width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            margin: 0 auto 25px;
-            border: 4px solid rgba(255,255,255,0.2);
-            position: relative;
+            height: 160px;
+            border-radius: 16px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 8px;
+            border: 3px solid rgba(255,255,255,0.2);
         }
 
-        .avatar-preview-large .avatar-face {
-            width: 100%;
-            height: 100%;
+        .avatar-preview-frame svg {
+            width: 100px;
+            height: 140px;
         }
 
-        .avatar-preview-large .avatar-hair {
-            font-size: 2.5rem;
-            top: -15px;
+        .gender-toggle {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 15px;
         }
 
-        .avatar-preview-large .avatar-face-emoji {
-            font-size: 3.5rem;
-            margin-top: 12px;
+        .gender-btn {
+            padding: 8px 20px;
+            border-radius: 20px;
+            border: 2px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.05);
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
         }
 
-        .avatar-preview-large .avatar-accessory {
-            font-size: 1.8rem;
-            top: -20px;
-            right: -5px;
+        .gender-btn.selected {
+            border-color: #4ade80;
+            background: rgba(74, 222, 128, 0.2);
+        }
+
+        .avatar-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .avatar-tab {
+            padding: 6px 10px;
+            border-radius: 8px;
+            border: none;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+
+        .avatar-tab.active {
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            color: #1a1a2e;
+        }
+
+        .avatar-tab-content {
+            display: none;
+        }
+
+        .avatar-tab-content.active {
+            display: block;
         }
 
         .avatar-section {
-            margin-bottom: 18px;
+            margin-bottom: 12px;
         }
 
         .avatar-section-title {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             opacity: 0.7;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
         }
 
         .avatar-options {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 5px;
         }
 
-        .avatar-skin-option {
-            width: 38px;
-            height: 38px;
+        .avatar-color-opt {
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
-            border: 3px solid transparent;
+            border: 2px solid transparent;
             cursor: pointer;
         }
 
-        .avatar-skin-option.selected {
+        .avatar-color-opt.selected {
             border-color: #4ade80;
         }
 
-        .avatar-option-btn {
-            padding: 8px 12px;
-            border-radius: 10px;
+        .avatar-style-opt {
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
             background: rgba(255,255,255,0.1);
             border: 2px solid transparent;
             cursor: pointer;
-            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3px;
         }
 
-        .avatar-option-btn.selected {
+        .avatar-style-opt.selected {
             border-color: #4ade80;
             background: rgba(74, 222, 128, 0.2);
         }
 
+        .avatar-style-opt svg {
+            width: 100%;
+            height: 100%;
+        }
+
         .avatar-save-btn {
             width: 100%;
-            padding: 14px;
-            border-radius: 12px;
+            padding: 12px;
+            border-radius: 10px;
             border: none;
             background: linear-gradient(135deg, #4ade80, #22c55e);
             color: #1a1a2e;
             font-family: 'Outfit', sans-serif;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
             margin-top: 10px;
@@ -2830,65 +2860,103 @@
                 <button type="button" class="avatar-builder-close" onclick="closeAvatarBuilder()">✕</button>
             </div>
             
-            <div class="avatar-preview-large" id="avatarPreviewLarge">
-                <div class="avatar-face" id="avatarPreviewFace">
-                    <div class="avatar-hair" id="avatarPreviewHair">💇</div>
-                    <div class="avatar-face-emoji" id="avatarPreviewEmoji">😊</div>
-                    <div class="avatar-accessory" id="avatarPreviewAccessory"></div>
+            <div class="avatar-preview-area">
+                <div class="avatar-preview-frame" id="avatarPreviewFrame">
+                    <svg viewBox="0 0 100 150" id="avatarPreviewSvg"></svg>
                 </div>
             </div>
             
-            <div class="avatar-section">
-                <div class="avatar-section-title">🎨 Skin Tone:</div>
-                <div class="avatar-options" id="skinToneOptions">
-                    <div class="avatar-skin-option" style="background: #FFDBAC;" onclick="setAvatarSkin('#FFDBAC', this)"></div>
-                    <div class="avatar-skin-option" style="background: #F5C7A1;" onclick="setAvatarSkin('#F5C7A1', this)"></div>
-                    <div class="avatar-skin-option" style="background: #E5A97F;" onclick="setAvatarSkin('#E5A97F', this)"></div>
-                    <div class="avatar-skin-option" style="background: #C68C53;" onclick="setAvatarSkin('#C68C53', this)"></div>
-                    <div class="avatar-skin-option" style="background: #A56B3E;" onclick="setAvatarSkin('#A56B3E', this)"></div>
-                    <div class="avatar-skin-option" style="background: #6B4423;" onclick="setAvatarSkin('#6B4423', this)"></div>
+            <div class="gender-toggle">
+                <button type="button" class="gender-btn selected" id="genderBoyBtn" onclick="setAvatarGender('boy')">👦 Boy</button>
+                <button type="button" class="gender-btn" id="genderGirlBtn" onclick="setAvatarGender('girl')">👧 Girl</button>
+            </div>
+            
+            <div class="avatar-tabs">
+                <button type="button" class="avatar-tab active" onclick="showAvatarTab('face', this)">😊 Face</button>
+                <button type="button" class="avatar-tab" onclick="showAvatarTab('hair', this)">💇 Hair</button>
+                <button type="button" class="avatar-tab" onclick="showAvatarTab('top', this)">👕 Top</button>
+                <button type="button" class="avatar-tab" onclick="showAvatarTab('bottom', this)">👖 Bottom</button>
+                <button type="button" class="avatar-tab" onclick="showAvatarTab('shoes', this)">👟 Shoes</button>
+                <button type="button" class="avatar-tab" onclick="showAvatarTab('extras', this)">✨ Extras</button>
+            </div>
+            
+            <!-- Face Tab -->
+            <div class="avatar-tab-content active" id="avatar-tab-face">
+                <div class="avatar-section">
+                    <div class="avatar-section-title">🎨 Background</div>
+                    <div class="avatar-options" id="avBgOptions"></div>
+                </div>
+                <div class="avatar-section">
+                    <div class="avatar-section-title">👤 Skin Tone</div>
+                    <div class="avatar-options" id="avSkinOptions"></div>
+                </div>
+                <div class="avatar-section">
+                    <div class="avatar-section-title">👀 Eyes</div>
+                    <div class="avatar-options" id="avEyeOptions"></div>
+                </div>
+                <div class="avatar-section">
+                    <div class="avatar-section-title">👄 Mouth</div>
+                    <div class="avatar-options" id="avMouthOptions"></div>
                 </div>
             </div>
             
-            <div class="avatar-section">
-                <div class="avatar-section-title">💇 Hair Style:</div>
-                <div class="avatar-options" id="hairOptions">
-                    <button type="button" class="avatar-option-btn" onclick="setAvatarHair('💇', this)">💇</button>
-                    <button type="button" class="avatar-option-btn" onclick="setAvatarHair('💇‍♀️', this)">💇‍♀️</button>
-                    <button type="button" class="avatar-option-btn" onclick="setAvatarHair('👱', this)">👱</button>
-                    <button type="button" class="avatar-option-btn" onclick="setAvatarHair('👱‍♀️', this)">👱‍♀️</button>
-                    <button type="button" class="avatar-option-btn" onclick="setAvatarHair('🧑‍🦱', this)">🧑‍🦱</button>
-                    <button type="button" class="avatar-option-btn" onclick="setAvatarHair('🧑‍🦰', this)">🧑‍🦰</button>
-                    <button type="button" class="avatar-option-btn" onclick="setAvatarHair('🧑‍🦳', this)">🧑‍🦳</button>
-                    <button type="button" class="avatar-option-btn" onclick="setAvatarHair('🧑‍🦲', this)">🧑‍🦲</button>
+            <!-- Hair Tab -->
+            <div class="avatar-tab-content" id="avatar-tab-hair">
+                <div class="avatar-section">
+                    <div class="avatar-section-title">💇 Style</div>
+                    <div class="avatar-options" id="avHairStyleOptions"></div>
+                </div>
+                <div class="avatar-section">
+                    <div class="avatar-section-title">🎨 Color</div>
+                    <div class="avatar-options" id="avHairColorOptions"></div>
                 </div>
             </div>
             
-            <div class="avatar-section">
-                <div class="avatar-section-title">😊 Face Expression:</div>
-                <div class="avatar-options" id="faceOptions">
-                    <button type="button" class="avatar-option-btn" onclick="setAvatarFace('😊', this)">😊</button>
-                    <button type="button" class="avatar-option-btn" onclick="setAvatarFace('😄', this)">😄</button>
-                    <button type="button" class="avatar-option-btn" onclick="setAvatarFace('😎', this)">😎</button>
-                    <button type="button" class="avatar-option-btn" onclick="setAvatarFace('🤩', this)">🤩</button>
-                    <button type="button" class="avatar-option-btn" onclick="setAvatarFace('😇', this)">😇</button>
-                    <button type="button" class="avatar-option-btn" onclick="setAvatarFace('🥳', this)">🥳</button>
-                    <button type="button" class="avatar-option-btn" onclick="setAvatarFace('🤓', this)">🤓</button>
-                    <button type="button" class="avatar-option-btn" onclick="setAvatarFace('😜', this)">😜</button>
+            <!-- Top Tab -->
+            <div class="avatar-tab-content" id="avatar-tab-top">
+                <div class="avatar-section">
+                    <div class="avatar-section-title">👕 Style</div>
+                    <div class="avatar-options" id="avTopStyleOptions"></div>
+                </div>
+                <div class="avatar-section">
+                    <div class="avatar-section-title">🎨 Color</div>
+                    <div class="avatar-options" id="avTopColorOptions"></div>
                 </div>
             </div>
             
-            <div class="avatar-section">
-                <div class="avatar-section-title">✨ Accessories:</div>
-                <div class="avatar-options" id="accessoryOptions">
-                    <button type="button" class="avatar-option-btn" onclick="setAvatarAccessory('', this)">❌</button>
-                    <button type="button" class="avatar-option-btn" onclick="setAvatarAccessory('👑', this)">👑</button>
-                    <button type="button" class="avatar-option-btn" onclick="setAvatarAccessory('🎀', this)">🎀</button>
-                    <button type="button" class="avatar-option-btn" onclick="setAvatarAccessory('🧢', this)">🧢</button>
-                    <button type="button" class="avatar-option-btn" onclick="setAvatarAccessory('🎩', this)">🎩</button>
-                    <button type="button" class="avatar-option-btn" onclick="setAvatarAccessory('🌟', this)">🌟</button>
-                    <button type="button" class="avatar-option-btn" onclick="setAvatarAccessory('🌈', this)">🌈</button>
-                    <button type="button" class="avatar-option-btn" onclick="setAvatarAccessory('🦋', this)">🦋</button>
+            <!-- Bottom Tab -->
+            <div class="avatar-tab-content" id="avatar-tab-bottom">
+                <div class="avatar-section">
+                    <div class="avatar-section-title">👖 Style</div>
+                    <div class="avatar-options" id="avBottomStyleOptions"></div>
+                </div>
+                <div class="avatar-section">
+                    <div class="avatar-section-title">🎨 Color</div>
+                    <div class="avatar-options" id="avBottomColorOptions"></div>
+                </div>
+            </div>
+            
+            <!-- Shoes Tab -->
+            <div class="avatar-tab-content" id="avatar-tab-shoes">
+                <div class="avatar-section">
+                    <div class="avatar-section-title">👟 Style</div>
+                    <div class="avatar-options" id="avShoeStyleOptions"></div>
+                </div>
+                <div class="avatar-section">
+                    <div class="avatar-section-title">🎨 Color</div>
+                    <div class="avatar-options" id="avShoeColorOptions"></div>
+                </div>
+            </div>
+            
+            <!-- Extras Tab -->
+            <div class="avatar-tab-content" id="avatar-tab-extras">
+                <div class="avatar-section">
+                    <div class="avatar-section-title">👓 Face Accessories</div>
+                    <div class="avatar-options" id="avFaceAccOptions"></div>
+                </div>
+                <div class="avatar-section">
+                    <div class="avatar-section-title">🎩 Head Accessories</div>
+                    <div class="avatar-options" id="avHeadAccOptions"></div>
                 </div>
             </div>
             
@@ -2995,7 +3063,7 @@
                     2025: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                 },
                 jackpotGoal: 'New video game', jackpotPoints: 600, jackpotWon: {},
-                avatar: { skinTone: '#FFDBAC', hair: '💇', face: '😊', accessory: '' }
+                avatar: { gender: 'boy', bg1: '#3b82f6', bg2: '#8b5cf6', skin: '#FFDBAC', hairStyle: 'short', hairColor: '#4a3728', eyes: 'normal', mouth: 'smile', topStyle: 'tshirt', topColor: '#3b82f6', bottomStyle: 'pants', bottomColor: '#1e3a5f', shoeStyle: 'sneakers', shoeColor: '#1a1a1a', faceAcc: 'none', headAcc: 'none' }
             },
             { 
                 name: 'Synn', emoji: '👧', weeklyPoints: 0, 
@@ -3005,7 +3073,7 @@
                     2025: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                 },
                 jackpotGoal: 'Shopping trip', jackpotPoints: 600, jackpotWon: {},
-                avatar: { skinTone: '#F5C7A1', hair: '👱‍♀️', face: '🤩', accessory: '👑' }
+                avatar: { gender: 'girl', bg1: '#ec4899', bg2: '#f472b6', skin: '#F5C7A1', hairStyle: 'long', hairColor: '#d4a574', eyes: 'happy', mouth: 'laugh', topStyle: 'dress', topColor: '#ec4899', bottomStyle: 'pants', bottomColor: '#1e3a5f', shoeStyle: 'ballet', shoeColor: '#ec4899', faceAcc: 'none', headAcc: 'crown' }
             },
             { 
                 name: 'Sam', emoji: '👧', weeklyPoints: 0, 
@@ -3015,7 +3083,7 @@
                     2025: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                 },
                 jackpotGoal: 'Trip to amusement park', jackpotPoints: 600, jackpotWon: {},
-                avatar: { skinTone: '#E5A97F', hair: '🧑‍🦱', face: '😇', accessory: '🎀' }
+                avatar: { gender: 'girl', bg1: '#22c55e', bg2: '#4ade80', skin: '#E5A97F', hairStyle: 'curlyGirl', hairColor: '#1a1a1a', eyes: 'big', mouth: 'smile', topStyle: 'tshirt', topColor: '#22c55e', bottomStyle: 'skirt', bottomColor: '#8b5cf6', shoeStyle: 'sneakers', shoeColor: '#ffffff', faceAcc: 'glasses', headAcc: 'flower' }
             }
         ];
 
@@ -4346,40 +4414,256 @@
         }
 
         // =====================================================
-        // AVATAR BUILDER
+        // FULL BODY AVATAR BUILDER
         // =====================================================
         var currentAvatarMember = null;
-        var tempAvatar = { skinTone: '#FFDBAC', hair: '💇', face: '😊', accessory: '' };
+        var tempAvatar = {
+            gender: 'boy', bg1: '#3b82f6', bg2: '#8b5cf6', skin: '#FFDBAC',
+            hairStyle: 'short', hairColor: '#4a3728', eyes: 'normal', mouth: 'smile',
+            topStyle: 'tshirt', topColor: '#3b82f6', bottomStyle: 'pants', bottomColor: '#1e3a5f',
+            shoeStyle: 'sneakers', shoeColor: '#1a1a1a', faceAcc: 'none', headAcc: 'none'
+        };
 
-        function openAvatarBuilder(memberName) {
-            // Find member
-            var member = null;
-            for (var i = 0; i < familyMembers.length; i++) {
-                if (familyMembers[i].name === memberName) {
-                    member = familyMembers[i];
-                    break;
+        // Color helper
+        function adjustColor(hex, amt) {
+            if (!hex || hex.length < 7) return hex;
+            var num = parseInt(hex.slice(1), 16);
+            var r = Math.max(0, Math.min(255, (num >> 16) + amt));
+            var g = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amt));
+            var b = Math.max(0, Math.min(255, (num & 0x0000FF) + amt));
+            return '#' + (0x1000000 + r * 0x10000 + g * 0x100 + b).toString(16).slice(1);
+        }
+
+        // Avatar part definitions
+        var boyHair = {
+            short: function(c) { return '<ellipse cx="50" cy="22" rx="22" ry="12" fill="'+c+'"/><ellipse cx="50" cy="18" rx="18" ry="8" fill="'+c+'"/>'; },
+            spiky: function(c) { return '<polygon points="50,5 42,20 32,8 38,20 25,12 35,22 50,20 65,22 75,12 62,20 68,8 58,20" fill="'+c+'"/>'; },
+            buzz: function(c) { return '<ellipse cx="50" cy="20" rx="20" ry="10" fill="'+c+'"/>'; },
+            messy: function(c) { return '<ellipse cx="50" cy="20" rx="22" ry="12" fill="'+c+'"/><ellipse cx="35" cy="15" rx="8" ry="5" fill="'+c+'"/><ellipse cx="65" cy="15" rx="8" ry="5" fill="'+c+'"/><ellipse cx="50" cy="12" rx="10" ry="6" fill="'+c+'"/>'; },
+            sidePart: function(c) { return '<ellipse cx="50" cy="20" rx="22" ry="11" fill="'+c+'"/><ellipse cx="35" cy="18" rx="12" ry="8" fill="'+c+'"/>'; },
+            mohawk: function(c) { return '<rect x="44" y="2" width="12" height="24" rx="6" fill="'+c+'"/>'; },
+            curlyBoy: function(c) { return '<circle cx="35" cy="18" r="10" fill="'+c+'"/><circle cx="50" cy="14" r="10" fill="'+c+'"/><circle cx="65" cy="18" r="10" fill="'+c+'"/>'; },
+            bald: function(c) { return ''; }
+        };
+
+        var girlHair = {
+            long: function(c) { return '<ellipse cx="50" cy="55" rx="32" ry="35" fill="'+c+'"/><ellipse cx="50" cy="18" rx="26" ry="12" fill="'+c+'"/>'; },
+            ponytail: function(c) { return '<ellipse cx="50" cy="18" rx="24" ry="11" fill="'+c+'"/><ellipse cx="80" cy="35" rx="10" ry="22" fill="'+c+'"/>'; },
+            pigtails: function(c) { return '<ellipse cx="50" cy="18" rx="24" ry="11" fill="'+c+'"/><ellipse cx="18" cy="40" rx="9" ry="20" fill="'+c+'"/><ellipse cx="82" cy="40" rx="9" ry="20" fill="'+c+'"/>'; },
+            curlyGirl: function(c) { return '<circle cx="25" cy="22" r="12" fill="'+c+'"/><circle cx="50" cy="15" r="14" fill="'+c+'"/><circle cx="75" cy="22" r="12" fill="'+c+'"/><circle cx="18" cy="38" r="10" fill="'+c+'"/><circle cx="82" cy="38" r="10" fill="'+c+'"/>'; },
+            bob: function(c) { return '<ellipse cx="50" cy="35" rx="30" ry="22" fill="'+c+'"/><ellipse cx="50" cy="18" rx="24" ry="11" fill="'+c+'"/>'; },
+            bun: function(c) { return '<ellipse cx="50" cy="18" rx="24" ry="11" fill="'+c+'"/><circle cx="50" cy="5" r="12" fill="'+c+'"/>'; },
+            braids: function(c) { return '<ellipse cx="50" cy="18" rx="24" ry="11" fill="'+c+'"/><rect x="20" y="25" width="8" height="45" rx="4" fill="'+c+'"/><rect x="72" y="25" width="8" height="45" rx="4" fill="'+c+'"/><circle cx="24" cy="72" r="5" fill="'+c+'"/><circle cx="76" cy="72" r="5" fill="'+c+'"/>'; },
+            wavy: function(c) { return '<path d="M22 20 Q30 55 25 75 Q35 50 50 18 Q65 50 75 75 Q70 55 78 20 Q65 10 50 12 Q35 10 22 20" fill="'+c+'"/>'; },
+            shortGirl: function(c) { return '<ellipse cx="50" cy="22" rx="24" ry="13" fill="'+c+'"/><ellipse cx="50" cy="18" rx="20" ry="9" fill="'+c+'"/>'; }
+        };
+
+        var boyTops = {
+            tshirt: function(c) { return '<path d="M30 58 L22 72 L30 72 L30 95 L70 95 L70 72 L78 72 L70 58 L60 62 L50 58 L40 62 Z" fill="'+c+'"/><path d="M40 62 Q50 66 60 62" stroke="'+adjustColor(c,-30)+'" stroke-width="1" fill="none"/>'; },
+            hoodie: function(c) { return '<path d="M28 58 L18 75 L28 75 L28 95 L72 95 L72 75 L82 75 L72 58 L60 62 L50 58 L40 62 Z" fill="'+c+'"/><ellipse cx="50" cy="62" rx="14" ry="7" fill="'+adjustColor(c,-20)+'"/><path d="M42 95 L42 78 Q50 84 58 78 L58 95" stroke="'+adjustColor(c,-30)+'" stroke-width="1" fill="none"/>'; },
+            jersey: function(c) { return '<path d="M30 58 L22 72 L30 72 L30 95 L70 95 L70 72 L78 72 L70 58 L60 62 L50 58 L40 62 Z" fill="'+c+'"/><text x="50" y="82" text-anchor="middle" font-size="14" font-weight="bold" fill="white">7</text>'; },
+            tank: function(c) { return '<path d="M35 58 L35 95 L65 95 L65 58 L58 62 L50 58 L42 62 Z" fill="'+c+'"/>'; },
+            polo: function(c) { return '<path d="M30 58 L22 72 L30 72 L30 95 L70 95 L70 72 L78 72 L70 58 L60 62 L50 58 L40 62 Z" fill="'+c+'"/><path d="M45 58 L45 70 L55 70 L55 58" fill="'+adjustColor(c,-30)+'"/><circle cx="50" cy="66" r="2" fill="'+adjustColor(c,-50)+'"/>'; },
+            jacket: function(c) { return '<path d="M28 58 L18 72 L28 72 L28 95 L72 95 L72 72 L82 72 L72 58 L60 62 L50 58 L40 62 Z" fill="'+c+'"/><path d="M50 62 L50 95" stroke="'+adjustColor(c,30)+'" stroke-width="2"/><rect x="48" y="70" width="4" height="4" fill="'+adjustColor(c,30)+'"/><rect x="48" y="80" width="4" height="4" fill="'+adjustColor(c,30)+'"/>'; },
+            sweater: function(c) { return '<path d="M28 58 L18 75 L28 75 L28 95 L72 95 L72 75 L82 75 L72 58 L60 62 L50 58 L40 62 Z" fill="'+c+'"/><path d="M28 85 L72 85" stroke="'+adjustColor(c,-20)+'" stroke-width="2"/><path d="M28 90 L72 90" stroke="'+adjustColor(c,-20)+'" stroke-width="2"/>'; }
+        };
+
+        var girlTops = {
+            tshirt: function(c) { return '<path d="M32 58 L25 70 L32 70 L32 95 L68 95 L68 70 L75 70 L68 58 L58 62 L50 58 L42 62 Z" fill="'+c+'"/><path d="M42 62 Q50 66 58 62" stroke="'+adjustColor(c,-30)+'" stroke-width="1" fill="none"/>'; },
+            dress: function(c) { return '<path d="M32 58 L28 62 L32 62 L26 120 L74 120 L68 62 L72 62 L68 58 L58 62 L50 58 L42 62 Z" fill="'+c+'"/><path d="M42 62 Q50 66 58 62" stroke="'+adjustColor(c,-30)+'" stroke-width="1" fill="none"/>'; },
+            blouse: function(c) { return '<path d="M32 58 L25 70 L32 70 L32 95 L68 95 L68 70 L75 70 L68 58 L58 62 L50 58 L42 62 Z" fill="'+c+'"/><circle cx="50" cy="68" r="2" fill="'+adjustColor(c,-40)+'"/><circle cx="50" cy="76" r="2" fill="'+adjustColor(c,-40)+'"/><path d="M42 62 L46 58 L50 62 L54 58 L58 62" stroke="'+adjustColor(c,-30)+'" stroke-width="1" fill="none"/>'; },
+            tank: function(c) { return '<path d="M36 58 L36 95 L64 95 L64 58 L56 62 L50 58 L44 62 Z" fill="'+c+'"/>'; },
+            crop: function(c) { return '<path d="M32 58 L25 68 L32 68 L32 82 L68 82 L68 68 L75 68 L68 58 L58 62 L50 58 L42 62 Z" fill="'+c+'"/>'; },
+            sweater: function(c) { return '<path d="M30 58 L20 72 L30 72 L30 95 L70 95 L70 72 L80 72 L70 58 L58 62 L50 58 L42 62 Z" fill="'+c+'"/><path d="M30 85 L70 85" stroke="'+adjustColor(c,-20)+'" stroke-width="2"/><path d="M30 90 L70 90" stroke="'+adjustColor(c,-20)+'" stroke-width="2"/>'; },
+            hoodie: function(c) { return '<path d="M30 58 L20 72 L30 72 L30 95 L70 95 L70 72 L80 72 L70 58 L58 62 L50 58 L42 62 Z" fill="'+c+'"/><ellipse cx="50" cy="62" rx="12" ry="6" fill="'+adjustColor(c,-20)+'"/><path d="M44 95 L44 80 Q50 85 56 80 L56 95" stroke="'+adjustColor(c,-30)+'" stroke-width="1" fill="none"/>'; },
+            cardigan: function(c) { return '<path d="M30 58 L22 70 L30 70 L30 95 L70 95 L70 70 L78 70 L70 58 L58 62 L50 58 L42 62 Z" fill="'+c+'"/><path d="M50 62 L50 95" stroke="'+adjustColor(c,-30)+'" stroke-width="1" fill="none"/><rect x="33" y="70" width="6" height="20" fill="'+adjustColor(c,-20)+'"/><rect x="61" y="70" width="6" height="20" fill="'+adjustColor(c,-20)+'"/>'; }
+        };
+
+        var boyBottoms = {
+            pants: function(c) { return '<path d="M30 93 L30 130 L45 130 L48 100 L52 100 L55 130 L70 130 L70 93 Z" fill="'+c+'"/>'; },
+            shorts: function(c) { return '<path d="M30 93 L30 115 L45 115 L48 98 L52 98 L55 115 L70 115 L70 93 Z" fill="'+c+'"/>'; },
+            jeans: function(c) { return '<path d="M30 93 L30 130 L45 130 L48 100 L52 100 L55 130 L70 130 L70 93 Z" fill="'+c+'"/><path d="M35 110 L42 110" stroke="'+adjustColor(c,30)+'" stroke-width="1"/><path d="M58 110 L65 110" stroke="'+adjustColor(c,30)+'" stroke-width="1"/><circle cx="35" cy="100" r="1.5" fill="'+adjustColor(c,30)+'"/>'; },
+            cargo: function(c) { return '<path d="M30 93 L30 115 L45 115 L48 98 L52 98 L55 115 L70 115 L70 93 Z" fill="'+c+'"/><rect x="32" y="100" width="8" height="10" fill="'+adjustColor(c,-20)+'"/><rect x="60" y="100" width="8" height="10" fill="'+adjustColor(c,-20)+'"/>'; },
+            joggers: function(c) { return '<path d="M30 93 L28 128 L46 128 L48 100 L52 100 L54 128 L72 128 L70 93 Z" fill="'+c+'"/><path d="M28 125 L46 125" stroke="'+adjustColor(c,-20)+'" stroke-width="2"/><path d="M54 125 L72 125" stroke="'+adjustColor(c,-20)+'" stroke-width="2"/>'; }
+        };
+
+        var girlBottoms = {
+            pants: function(c) { return '<path d="M32 93 L32 130 L46 130 L48 100 L52 100 L54 130 L68 130 L68 93 Z" fill="'+c+'"/>'; },
+            shorts: function(c) { return '<path d="M32 93 L32 112 L46 112 L48 98 L52 98 L54 112 L68 112 L68 93 Z" fill="'+c+'"/>'; },
+            skirt: function(c) { return '<path d="M28 93 L24 118 L76 118 L72 93 Z" fill="'+c+'"/>'; },
+            skirtLong: function(c) { return '<path d="M28 93 L20 135 L80 135 L72 93 Z" fill="'+c+'"/>'; },
+            jeans: function(c) { return '<path d="M32 93 L32 130 L46 130 L48 100 L52 100 L54 130 L68 130 L68 93 Z" fill="'+c+'"/><path d="M36 110 L42 110" stroke="'+adjustColor(c,30)+'" stroke-width="1"/><path d="M58 110 L64 110" stroke="'+adjustColor(c,30)+'" stroke-width="1"/>'; },
+            leggings: function(c) { return '<path d="M34 93 L34 132 L46 132 L48 100 L52 100 L54 132 L66 132 L66 93 Z" fill="'+c+'"/>'; },
+            skater: function(c) { return '<path d="M30 93 Q35 105 28 115 L72 115 Q65 105 70 93 Z" fill="'+c+'"/>'; }
+        };
+
+        var boyShoes = {
+            sneakers: function(c) { return '<ellipse cx="38" cy="138" rx="13" ry="7" fill="'+c+'"/><ellipse cx="62" cy="138" rx="13" ry="7" fill="'+c+'"/><path d="M28 136 L28 132 L48 132 L48 136" fill="white"/><path d="M52 136 L52 132 L72 132 L72 136" fill="white"/>'; },
+            boots: function(c) { return '<path d="M26 122 L26 142 L50 142 L50 122 Z" fill="'+c+'"/><path d="M50 122 L50 142 L74 142 L74 122 Z" fill="'+c+'"/>'; },
+            sandals: function(c) { return '<ellipse cx="38" cy="142" rx="11" ry="5" fill="'+c+'"/><ellipse cx="62" cy="142" rx="11" ry="5" fill="'+c+'"/><path d="M32 140 L44 140" stroke="'+c+'" stroke-width="4"/><path d="M56 140 L68 140" stroke="'+c+'" stroke-width="4"/>'; },
+            sports: function(c) { return '<ellipse cx="38" cy="138" rx="14" ry="7" fill="'+c+'"/><ellipse cx="62" cy="138" rx="14" ry="7" fill="'+c+'"/><path d="M30 136 L46 136" stroke="white" stroke-width="2"/><path d="M54 136 L70 136" stroke="white" stroke-width="2"/><path d="M32 138 L36 134" stroke="white" stroke-width="1"/><path d="M56 138 L60 134" stroke="white" stroke-width="1"/>'; },
+            hightops: function(c) { return '<path d="M26 125 L26 142 L50 142 L50 125 Q38 122 26 125" fill="'+c+'"/><path d="M50 125 L50 142 L74 142 L74 125 Q62 122 50 125" fill="'+c+'"/><circle cx="30" cy="128" r="2" fill="white"/><circle cx="70" cy="128" r="2" fill="white"/>'; }
+        };
+
+        var girlShoes = {
+            sneakers: function(c) { return '<ellipse cx="38" cy="140" rx="12" ry="6" fill="'+c+'"/><ellipse cx="62" cy="140" rx="12" ry="6" fill="'+c+'"/><path d="M29 138 L29 135 L47 135 L47 138" fill="white"/><path d="M53 138 L53 135 L71 135 L71 138" fill="white"/>'; },
+            boots: function(c) { return '<path d="M28 120 L28 142 L48 142 L48 120 Z" fill="'+c+'"/><path d="M52 120 L52 142 L72 142 L72 120 Z" fill="'+c+'"/>'; },
+            sandals: function(c) { return '<ellipse cx="38" cy="142" rx="10" ry="4" fill="'+c+'"/><ellipse cx="62" cy="142" rx="10" ry="4" fill="'+c+'"/><path d="M34 140 L42 140" stroke="'+c+'" stroke-width="3"/><path d="M58 140 L66 140" stroke="'+c+'" stroke-width="3"/>'; },
+            heels: function(c) { return '<path d="M30 132 L30 140 L48 140 L48 132 Z" fill="'+c+'"/><path d="M52 132 L52 140 L70 140 L70 132 Z" fill="'+c+'"/><rect x="32" y="140" width="5" height="8" fill="'+c+'"/><rect x="63" y="140" width="5" height="8" fill="'+c+'"/>'; },
+            ballet: function(c) { return '<ellipse cx="38" cy="140" rx="11" ry="5" fill="'+c+'"/><ellipse cx="62" cy="140" rx="11" ry="5" fill="'+c+'"/><path d="M38 136 Q38 133 42 136" stroke="'+adjustColor(c,-30)+'" stroke-width="1" fill="none"/><path d="M62 136 Q62 133 66 136" stroke="'+adjustColor(c,-30)+'" stroke-width="1" fill="none"/>'; },
+            slippers: function(c) { return '<ellipse cx="38" cy="142" rx="12" ry="5" fill="'+c+'"/><ellipse cx="62" cy="142" rx="12" ry="5" fill="'+c+'"/><ellipse cx="38" cy="140" rx="6" ry="4" fill="'+adjustColor(c,40)+'"/><ellipse cx="62" cy="140" rx="6" ry="4" fill="'+adjustColor(c,40)+'"/>'; }
+        };
+
+        var boyFaceAcc = {
+            none: '',
+            glasses: '<circle cx="40" cy="32" r="8" fill="none" stroke="#333" stroke-width="1.5"/><circle cx="60" cy="32" r="8" fill="none" stroke="#333" stroke-width="1.5"/><path d="M48 32 L52 32" stroke="#333" stroke-width="1.5"/><path d="M25 30 L32 32" stroke="#333" stroke-width="1.5"/><path d="M68 32 L75 30" stroke="#333" stroke-width="1.5"/>',
+            sunglasses: '<ellipse cx="40" cy="32" rx="10" ry="7" fill="#333"/><ellipse cx="60" cy="32" rx="10" ry="7" fill="#333"/><path d="M50 32 L50 32" stroke="#333" stroke-width="3"/><path d="M25 29 L30 32" stroke="#333" stroke-width="1.5"/><path d="M70 32 L75 29" stroke="#333" stroke-width="1.5"/>',
+            sportGlasses: '<path d="M28 30 L45 30 L48 35 L52 35 L55 30 L72 30 L72 38 L55 38 L52 33 L48 33 L45 38 L28 38 Z" fill="#333" fill-opacity="0.8"/>'
+        };
+
+        var boyHeadAcc = {
+            none: '',
+            cap: '<ellipse cx="50" cy="18" rx="28" ry="10" fill="#3b82f6"/><path d="M25 18 Q50 0 75 18" fill="#3b82f6"/><ellipse cx="78" cy="20" rx="12" ry="6" fill="#2563eb"/>',
+            beanie: '<ellipse cx="50" cy="20" rx="26" ry="14" fill="#ef4444"/><ellipse cx="50" cy="12" rx="20" ry="8" fill="#ef4444"/><circle cx="50" cy="2" r="5" fill="#ef4444"/>',
+            headphones: '<path d="M24 30 Q24 8 50 8 Q76 8 76 30" stroke="#333" stroke-width="5" fill="none"/><ellipse cx="24" cy="34" rx="7" ry="10" fill="#333"/><ellipse cx="76" cy="34" rx="7" ry="10" fill="#333"/>',
+            backwards: '<ellipse cx="50" cy="22" rx="26" ry="12" fill="#22c55e"/><ellipse cx="22" cy="24" rx="10" ry="6" fill="#16a34a"/>',
+            helmet: '<path d="M22 35 Q22 5 50 5 Q78 5 78 35" fill="#f59e0b"/><ellipse cx="50" cy="35" rx="28" ry="8" fill="#d97706"/>'
+        };
+
+        var girlFaceAcc = {
+            none: '',
+            glasses: '<circle cx="40" cy="32" r="7" fill="none" stroke="#ec4899" stroke-width="1.5"/><circle cx="60" cy="32" r="7" fill="none" stroke="#ec4899" stroke-width="1.5"/><path d="M47 32 L53 32" stroke="#ec4899" stroke-width="1.5"/><path d="M26 30 L33 32" stroke="#ec4899" stroke-width="1.5"/><path d="M67 32 L74 30" stroke="#ec4899" stroke-width="1.5"/>',
+            sunglasses: '<ellipse cx="40" cy="32" rx="9" ry="6" fill="#8b5cf6"/><ellipse cx="60" cy="32" rx="9" ry="6" fill="#8b5cf6"/><path d="M49 32 L51 32" stroke="#6d28d9" stroke-width="2"/><path d="M26 30 L31 32" stroke="#6d28d9" stroke-width="1.5"/><path d="M69 32 L74 30" stroke="#6d28d9" stroke-width="1.5"/>',
+            catEye: '<path d="M30 35 L35 28 L48 32 L48 36 L35 36 Z" fill="#333"/><path d="M52 32 L65 28 L70 35 L65 36 L52 36 Z" fill="#333"/><path d="M48 34 L52 34" stroke="#333" stroke-width="2"/>'
+        };
+
+        var girlHeadAcc = {
+            none: '',
+            crown: '<polygon points="35,12 40,2 45,8 50,-2 55,8 60,2 65,12" fill="#ffd700" stroke="#daa520" stroke-width="0.5"/><rect x="35" y="12" width="30" height="5" fill="#ffd700"/><circle cx="42" cy="8" r="2" fill="#ff0066"/><circle cx="50" cy="2" r="2" fill="#00ffcc"/><circle cx="58" cy="8" r="2" fill="#ff0066"/>',
+            bow: '<ellipse cx="25" cy="18" rx="12" ry="8" fill="#ff69b4"/><ellipse cx="42" cy="18" rx="12" ry="8" fill="#ff69b4"/><circle cx="33" cy="18" r="5" fill="#ff1493"/>',
+            flower: '<circle cx="75" cy="22" r="10" fill="#ff69b4"/><circle cx="75" cy="22" r="5" fill="#ffd700"/>',
+            headband: '<path d="M22 25 Q50 15 78 25" stroke="#ec4899" stroke-width="4" fill="none"/>',
+            tiara: '<path d="M30 20 Q40 10 50 15 Q60 10 70 20" stroke="#c0c0c0" stroke-width="2" fill="none"/><circle cx="50" cy="12" r="4" fill="#87ceeb"/><circle cx="40" cy="16" r="2" fill="#c0c0c0"/><circle cx="60" cy="16" r="2" fill="#c0c0c0"/>',
+            scrunchie: '<circle cx="75" cy="30" r="8" fill="#8b5cf6"/><circle cx="75" cy="30" r="5" fill="#a78bfa"/>'
+        };
+
+        var avatarEyes = {
+            normal: '<ellipse cx="40" cy="32" rx="5" ry="6" fill="white"/><ellipse cx="60" cy="32" rx="5" ry="6" fill="white"/><circle cx="40" cy="33" r="3" fill="#2d1b0e"/><circle cx="60" cy="33" r="3" fill="#2d1b0e"/><circle cx="41" cy="31" r="1" fill="white"/><circle cx="61" cy="31" r="1" fill="white"/>',
+            happy: '<path d="M35 34 Q40 28 45 34" stroke="#2d1b0e" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M55 34 Q60 28 65 34" stroke="#2d1b0e" stroke-width="2" fill="none" stroke-linecap="round"/>',
+            wink: '<ellipse cx="40" cy="32" rx="5" ry="6" fill="white"/><circle cx="40" cy="33" r="3" fill="#2d1b0e"/><path d="M55 32 Q60 30 65 32" stroke="#2d1b0e" stroke-width="2" fill="none" stroke-linecap="round"/>',
+            big: '<ellipse cx="40" cy="32" rx="7" ry="8" fill="white"/><ellipse cx="60" cy="32" rx="7" ry="8" fill="white"/><circle cx="40" cy="33" r="4" fill="#2d1b0e"/><circle cx="60" cy="33" r="4" fill="#2d1b0e"/><circle cx="42" cy="30" r="1.5" fill="white"/><circle cx="62" cy="30" r="1.5" fill="white"/>',
+            sleepy: '<path d="M35 32 L45 32" stroke="#2d1b0e" stroke-width="2" stroke-linecap="round"/><path d="M55 32 L65 32" stroke="#2d1b0e" stroke-width="2" stroke-linecap="round"/>'
+        };
+
+        var avatarMouths = {
+            smile: '<path d="M42 42 Q50 48 58 42" stroke="#c47b7b" stroke-width="2" fill="none" stroke-linecap="round"/>',
+            laugh: '<path d="M42 40 Q50 50 58 40 Z" fill="#c47b7b"/><path d="M45 45 Q50 47 55 45" fill="white"/>',
+            grin: '<path d="M42 42 Q50 46 58 42" stroke="#c47b7b" stroke-width="2" fill="none"/><path d="M44 43 L56 43" stroke="white" stroke-width="1.5"/>',
+            tongue: '<path d="M42 42 Q50 47 58 42" stroke="#c47b7b" stroke-width="2" fill="none"/><ellipse cx="50" cy="47" rx="4" ry="5" fill="#ff6b6b"/>',
+            surprised: '<ellipse cx="50" cy="44" rx="5" ry="6" fill="#c47b7b"/>',
+            flat: '<path d="M44 43 L56 43" stroke="#c47b7b" stroke-width="2" stroke-linecap="round"/>'
+        };
+
+        function generateAvatarSVG(av) {
+            var svg = '';
+            var isBoy = av.gender === 'boy';
+            var hairParts = isBoy ? boyHair : girlHair;
+            var topParts = isBoy ? boyTops : girlTops;
+            var bottomParts = isBoy ? boyBottoms : girlBottoms;
+            var shoeParts = isBoy ? boyShoes : girlShoes;
+            var faceAccParts = isBoy ? boyFaceAcc : girlFaceAcc;
+            var headAccParts = isBoy ? boyHeadAcc : girlHeadAcc;
+
+            var isDress = !isBoy && av.topStyle === 'dress';
+            var showLegs = !isDress && (av.bottomStyle === 'shorts' || av.bottomStyle === 'skirt' || av.bottomStyle === 'skater' || av.bottomStyle === 'cargo');
+
+            // Hair behind for long styles
+            if (!isBoy && (av.hairStyle === 'long' || av.hairStyle === 'braids' || av.hairStyle === 'wavy') && hairParts[av.hairStyle]) {
+                svg += hairParts[av.hairStyle](av.hairColor);
+            }
+
+            // Legs
+            if (showLegs) {
+                var legTop = av.bottomStyle === 'shorts' || av.bottomStyle === 'cargo' ? 115 : 118;
+                svg += '<rect x="34" y="'+legTop+'" width="11" height="'+(138-legTop)+'" rx="5" fill="'+av.skin+'"/>';
+                svg += '<rect x="55" y="'+legTop+'" width="11" height="'+(138-legTop)+'" rx="5" fill="'+av.skin+'"/>';
+            }
+
+            // Arms & hands
+            svg += '<rect x="18" y="60" width="10" height="35" rx="4" fill="'+av.skin+'"/>';
+            svg += '<rect x="72" y="60" width="10" height="35" rx="4" fill="'+av.skin+'"/>';
+            svg += '<circle cx="23" cy="97" r="6" fill="'+av.skin+'"/>';
+            svg += '<circle cx="77" cy="97" r="6" fill="'+av.skin+'"/>';
+
+            // Head
+            svg += '<ellipse cx="50" cy="32" rx="24" ry="26" fill="'+av.skin+'"/>';
+            svg += '<rect x="44" y="52" width="12" height="10" fill="'+av.skin+'"/>';
+            svg += '<ellipse cx="26" cy="32" rx="4" ry="6" fill="'+av.skin+'"/>';
+            svg += '<ellipse cx="74" cy="32" rx="4" ry="6" fill="'+av.skin+'"/>';
+
+            // Hair on top
+            if (hairParts[av.hairStyle]) {
+                if (isBoy || (!isBoy && av.hairStyle !== 'long' && av.hairStyle !== 'braids' && av.hairStyle !== 'wavy')) {
+                    svg += hairParts[av.hairStyle](av.hairColor);
+                } else {
+                    svg += '<ellipse cx="50" cy="18" rx="26" ry="12" fill="'+av.hairColor+'"/>';
                 }
             }
+
+            // Eyes & mouth
+            svg += avatarEyes[av.eyes] || avatarEyes.normal;
+            svg += '<circle cx="32" cy="40" r="4" fill="#ffb6c1" opacity="0.4"/>';
+            svg += '<circle cx="68" cy="40" r="4" fill="#ffb6c1" opacity="0.4"/>';
+            svg += '<path d="M35 26 Q40 24 45 26" stroke="'+av.hairColor+'" stroke-width="1.5" fill="none"/>';
+            svg += '<path d="M55 26 Q60 24 65 26" stroke="'+av.hairColor+'" stroke-width="1.5" fill="none"/>';
+            svg += avatarMouths[av.mouth] || avatarMouths.smile;
+
+            // Top
+            if (isDress) {
+                svg += topParts.dress(av.topColor);
+            } else if (topParts[av.topStyle]) {
+                svg += topParts[av.topStyle](av.topColor);
+                if (bottomParts[av.bottomStyle]) {
+                    svg += bottomParts[av.bottomStyle](av.bottomColor);
+                }
+            }
+
+            // Shoes
+            if (shoeParts[av.shoeStyle]) {
+                svg += shoeParts[av.shoeStyle](av.shoeColor);
+            }
+
+            // Accessories
+            if (headAccParts[av.headAcc]) svg += headAccParts[av.headAcc];
+            if (faceAccParts[av.faceAcc]) svg += faceAccParts[av.faceAcc];
+
+            return svg;
+        }
+
+        function getDefaultAvatar(gender) {
+            if (gender === 'girl') {
+                return { gender: 'girl', bg1: '#ec4899', bg2: '#f472b6', skin: '#FFDBAC', hairStyle: 'long', hairColor: '#4a3728', eyes: 'normal', mouth: 'smile', topStyle: 'tshirt', topColor: '#ec4899', bottomStyle: 'pants', bottomColor: '#1e3a5f', shoeStyle: 'sneakers', shoeColor: '#1a1a1a', faceAcc: 'none', headAcc: 'none' };
+            }
+            return { gender: 'boy', bg1: '#3b82f6', bg2: '#8b5cf6', skin: '#FFDBAC', hairStyle: 'short', hairColor: '#4a3728', eyes: 'normal', mouth: 'smile', topStyle: 'tshirt', topColor: '#3b82f6', bottomStyle: 'pants', bottomColor: '#1e3a5f', shoeStyle: 'sneakers', shoeColor: '#1a1a1a', faceAcc: 'none', headAcc: 'none' };
+        }
+
+        function openAvatarBuilder(memberName) {
+            var member = null;
+            for (var i = 0; i < familyMembers.length; i++) {
+                if (familyMembers[i].name === memberName) { member = familyMembers[i]; break; }
+            }
             if (!member) return;
-            
+
             currentAvatarMember = memberName;
-            
-            // Load current avatar or defaults
-            var avatar = member.avatar || { skinTone: '#FFDBAC', hair: '💇', face: '😊', accessory: '' };
-            tempAvatar = {
-                skinTone: avatar.skinTone || '#FFDBAC',
-                hair: avatar.hair || '💇',
-                face: avatar.face || '😊',
-                accessory: avatar.accessory || ''
-            };
-            
-            // Update preview
+            var av = member.avatar || getDefaultAvatar('boy');
+            tempAvatar = JSON.parse(JSON.stringify(av));
+
+            // Set gender buttons
+            document.getElementById('genderBoyBtn').classList.toggle('selected', tempAvatar.gender === 'boy');
+            document.getElementById('genderGirlBtn').classList.toggle('selected', tempAvatar.gender === 'girl');
+
+            buildAvatarOptions();
             updateAvatarPreview();
-            
-            // Highlight current selections
-            highlightAvatarSelections();
-            
-            // Show modal
             document.getElementById('avatarBuilderOverlay').classList.add('active');
         }
 
@@ -4388,141 +4672,210 @@
             currentAvatarMember = null;
         }
 
+        function showAvatarTab(tabId, btn) {
+            var contents = document.querySelectorAll('.avatar-tab-content');
+            for (var i = 0; i < contents.length; i++) contents[i].classList.remove('active');
+            var tabs = document.querySelectorAll('.avatar-tab');
+            for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+            document.getElementById('avatar-tab-' + tabId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        function setAvatarGender(g) {
+            tempAvatar.gender = g;
+            document.getElementById('genderBoyBtn').classList.toggle('selected', g === 'boy');
+            document.getElementById('genderGirlBtn').classList.toggle('selected', g === 'girl');
+            // Reset to defaults for this gender
+            var def = getDefaultAvatar(g);
+            tempAvatar.hairStyle = def.hairStyle;
+            tempAvatar.topStyle = def.topStyle;
+            tempAvatar.bottomStyle = def.bottomStyle;
+            tempAvatar.shoeStyle = def.shoeStyle;
+            tempAvatar.faceAcc = 'none';
+            tempAvatar.headAcc = 'none';
+            buildAvatarOptions();
+            updateAvatarPreview();
+        }
+
         function updateAvatarPreview() {
-            document.getElementById('avatarPreviewFace').style.background = tempAvatar.skinTone;
-            document.getElementById('avatarPreviewHair').textContent = tempAvatar.hair;
-            document.getElementById('avatarPreviewEmoji').textContent = tempAvatar.face;
-            document.getElementById('avatarPreviewAccessory').textContent = tempAvatar.accessory;
+            var svg = generateAvatarSVG(tempAvatar);
+            document.getElementById('avatarPreviewSvg').innerHTML = svg;
+            document.getElementById('avatarPreviewFrame').style.background = 'linear-gradient(135deg, '+tempAvatar.bg1+', '+tempAvatar.bg2+')';
         }
 
-        function highlightAvatarSelections() {
-            // Highlight skin tone
-            var skinOptions = document.querySelectorAll('.avatar-skin-option');
-            for (var i = 0; i < skinOptions.length; i++) {
-                var option = skinOptions[i];
-                if (option.style.background === tempAvatar.skinTone || 
-                    rgbToHex(option.style.background) === tempAvatar.skinTone.toUpperCase()) {
-                    option.classList.add('selected');
-                } else {
-                    option.classList.remove('selected');
-                }
-            }
-            
-            // Highlight hair
-            var hairOptions = document.querySelectorAll('#hairOptions .avatar-option-btn');
-            for (var i = 0; i < hairOptions.length; i++) {
-                var btn = hairOptions[i];
-                if (btn.textContent === tempAvatar.hair) {
-                    btn.classList.add('selected');
-                } else {
-                    btn.classList.remove('selected');
-                }
-            }
-            
-            // Highlight face
-            var faceOptions = document.querySelectorAll('#faceOptions .avatar-option-btn');
-            for (var i = 0; i < faceOptions.length; i++) {
-                var btn = faceOptions[i];
-                if (btn.textContent === tempAvatar.face) {
-                    btn.classList.add('selected');
-                } else {
-                    btn.classList.remove('selected');
-                }
-            }
-            
-            // Highlight accessory
-            var accessoryOptions = document.querySelectorAll('#accessoryOptions .avatar-option-btn');
-            for (var i = 0; i < accessoryOptions.length; i++) {
-                var btn = accessoryOptions[i];
-                var btnValue = btn.textContent === '❌' ? '' : btn.textContent;
-                if (btnValue === tempAvatar.accessory) {
-                    btn.classList.add('selected');
-                } else {
-                    btn.classList.remove('selected');
-                }
-            }
-        }
-
-        function rgbToHex(rgb) {
-            if (!rgb || rgb.indexOf('rgb') === -1) return rgb;
-            var parts = rgb.match(/\d+/g);
-            if (!parts || parts.length < 3) return rgb;
-            var r = parseInt(parts[0]).toString(16).padStart(2, '0');
-            var g = parseInt(parts[1]).toString(16).padStart(2, '0');
-            var b = parseInt(parts[2]).toString(16).padStart(2, '0');
-            return '#' + r + g + b;
-        }
-
-        function setAvatarSkin(color, el) {
-            tempAvatar.skinTone = color;
-            updateAvatarPreview();
-            
-            var options = document.querySelectorAll('.avatar-skin-option');
-            for (var i = 0; i < options.length; i++) {
-                options[i].classList.remove('selected');
-            }
+        function selectAvatarOpt(el) {
+            var siblings = el.parentElement.querySelectorAll('.avatar-color-opt, .avatar-style-opt');
+            for (var i = 0; i < siblings.length; i++) siblings[i].classList.remove('selected');
             el.classList.add('selected');
         }
 
-        function setAvatarHair(hair, el) {
-            tempAvatar.hair = hair;
-            updateAvatarPreview();
-            
-            var options = document.querySelectorAll('#hairOptions .avatar-option-btn');
-            for (var i = 0; i < options.length; i++) {
-                options[i].classList.remove('selected');
-            }
-            el.classList.add('selected');
-        }
+        function setAvBg(c1, c2, el) { tempAvatar.bg1 = c1; tempAvatar.bg2 = c2; selectAvatarOpt(el); updateAvatarPreview(); }
+        function setAvSkin(c, el) { tempAvatar.skin = c; selectAvatarOpt(el); updateAvatarPreview(); }
+        function setAvHairColor(c, el) { tempAvatar.hairColor = c; selectAvatarOpt(el); updateAvatarPreview(); }
+        function setAvTopColor(c, el) { tempAvatar.topColor = c; selectAvatarOpt(el); updateAvatarPreview(); }
+        function setAvBottomColor(c, el) { tempAvatar.bottomColor = c; selectAvatarOpt(el); updateAvatarPreview(); }
+        function setAvShoeColor(c, el) { tempAvatar.shoeColor = c; selectAvatarOpt(el); updateAvatarPreview(); }
+        function setAvHairStyle(s, el) { tempAvatar.hairStyle = s; selectAvatarOpt(el); updateAvatarPreview(); }
+        function setAvEyes(s, el) { tempAvatar.eyes = s; selectAvatarOpt(el); updateAvatarPreview(); }
+        function setAvMouth(s, el) { tempAvatar.mouth = s; selectAvatarOpt(el); updateAvatarPreview(); }
+        function setAvTopStyle(s, el) { tempAvatar.topStyle = s; selectAvatarOpt(el); updateAvatarPreview(); }
+        function setAvBottomStyle(s, el) { tempAvatar.bottomStyle = s; selectAvatarOpt(el); updateAvatarPreview(); }
+        function setAvShoeStyle(s, el) { tempAvatar.shoeStyle = s; selectAvatarOpt(el); updateAvatarPreview(); }
+        function setAvFaceAcc(s, el) { tempAvatar.faceAcc = s; selectAvatarOpt(el); updateAvatarPreview(); }
+        function setAvHeadAcc(s, el) { tempAvatar.headAcc = s; selectAvatarOpt(el); updateAvatarPreview(); }
 
-        function setAvatarFace(face, el) {
-            tempAvatar.face = face;
-            updateAvatarPreview();
-            
-            var options = document.querySelectorAll('#faceOptions .avatar-option-btn');
-            for (var i = 0; i < options.length; i++) {
-                options[i].classList.remove('selected');
-            }
-            el.classList.add('selected');
-        }
+        function buildAvatarOptions() {
+            var isBoy = tempAvatar.gender === 'boy';
 
-        function setAvatarAccessory(accessory, el) {
-            tempAvatar.accessory = accessory;
-            updateAvatarPreview();
-            
-            var options = document.querySelectorAll('#accessoryOptions .avatar-option-btn');
-            for (var i = 0; i < options.length; i++) {
-                options[i].classList.remove('selected');
+            // Backgrounds
+            var bgOpts = document.getElementById('avBgOptions');
+            bgOpts.innerHTML = '';
+            var bgs = [['#3b82f6','#8b5cf6'],['#ec4899','#f472b6'],['#22c55e','#4ade80'],['#f59e0b','#fbbf24'],['#ef4444','#f87171'],['#8b5cf6','#a78bfa'],['#06b6d4','#22d3ee'],['#f97316','#fb923c']];
+            for (var i = 0; i < bgs.length; i++) {
+                var sel = (tempAvatar.bg1 === bgs[i][0]) ? ' selected' : '';
+                bgOpts.innerHTML += '<div class="avatar-color-opt'+sel+'" style="background: linear-gradient(135deg, '+bgs[i][0]+', '+bgs[i][1]+');" onclick="setAvBg(\''+bgs[i][0]+'\', \''+bgs[i][1]+'\', this)"></div>';
             }
-            el.classList.add('selected');
+
+            // Skins
+            var skinOpts = document.getElementById('avSkinOptions');
+            skinOpts.innerHTML = '';
+            var skins = ['#FFDBAC','#F5C7A1','#E5A97F','#C68C53','#A56B3E','#6B4423'];
+            for (var i = 0; i < skins.length; i++) {
+                var sel = (tempAvatar.skin === skins[i]) ? ' selected' : '';
+                skinOpts.innerHTML += '<div class="avatar-color-opt'+sel+'" style="background: '+skins[i]+';" onclick="setAvSkin(\''+skins[i]+'\', this)"></div>';
+            }
+
+            // Eyes
+            var eyeOpts = document.getElementById('avEyeOptions');
+            eyeOpts.innerHTML = '';
+            var eyeKeys = ['normal','happy','wink','big','sleepy'];
+            for (var i = 0; i < eyeKeys.length; i++) {
+                var sel = (tempAvatar.eyes === eyeKeys[i]) ? ' selected' : '';
+                eyeOpts.innerHTML += '<div class="avatar-style-opt'+sel+'" onclick="setAvEyes(\''+eyeKeys[i]+'\', this)"><svg viewBox="30 25 40 20">'+avatarEyes[eyeKeys[i]]+'</svg></div>';
+            }
+
+            // Mouths
+            var mouthOpts = document.getElementById('avMouthOptions');
+            mouthOpts.innerHTML = '';
+            var mouthKeys = ['smile','laugh','grin','tongue','surprised','flat'];
+            for (var i = 0; i < mouthKeys.length; i++) {
+                var sel = (tempAvatar.mouth === mouthKeys[i]) ? ' selected' : '';
+                mouthOpts.innerHTML += '<div class="avatar-style-opt'+sel+'" onclick="setAvMouth(\''+mouthKeys[i]+'\', this)"><svg viewBox="35 38 30 20">'+avatarMouths[mouthKeys[i]]+'</svg></div>';
+            }
+
+            // Hair styles
+            var hairOpts = document.getElementById('avHairStyleOptions');
+            hairOpts.innerHTML = '';
+            var hairParts = isBoy ? boyHair : girlHair;
+            var hairKeys = Object.keys(hairParts);
+            for (var i = 0; i < hairKeys.length; i++) {
+                var sel = (tempAvatar.hairStyle === hairKeys[i]) ? ' selected' : '';
+                var preview = '<circle cx="25" cy="30" r="12" fill="#FFDBAC"/>' + hairParts[hairKeys[i]]('#4a3728');
+                hairOpts.innerHTML += '<div class="avatar-style-opt'+sel+'" onclick="setAvHairStyle(\''+hairKeys[i]+'\', this)"><svg viewBox="5 -5 40 45">'+preview+'</svg></div>';
+            }
+
+            // Hair colors
+            var hairColorOpts = document.getElementById('avHairColorOptions');
+            hairColorOpts.innerHTML = '';
+            var hairColors = ['#4a3728','#1a1a1a','#d4a574','#c9302c','#ff69b4','#4169e1','#9370db','#22d3ee'];
+            for (var i = 0; i < hairColors.length; i++) {
+                var sel = (tempAvatar.hairColor === hairColors[i]) ? ' selected' : '';
+                hairColorOpts.innerHTML += '<div class="avatar-color-opt'+sel+'" style="background: '+hairColors[i]+';" onclick="setAvHairColor(\''+hairColors[i]+'\', this)"></div>';
+            }
+
+            // Top styles
+            var topOpts = document.getElementById('avTopStyleOptions');
+            topOpts.innerHTML = '';
+            var topParts = isBoy ? boyTops : girlTops;
+            var topKeys = Object.keys(topParts);
+            for (var i = 0; i < topKeys.length; i++) {
+                var sel = (tempAvatar.topStyle === topKeys[i]) ? ' selected' : '';
+                topOpts.innerHTML += '<div class="avatar-style-opt'+sel+'" onclick="setAvTopStyle(\''+topKeys[i]+'\', this)"><svg viewBox="15 55 70 50">'+topParts[topKeys[i]]('#3b82f6')+'</svg></div>';
+            }
+
+            // Top colors
+            var topColorOpts = document.getElementById('avTopColorOptions');
+            topColorOpts.innerHTML = '';
+            var topColors = isBoy ? ['#3b82f6','#ef4444','#22c55e','#1a1a1a','#ffffff','#f59e0b','#8b5cf6','#6b7280'] : ['#ec4899','#8b5cf6','#3b82f6','#ef4444','#22c55e','#ffffff','#fbbf24','#1a1a1a'];
+            for (var i = 0; i < topColors.length; i++) {
+                var sel = (tempAvatar.topColor === topColors[i]) ? ' selected' : '';
+                topColorOpts.innerHTML += '<div class="avatar-color-opt'+sel+'" style="background: '+topColors[i]+';" onclick="setAvTopColor(\''+topColors[i]+'\', this)"></div>';
+            }
+
+            // Bottom styles
+            var bottomOpts = document.getElementById('avBottomStyleOptions');
+            bottomOpts.innerHTML = '';
+            var bottomParts = isBoy ? boyBottoms : girlBottoms;
+            var bottomKeys = Object.keys(bottomParts);
+            for (var i = 0; i < bottomKeys.length; i++) {
+                var sel = (tempAvatar.bottomStyle === bottomKeys[i]) ? ' selected' : '';
+                bottomOpts.innerHTML += '<div class="avatar-style-opt'+sel+'" onclick="setAvBottomStyle(\''+bottomKeys[i]+'\', this)"><svg viewBox="20 90 60 50">'+bottomParts[bottomKeys[i]]('#1e3a5f')+'</svg></div>';
+            }
+
+            // Bottom colors
+            var bottomColorOpts = document.getElementById('avBottomColorOptions');
+            bottomColorOpts.innerHTML = '';
+            var bottomColors = isBoy ? ['#1e3a5f','#1a1a1a','#4a5568','#22c55e','#854d0e'] : ['#1e3a5f','#1a1a1a','#ec4899','#8b5cf6','#22c55e','#fbbf24'];
+            for (var i = 0; i < bottomColors.length; i++) {
+                var sel = (tempAvatar.bottomColor === bottomColors[i]) ? ' selected' : '';
+                bottomColorOpts.innerHTML += '<div class="avatar-color-opt'+sel+'" style="background: '+bottomColors[i]+';" onclick="setAvBottomColor(\''+bottomColors[i]+'\', this)"></div>';
+            }
+
+            // Shoe styles
+            var shoeOpts = document.getElementById('avShoeStyleOptions');
+            shoeOpts.innerHTML = '';
+            var shoeParts = isBoy ? boyShoes : girlShoes;
+            var shoeKeys = Object.keys(shoeParts);
+            for (var i = 0; i < shoeKeys.length; i++) {
+                var sel = (tempAvatar.shoeStyle === shoeKeys[i]) ? ' selected' : '';
+                shoeOpts.innerHTML += '<div class="avatar-style-opt'+sel+'" onclick="setAvShoeStyle(\''+shoeKeys[i]+'\', this)"><svg viewBox="20 125 60 25">'+shoeParts[shoeKeys[i]]('#1a1a1a')+'</svg></div>';
+            }
+
+            // Shoe colors
+            var shoeColorOpts = document.getElementById('avShoeColorOptions');
+            shoeColorOpts.innerHTML = '';
+            var shoeColors = isBoy ? ['#1a1a1a','#ffffff','#ef4444','#3b82f6','#22c55e','#f59e0b'] : ['#1a1a1a','#ffffff','#ec4899','#8b5cf6','#ef4444','#fbbf24'];
+            for (var i = 0; i < shoeColors.length; i++) {
+                var sel = (tempAvatar.shoeColor === shoeColors[i]) ? ' selected' : '';
+                shoeColorOpts.innerHTML += '<div class="avatar-color-opt'+sel+'" style="background: '+shoeColors[i]+';" onclick="setAvShoeColor(\''+shoeColors[i]+'\', this)"></div>';
+            }
+
+            // Face accessories
+            var faceAccOpts = document.getElementById('avFaceAccOptions');
+            faceAccOpts.innerHTML = '';
+            var faceAccParts = isBoy ? boyFaceAcc : girlFaceAcc;
+            var faceAccKeys = Object.keys(faceAccParts);
+            for (var i = 0; i < faceAccKeys.length; i++) {
+                var sel = (tempAvatar.faceAcc === faceAccKeys[i]) ? ' selected' : '';
+                var content = faceAccKeys[i] === 'none' ? '<text x="35" y="38" text-anchor="middle" font-size="16">❌</text>' : faceAccParts[faceAccKeys[i]];
+                faceAccOpts.innerHTML += '<div class="avatar-style-opt'+sel+'" onclick="setAvFaceAcc(\''+faceAccKeys[i]+'\', this)"><svg viewBox="20 20 60 40">'+content+'</svg></div>';
+            }
+
+            // Head accessories
+            var headAccOpts = document.getElementById('avHeadAccOptions');
+            headAccOpts.innerHTML = '';
+            var headAccParts = isBoy ? boyHeadAcc : girlHeadAcc;
+            var headAccKeys = Object.keys(headAccParts);
+            for (var i = 0; i < headAccKeys.length; i++) {
+                var sel = (tempAvatar.headAcc === headAccKeys[i]) ? ' selected' : '';
+                var content = headAccKeys[i] === 'none' ? '<text x="50" y="25" text-anchor="middle" font-size="16">❌</text>' : headAccParts[headAccKeys[i]];
+                headAccOpts.innerHTML += '<div class="avatar-style-opt'+sel+'" onclick="setAvHeadAcc(\''+headAccKeys[i]+'\', this)"><svg viewBox="10 -5 80 50">'+content+'</svg></div>';
+            }
         }
 
         function saveAvatar() {
             if (!currentAvatarMember) return;
-            
-            // Find member and update avatar
+
             for (var i = 0; i < familyMembers.length; i++) {
                 if (familyMembers[i].name === currentAvatarMember) {
-                    familyMembers[i].avatar = {
-                        skinTone: tempAvatar.skinTone,
-                        hair: tempAvatar.hair,
-                        face: tempAvatar.face,
-                        accessory: tempAvatar.accessory
-                    };
-                    // Update emoji to match face for backwards compatibility
-                    familyMembers[i].emoji = tempAvatar.face;
+                    familyMembers[i].avatar = JSON.parse(JSON.stringify(tempAvatar));
                     break;
                 }
             }
-            
-            // Save and re-render
+
             saveV12Data();
             renderAllV12();
-            
-            // Close modal
             closeAvatarBuilder();
-            
-            // Show toast
             showToast('🎨 Avatar saved!');
         }
 
@@ -4825,19 +5178,13 @@
                     var pointsToReward = member.rewardPoints - (member.weeklyPoints % member.rewardPoints);
                     
                     // Get avatar settings (with defaults)
-                    var avatar = member.avatar || { skinTone: '#FFDBAC', hair: '💇', face: '😊', accessory: '' };
+                    var avatar = member.avatar || getDefaultAvatar('boy');
 
                     html += '<div class="score-item ' + (isLeader ? 'leader' : '') + '" onclick="openEditRewardModal(\'' + member.name + '\')" style="display:block;visibility:visible;opacity:1;">';
                     
-                    // Custom Avatar Display
-                    html += '<div class="avatar-display" onclick="event.stopPropagation(); openAvatarBuilder(\'' + member.name + '\')">';
-                    html += '<div class="avatar-face" style="background: ' + avatar.skinTone + ';">';
-                    html += '<div class="avatar-hair">' + avatar.hair + '</div>';
-                    html += '<div class="avatar-face-emoji">' + avatar.face + '</div>';
-                    if (avatar.accessory) {
-                        html += '<div class="avatar-accessory">' + avatar.accessory + '</div>';
-                    }
-                    html += '</div>';
+                    // Full Body Avatar Display
+                    html += '<div class="avatar-display" onclick="event.stopPropagation(); openAvatarBuilder(\'' + member.name + '\')" style="background: linear-gradient(135deg, ' + avatar.bg1 + ', ' + avatar.bg2 + ');">';
+                    html += '<svg viewBox="0 0 100 150">' + generateAvatarSVG(avatar) + '</svg>';
                     html += '<div class="avatar-edit-hint">✏️</div>';
                     html += '</div>';
                     
@@ -4871,11 +5218,8 @@
                     var pointsNeeded = Math.max(member.jackpotPoints - yearlyTotal, 0);
                     var jackpotWon = member.jackpotWon[selectedYear] || yearlyTotal >= member.jackpotPoints;
                     
-                    // Get avatar settings (with defaults)
-                    var avatar = member.avatar || { skinTone: '#FFDBAC', hair: '💇', face: '😊', accessory: '' };
-                    
                     html += '<div class="jackpot-card" onclick="requestJackpotEdit(\'' + member.name + '\')" style="display:block;visibility:visible;opacity:1;">';
-                    html += '<div class="name">' + avatar.face + ' ' + member.name + '</div>';
+                    html += '<div class="name">' + member.emoji + ' ' + member.name + '</div>';
                     html += '<div class="yearly-total">' + yearlyTotal + '</div>';
                     html += '<div class="yearly-label">points in ' + selectedYear + '</div>';
                     html += '<div class="jackpot-progress"><div class="jackpot-progress-bar" style="width:' + progress + '%"></div></div>';
