@@ -1984,7 +1984,17 @@
                 <div class="jackpot-title">
                     🎰 Super Ultimate Jackpot 
                     <div class="year-buttons" id="yearButtons" style="display: flex; visibility: visible;">
-                        <!-- Year buttons generated dynamically by JavaScript -->
+                        <button type="button" class="year-btn active" onclick="changeYearTo(2025)">2025</button>
+                        <button type="button" class="year-btn" onclick="changeYearTo(2026)">2026</button>
+                        <button type="button" class="year-btn" onclick="changeYearTo(2027)">2027</button>
+                        <button type="button" class="year-btn" onclick="changeYearTo(2028)">2028</button>
+                        <button type="button" class="year-btn" onclick="changeYearTo(2029)">2029</button>
+                        <button type="button" class="year-btn" onclick="changeYearTo(2030)">2030</button>
+                        <button type="button" class="year-btn" onclick="changeYearTo(2031)">2031</button>
+                        <button type="button" class="year-btn" onclick="changeYearTo(2032)">2032</button>
+                        <button type="button" class="year-btn" onclick="changeYearTo(2033)">2033</button>
+                        <button type="button" class="year-btn" onclick="changeYearTo(2034)">2034</button>
+                        <button type="button" class="year-btn" onclick="changeYearTo(2035)">2035</button>
                     </div>
                 </div>
                 <div class="jackpot-cards" id="jackpotCards" style="display: flex; visibility: visible; opacity: 1;"></div>
@@ -2673,7 +2683,7 @@
         const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         const CURRENT_MONTH = new Date().getMonth();
         const CURRENT_YEAR = new Date().getFullYear();
-        let selectedYear = CURRENT_YEAR;
+        let selectedYear = 2025;
         let editMode = false;
         let editModeTimeout = null;
 
@@ -4033,34 +4043,16 @@
             document.getElementById('soundText').textContent = soundEnabled ? 'Sound On' : 'Sound Off';
         }
 
-        function renderYearButtons() {
-            var container = document.getElementById('yearButtons');
-            if (!container) return;
-            
-            var html = '';
-            var startYear = CURRENT_YEAR;
-            var endYear = CURRENT_YEAR + 10;
-            
-            for (var year = startYear; year <= endYear; year++) {
-                var activeClass = (year === selectedYear) ? ' active' : '';
-                html += '<button type="button" class="year-btn' + activeClass + '" onclick="changeYearTo(' + year + ')">' + year + '</button>';
-            }
-            
-            container.innerHTML = html;
-        }
-
         function changeYearTo(year) {
             selectedYear = year;
             document.getElementById('monthlyYearLabel').textContent = selectedYear;
             // Update year buttons
-            var buttons = document.querySelectorAll('.year-btn');
-            for (var i = 0; i < buttons.length; i++) {
-                var btn = buttons[i];
+            document.querySelectorAll('.year-btn').forEach(btn => {
                 btn.classList.remove('active');
                 if (parseInt(btn.textContent) === year) {
                     btn.classList.add('active');
                 }
-            }
+            });
             renderAllV12();
         }
 
@@ -4671,9 +4663,6 @@
         }
 
         function renderAllV12() { 
-            try {
-                renderYearButtons();
-            } catch(e) { console.error('renderYearButtons error:', e); }
             try {
                 renderScoreboard(); 
             } catch(e) { console.error('renderScoreboard error:', e); }
