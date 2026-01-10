@@ -2763,90 +2763,6 @@
         function saveV12Data() {
             saveData(STORAGE_KEYS.FAMILY_MEMBERS, familyMembers);
             saveData(STORAGE_KEYS.CHORES, chores);
-            // Also save to cloud (async, non-blocking)
-            saveCloudData();
-        }
-
-        // =====================================================
-        // CLOUD DATA PERSISTENCE
-        // =====================================================
-        var cloudSyncInProgress = false;
-        var lastCloudSync = 0;
-
-        function saveCloudData() {
-            // Debounce - only save every 2 seconds max
-            var now = Date.now();
-            if (now - lastCloudSync < 2000) return;
-            lastCloudSync = now;
-
-            if (!apiConfig.functionUrl || cloudSyncInProgress) return;
-            cloudSyncInProgress = true;
-
-            var data = {
-                familyMembers: familyMembers,
-                chores: chores,
-                lastUpdated: new Date().toISOString()
-            };
-
-            fetch(apiConfig.functionUrl + '/api/chores?code=' + apiConfig.functionKey, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            })
-            .then(function(response) {
-                if (response.ok) {
-                    console.log('Cloud sync: saved successfully');
-                } else {
-                    console.error('Cloud sync: save failed', response.status);
-                }
-            })
-            .catch(function(error) {
-                console.error('Cloud sync: save error', error);
-            })
-            .finally(function() {
-                cloudSyncInProgress = false;
-            });
-        }
-
-        function loadCloudData() {
-            return new Promise(function(resolve, reject) {
-                if (!apiConfig.functionUrl) {
-                    resolve(false);
-                    return;
-                }
-
-                fetch(apiConfig.functionUrl + '/api/chores?code=' + apiConfig.functionKey, {
-                    method: 'GET',
-                    headers: { 'Content-Type': 'application/json' }
-                })
-                .then(function(response) {
-                    if (response.ok) {
-                        return response.json();
-                    } else if (response.status === 404) {
-                        // No cloud data yet, that's ok
-                        return null;
-                    } else {
-                        throw new Error('Failed to load: ' + response.status);
-                    }
-                })
-                .then(function(data) {
-                    if (data && data.familyMembers && data.chores) {
-                        familyMembers = data.familyMembers;
-                        chores = data.chores;
-                        // Also save to localStorage for offline access
-                        saveData(STORAGE_KEYS.FAMILY_MEMBERS, familyMembers);
-                        saveData(STORAGE_KEYS.CHORES, chores);
-                        console.log('Cloud sync: loaded successfully');
-                        resolve(true);
-                    } else {
-                        resolve(false);
-                    }
-                })
-                .catch(function(error) {
-                    console.error('Cloud sync: load error', error);
-                    resolve(false);
-                });
-            });
         }
 
         function saveData(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
@@ -3011,24 +2927,12 @@
             loadCalendarEvents();
             loadTodoLists().then(function() { loadTodoTasks(); });
             
-            // V12 Scoreboard System - render immediately with localStorage data
+            // V12 Scoreboard System - render immediately and again after delay
             try {
                 renderAllV12();
             } catch(e) {
                 console.error('Initial renderAllV12 error:', e);
             }
-            
-            // Load cloud data and re-render if newer data exists
-            loadCloudData().then(function(loaded) {
-                if (loaded) {
-                    try {
-                        renderAllV12();
-                        console.log('Re-rendered with cloud data');
-                    } catch(e) {
-                        console.error('Cloud data renderAllV12 error:', e);
-                    }
-                }
-            });
             
             // Render again after DOM is fully ready
             setTimeout(function() {
